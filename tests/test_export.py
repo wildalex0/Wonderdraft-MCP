@@ -214,6 +214,7 @@ class Dialog:
         self.keys, self.finds, self.waits, self.t = [], list(finds), list(waits), 0.0
         monkeypatch.setattr(wa, "_send_keys", lambda ch: self.keys.append(ch[0][-1]))
         monkeypatch.setattr(wa, "_foreground", lambda h: True)
+        monkeypatch.setattr(wa, "_is_foreground", lambda h: True)
         monkeypatch.setattr(wa, "_find_dialog", lambda pid: self.finds.pop(0) if self.finds else None)
         monkeypatch.setattr(wa, "_wait_dialog", lambda pid, t, d=None: self.waits.pop(0))
         monkeypatch.setattr(wa, "_clock", lambda: self.t)
@@ -252,6 +253,48 @@ def test_open_dialog_respects_deadline(monkeypatch):
     Dialog(monkeypatch, finds=[], waits=[None, None])
     with pytest.raises(ExportError, match="timed out"):
         wa._open_export_dialog(1, 2, deadline=0)
+
+
+def test_keys_only_sent_while_foreground_aborts_otherwise(monkeypatch):
+    d = Dialog(monkeypatch, finds=[None], waits=[99])
+    # foreground at the attempt's start, then another window takes it and keeps it
+    monkeypatch.setattr(wa, "_is_foreground", lambda h: False)
+    refg = []
+    monkeypatch.setattr(wa, "_foreground", lambda h: refg.append(h) or len(refg) == 1)
+    with pytest.raises(ExportError, match="no keys were sent"):
+        wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == []
+    assert refg == [2, 2]  # initial foreground + exactly one re-foreground
+
+
+def test_keys_resent_after_one_successful_refocus(monkeypatch):
+    d = Dialog(monkeypatch, finds=[None], waits=[99])
+    state = {"fg": True, "checks": 0}
+
+    def is_fg(h):
+        state["checks"] += 1
+        if state["checks"] == 2:  # focus stolen just before Enter
+            state["fg"] = False
+        return state["fg"]
+
+    def refocus(h):
+        state["fg"] = True
+        return True
+
+    monkeypatch.setattr(wa, "_is_foreground", is_fg)
+    monkeypatch.setattr(wa, "_foreground", refocus)
+    wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == CTRL_E_ENTER and state["checks"] >= 3
+
+
+def test_every_send_is_guarded():
+    import inspect
+    src = inspect.getsource(wa)
+    # "_send_keys(" appears only in its def and in the one guarded call inside _send_keys_to
+    assert src.count("_send_keys(") == 2
+    guarded = src.split("def _send_keys_to", 1)[1].split("
+def ", 1)[0]
+    assert "_send_keys(chords)" in guarded
 
 
 def test_format_suffix_mismatch(tmp_path):

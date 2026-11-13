@@ -266,6 +266,23 @@ def _wait_responsive(hwnd: int, deadline: float) -> None:
         _sleep(0.25, deadline)
 
 
+def _is_foreground(hwnd) -> bool:
+    u, _ = _user32()
+    return u.GetForegroundWindow() == hwnd
+
+
+def _send_keys_to(main, chords: list[list[int]]) -> None:
+    """Send keys only while Wonderdraft's map window is the foreground window: if it is not,
+    re-foreground it once; if that fails, abort without sending anything (the keys would go
+    to whatever window the user is in)."""
+    if not _is_foreground(main):
+        log.info("Wonderdraft lost the foreground before sending keys; re-foregrounding")
+        if not (_foreground(main) and _is_foreground(main)):
+            raise ExportError("Wonderdraft is no longer the active window (another window took "
+                              "the focus); no keys were sent. Close other windows and try again.")
+    _send_keys(chords)
+
+
 def _open_export_dialog(pid: int, main: int, deadline: float = float("inf")) -> None:
     """Ctrl+E then Enter. If the native dialog does not show within 5 s, retry once
     (Esc first, to close a possibly open Export Options popup). Never sends keys while the
@@ -281,13 +298,13 @@ def _open_export_dialog(pid: int, main: int, deadline: float = float("inf")) -> 
             continue
         _sleep(0.3, deadline)
         if attempt == 2:
-            _send_keys([[0x1B]])  # Esc
+            _send_keys_to(main, [[0x1B]])  # Esc
             _sleep(0.5, deadline)
             if _find_dialog(pid) is not None:
                 return
-        _send_keys([[0x11, 0x45]])  # Ctrl+E
+        _send_keys_to(main, [[0x11, 0x45]])  # Ctrl+E
         _sleep(1.5, deadline)
-        _send_keys([[0x0D]])  # Enter: accept the Export Options defaults
+        _send_keys_to(main, [[0x0D]])  # Enter: accept the Export Options defaults
         if _wait_dialog(pid, 5.0, deadline) is not None:
             log.info("export dialog appeared (attempt %d)", attempt)
             return
