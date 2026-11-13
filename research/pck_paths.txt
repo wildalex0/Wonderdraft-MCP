@@ -1,0 +1,2404 @@
+res://.import/HDR_L_0.png-d00817f24048657d9b47f8ffd9a45441.stex
+res://.import/add_32.png-a2b85378cb0835b24f4178eb9b23ca24.stex
+res://.import/add_color.png-677af7cfdd984772c4de5666c57de70a.stex
+res://.import/align_center.png-cdefd46528979aa5a3337b79920b2a89.stex
+res://.import/align_left.png-41e251b343c81e204039b041f75eedd3.stex
+res://.import/align_right.png-1614e24f2c1e80436865e74fc691b422.stex
+res://.import/arrow_e.png-fba63f213ef4a265ffd905f749655c0a.stex
+res://.import/arrow_n.png-7091f85c4b7646eeac4a6d6f2607928a.stex
+res://.import/arrow_s.png-9cf25522454aa92995f1902f4a020cfc.stex
+res://.import/arrow_w.png-3a2bef6a542f6f407be249fe032fd40d.stex
+res://.import/box_tool_64.png-d5a8ce28ac3421f6720b2a30ad633b3d.stex
+res://.import/button_disabled.png-cd2162b403141f3a4660892e2cc40977.stex
+res://.import/button_hover.png-94cf411e0d0ebf18cc12b96e5cbe98e3.stex
+res://.import/button_normal.png-555e9e2587bd981776b211606bccc6a6.stex
+res://.import/button_pressed.png-dfc8cbc2404e1438132c44e5827eb199.stex
+res://.import/checked.png-a23913dbb696ec9fd4de8dd7991ed9f0.stex
+res://.import/collapse_hide.png-f1fd5d439938d237b045e8bc3a2b0f5f.stex
+res://.import/collapse_show.png-e6ff683defacf72e73333a8c408d1080.stex
+res://.import/color_brush.png-1dfd62ee81b605ee061440760f1fb65e.stex
+res://.import/cropper.png-93d0a6ff9f22feaa6b2c17e7b7308777.stex
+res://.import/drag.png-14eeb0c0fb8c06f37f0a80e530a558a6.stex
+res://.import/drop.png-d7be34b408db3faa660f97f84305ac95.stex
+res://.import/error.wav-96ee995c279b7ea423bbc5828e047ff6.sample
+res://.import/eyedropper.png-feee746307f229a04dcdf960e4f1999d.stex
+res://.import/frame_64.png-552730c3e1e20184128535cc1c4c632b.stex
+res://.import/freshwater_brush_64.png-d6ad05752807f58ddd0eff1f46de18d2.stex
+res://.import/fx_options_64.png-72f5acae86a1ac5c3fe0914aebed2494.stex
+res://.import/gradient.png-223b639c027b55b05fc6a6803ad0f720.stex
+res://.import/grid_tool_64.png-17770df3116cd647ef9144720f8e6f40.stex
+res://.import/ground_brush_64.png-2943fef6e0d1040c39c071451ab30735.stex
+res://.import/ground_color_eraser_normal.png-7fffba9d543d1da5568f83848ccffc2b.stex
+res://.import/ground_color_eraser_pressed.png-fd667a5f719608a65985d764da2be434.stex
+res://.import/ground_color_normal.png-04be6f2566954df6c869a8454a2c1d1e.stex
+res://.import/ground_color_pressed.png-e82627989b24071448fd9b841f4d1a61.stex
+res://.import/hide_panel.png-432f7ef6755a5036de8115f2c7446e8f.stex
+res://.import/invisible.png-b637297cd715e1b6c6311a5af478ac50.stex
+res://.import/knob.png-ac406232e8c727d9ae19dd5e08e8b9f8.stex
+res://.import/knob_hover.png-a3278d105e03ae0cd8f6816f93c56204.stex
+res://.import/label_tool_64.png-0b74eb77db1809be7a3b1d344f4260bd.stex
+res://.import/lake_tool_64.png-1ba58b5ebf24a20da9e7a637d79d320d.stex
+res://.import/landmass_brush_64.png-76d6e12e2740ef2ef48f715f7b5a8f43.stex
+res://.import/landmass_eraser_64.png-b375a33afb9e877bfe3af1947280f242.stex
+res://.import/landmass_wizard_64.png-76ddd5598906a21b6bb1398bfeb2f68c.stex
+res://.import/layers_64.png-4e973ee7c4b72064177cd82ea2330924.stex
+res://.import/link.png-67fdbbf0dc4597424f0b98656dae77d0.stex
+res://.import/locked.png-6cbbbe4aeb2411ca4a44fff93cadf0fc.stex
+res://.import/lower_landmass_tool_64.png-4a6294a2392d28af8ada93185c14a0a3.stex
+res://.import/map_anchor.png-a6f55395d2ee53107646b17da3d9e2dd.stex
+res://.import/measuring_tool_64.png-1b9857c877ecd2514d360e8848d0d259.stex
+res://.import/menu.png-44ee812e6006ace0b2703d300d0096d0.stex
+res://.import/mountain_brush_64.png-2bf52eb88f822d12f451c728afee9403.stex
+res://.import/move_label.png-af9ad27ba5c4834265197b60a3d83bbd.stex
+res://.import/move_label_hover.png-6f82f4c50c19b700c742dc1823287631.stex
+res://.import/pan.png-61cde84fbbddfb271fd770a8d58f1d22.stex
+res://.import/path_tool_64.png-5425d45d34ebbf7fc41a7410257cdce0.stex
+res://.import/polygon_lasso_64.png-f0fedf7df648babc52e15f1dd96915be.stex
+res://.import/raise_landmass_tool_64.png-8ed8bb787bc6f089a3afdc97b71549be.stex
+res://.import/randomize_32.png-bf3cd22f36db0ccb0a8cdab2340a3478.stex
+res://.import/randomize_water_64.png-722ab781fb6ca684e3ea6c85480dc4f4.stex
+res://.import/remove_32.png-f5cab222674e6fffb9941aff6947b906.stex
+res://.import/reset_24.png-4f2b01dc97637d25fda065bc339af594.stex
+res://.import/reset_32.png-183f18385f975cf22a66039404350089.stex
+res://.import/river_glow.png-974a8ab994852f9f2792bf83d272f889.stex
+res://.import/river_tool_64.png-123665d3d19440bd4ab97bce02919d96.stex
+res://.import/rotate_label.png-4176e4744b0a05355b0b43354706b413.stex
+res://.import/rotate_label_hover.png-36b5bde6a893799f826b33a919e460f3.stex
+res://.import/save_error.png-06f38c47d02859faeaad1438eb8132bc.stex
+res://.import/saved.wav-51e50e5a3c64720b8bfad90082769d53.sample
+res://.import/saved_indicator.png-d63a323205dca44443421491c1281682.stex
+res://.import/saving_indicator.png-9a592ff5ad88a255fa8144d998857433.stex
+res://.import/scale_creator_64.png-ad023cc619f9cdf3231076749cf16dd8.stex
+res://.import/show_panel.png-efda0871f5025c4e6162c20088fee4ac.stex
+res://.import/splash.png-929ed8a00b89ba36c51789452f874c77.stex
+res://.import/symbol_eraser.png-993e0933bd52f0722332829fa4cd51c4.stex
+res://.import/symbol_move_tool_64.png-ad5cd5d311a2bdc1c38d361a71b04324.stex
+res://.import/symbol_tool_64.png-c72174de31cc54881c6b41a7d9233049.stex
+res://.import/territory_tool_64.png-899a7e08914ed367b49eef654ba2c210.stex
+res://.import/toggle_off.png-20b888d59356f08826de4c0a35106157.stex
+res://.import/toggle_on.png-89d6fef3bc9701e5bab275caa13f5af5.stex
+res://.import/tool_options_64.png-c4e66e32188c3a26643510050bb6bdf6.stex
+res://.import/trace_tool_64.png-d2d53cff278411c06441ea8ce4aca762.stex
+res://.import/tree_brush_64.png-ef070c29dc17c7f8557b8b87c02fe53b.stex
+res://.import/unlink.png-effa71ab0eca25f3d937912232467299.stex
+res://.import/unlocked.png-cc0122e20b9d286232c4bb9dba234583.stex
+res://.import/visible.png-e5303967a310e3c9f25040a165ff31bf.stex
+res://.import/warning.png-0f825ac468b484725c06fab4651ff1ae.stex
+res://.import/warning_32.png-75c3f61b6b78722278ed612566e4964c.stex
+res://.import/water_options_64.png-bcd90fd11b8a610870b15c61066df0ef.stex
+res://.import/windrose_tool_64.png-b471f9fac5cf2a6b343808a6059f1adf.stex
+res://.import/wonderdraft_icon.png-3b72ef6a855b48bf6630e0650beced6b.stex
+res://.import/wonderdraft_icon_16.png-29d3372b870d640f18b7b57bf3af8beb.stex
+res://.import/wonderdraft_icon_64.png-9f40f3eb7272fa7c3d99eddaad556675.stex
+res://.import/zoom.png-6802ee6a01767b70bd33d4686cab20b9.stex
+res://brushes/cloud_circle.wonderdraft_image
+res://brushes/hard_circle.wonderdraft_image
+res://brushes/landmass_brush.wonderdraft_image
+res://brushes/soft_circle.wonderdraft_image
+res://cursors/drag.png.import
+res://cursors/drop.png.import
+res://cursors/eyedropper.png.import
+res://data/app_theme.tres.converted.res
+res://data/app_theme.tres.remap
+res://data/app_theme_4k.tres.converted.res
+res://data/app_theme_4k.tres.remap
+res://data/button_stylebox.tres.converted.res
+res://data/button_stylebox.tres.remap
+res://data/cacert.pem
+res://data/default_bold_dynamicfont.tres.converted.res
+res://data/default_bold_dynamicfont.tres.remap
+res://data/default_bold_dynamicfont_4k.tres.converted.res
+res://data/default_bold_dynamicfont_4k.tres.remap
+res://data/default_bold_font.ttf
+res://data/default_dynamicfont.tres.converted.res
+res://data/default_dynamicfont.tres.remap
+res://data/default_dynamicfont_4k.tres.converted.res
+res://data/default_dynamicfont_4k.tres.remap
+res://data/default_environment.tres.converted.res
+res://data/default_environment.tres.remap
+res://data/default_font.ttf
+res://data/default_large_dynamicfont.tres.converted.res
+res://data/default_large_dynamicfont.tres.remap
+res://data/default_medium_dynamicfont.tres.converted.res
+res://data/default_medium_dynamicfont.tres.remap
+res://data/default_small_dynamicfont.tres.converted.res
+res://data/default_small_dynamicfont.tres.remap
+res://data/fade_in_gradient.tres.converted.res
+res://data/fade_in_gradient.tres.remap
+res://data/ground_color_buttongroup.tres.converted.res
+res://data/ground_color_buttongroup.tres.remap
+res://data/layers_buttongroup.tres.converted.res
+res://data/layers_buttongroup.tres.remap
+res://data/noto_sans_cjk.otf
+res://data/noto_sans_dynamicfont.tres.converted.res
+res://data/noto_sans_dynamicfont.tres.remap
+res://data/palette_button_hover.tres.converted.res
+res://data/palette_button_hover.tres.remap
+res://data/palette_button_normal.tres.converted.res
+res://data/palette_button_normal.tres.remap
+res://data/palette_button_pressed.tres.converted.res
+res://data/palette_button_pressed.tres.remap
+res://data/panel_button_normal.tres.converted.res
+res://data/panel_button_normal.tres.remap
+res://data/panel_buttongroup.tres.converted.res
+res://data/panel_buttongroup.tres.remap
+res://data/path_styles_buttongroup.tres.converted.res
+res://data/path_styles_buttongroup.tres.remap
+res://data/scrollbar_hover.tres.converted.res
+res://data/scrollbar_hover.tres.remap
+res://data/scrollbar_normal.tres.converted.res
+res://data/scrollbar_normal.tres.remap
+res://data/scrollbar_pressed.tres.converted.res
+res://data/scrollbar_pressed.tres.remap
+res://data/sprite_buttongroup.tres.converted.res
+res://data/sprite_buttongroup.tres.remap
+res://data/tools_buttongroup.tres.converted.res
+res://data/tools_buttongroup.tres.remap
+res://default_env.tres.converted.res
+res://default_env.tres.remap
+res://fonts/Aladin.ttf
+res://fonts/Barlow Condensed.ttf
+res://fonts/Bilbo.ttf
+res://fonts/Cinzel Decorative.ttf
+res://fonts/East Sea Dokdo.ttf
+res://fonts/Fredericka the Great.ttf
+res://fonts/Gentium Book Basic.ttf
+res://fonts/IM Fell DW Pica.ttf
+res://fonts/IM Fell English Italic.ttf
+res://fonts/Katibeh.ttf
+res://fonts/Lancelot.ttf
+res://fonts/Marko One.ttf
+res://fonts/Merriweather.ttf
+res://fonts/Metamorphous.ttf
+res://fonts/Uncial Antiqua.ttf
+res://icons/add_32.png.import
+res://icons/add_color.png.import
+res://icons/align_center.png.import
+res://icons/align_left.png.import
+res://icons/align_right.png.import
+res://icons/arrow_e.png.import
+res://icons/arrow_n.png.import
+res://icons/arrow_s.png.import
+res://icons/arrow_w.png.import
+res://icons/box_tool_64.png.import
+res://icons/button_disabled.png.import
+res://icons/button_hover.png.import
+res://icons/button_normal.png.import
+res://icons/button_pressed.png.import
+res://icons/checked.png.import
+res://icons/collapse_hide.png.import
+res://icons/collapse_show.png.import
+res://icons/color_brush.png.import
+res://icons/cropper.png.import
+res://icons/frame_64.png.import
+res://icons/freshwater_brush_64.png.import
+res://icons/fx_options_64.png.import
+res://icons/grid_tool_64.png.import
+res://icons/ground_brush_64.png.import
+res://icons/ground_color_eraser_normal.png.import
+res://icons/ground_color_eraser_pressed.png.import
+res://icons/ground_color_normal.png.import
+res://icons/ground_color_pressed.png.import
+res://icons/hide_panel.png.import
+res://icons/invisible.png.import
+res://icons/knob.png.import
+res://icons/knob_hover.png.import
+res://icons/label_tool_64.png.import
+res://icons/lake_tool_64.png.import
+res://icons/landmass_brush_64.png.import
+res://icons/landmass_eraser_64.png.import
+res://icons/landmass_wizard_64.png.import
+res://icons/layers_64.png.import
+res://icons/link.png.import
+res://icons/locked.png.import
+res://icons/lower_landmass_tool_64.png.import
+res://icons/map_anchor.png.import
+res://icons/measuring_tool_64.png.import
+res://icons/menu.png.import
+res://icons/mountain_brush_64.png.import
+res://icons/move_label.png.import
+res://icons/move_label_hover.png.import
+res://icons/pan.png.import
+res://icons/path_tool_64.png.import
+res://icons/polygon_lasso_64.png.import
+res://icons/raise_landmass_tool_64.png.import
+res://icons/randomize_32.png.import
+res://icons/randomize_water_64.png.import
+res://icons/remove_32.png.import
+res://icons/reset_24.png.import
+res://icons/reset_32.png.import
+res://icons/river_tool_64.png.import
+res://icons/rotate_label.png.import
+res://icons/rotate_label_hover.png.import
+res://icons/save_error.png.import
+res://icons/saved_indicator.png.import
+res://icons/saving_indicator.png.import
+res://icons/scale_creator_64.png.import
+res://icons/show_panel.png.import
+res://icons/symbol_eraser.png.import
+res://icons/symbol_move_tool_64.png.import
+res://icons/symbol_tool_64.png.import
+res://icons/territory_tool_64.png.import
+res://icons/toggle_off.png.import
+res://icons/toggle_on.png.import
+res://icons/tool_options_64.png.import
+res://icons/trace_tool_64.png.import
+res://icons/tree_brush_64.png.import
+res://icons/unlink.png.import
+res://icons/unlocked.png.import
+res://icons/visible.png.import
+res://icons/warning.png.import
+res://icons/warning_32.png.import
+res://icons/water_options_64.png.import
+res://icons/windrose_tool_64.png.import
+res://icons/zoom.png.import
+res://materials/font.material
+res://materials/font_sdf.material
+res://materials/sdf.material
+res://names/bodies_of_water.csv
+res://names/nations.csv.import
+res://names/settlements.csv
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/.wonderdraft_symbols
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a01.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a02.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a03.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a04.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a05.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a06.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a07.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a08.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a09.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a10.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a11.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a12.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_large/sand_dune_w3a13.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/.wonderdraft_symbols
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a01.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a02.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a03.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a04.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a05.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a06.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a07.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a08.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a09.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a10.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a11.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a12.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3.1a13.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a01.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a02.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a03.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a04.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a05.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a06.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a07.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a08.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a09.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a10.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a11.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a12.wonderdraft_image
+res://packs/Arabia by Chan/sprites/mountains/sand_dunes_small/sand_dune_w3_1a13.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/.wonderdraft_symbols
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/01.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/02.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/03.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/04.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/05.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/06.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/08.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/09.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/10.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/arch.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/bridge_1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/building_courtyard.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/building_dome.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/building_mashrabiya.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort tower ALT.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort tower.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort walls diagonal.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort walls horizontal back.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort walls horizontal front.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort walls vertical.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fort_bridge.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fountain_octagonal_1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fountain_octagonal_2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fountain_square.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/fountain_well.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/library alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/library.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/market 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/market 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/market 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/market 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/market 5.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/mosque 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/mosque 2 alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/mosque 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/oasis.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tent 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tent 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tent 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tent 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tent 5.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tower 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tower 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tower 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/tower 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/university alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Color/university.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/.wonderdraft_symbols
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/01.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/02.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/03.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/04.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/05.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/06.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/07.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/09.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/10.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/arch.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/bridge_1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/building_courtyard.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/building_dome.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/building_mashrabiya.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort tower ALT.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort tower.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort walls diagonal.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort walls horizontal back.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort walls horizontal front.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort walls vertical.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fort_bridge.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fountain_octagonal_1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fountain_octagonal_2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fountain_square.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/fountain_well.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/library.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/market 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/market 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/market 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/market 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/market 5.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/mosque 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/mosque 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/palm_tree_1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/palm_tree_2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 4 alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 5 alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tent 5.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tower 1.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tower 2.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tower 3.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/tower 4.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/university alt.wonderdraft_image
+res://packs/Arabia by Chan/sprites/symbols/Arabia Paintable/university.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/.wonderdraft_symbols
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/01.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/06 inn.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/barn.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/bats 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/bats 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/bats 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/castle.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/castle_02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/castle_03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/castle_04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/cathedral alt.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/cathedral.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 01 gate.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 02 post.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fence 06.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/field pumpkins 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/field pumpkins 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/field pumpkins 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/field scarecrow.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 4.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 5.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/fields 6.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/gallows.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 01 masoleum 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 02 masoleum 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 06.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 07.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 08.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 09.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 10.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/graveyard 11.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/ruin01.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/ruin02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/ruin03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/ruin04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/ruin05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/stable 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/stable 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/stable 3 lean-to.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/stable fence 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/stable fence 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_normal/tower.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/.wonderdraft_symbols
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/01.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/06 inn.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/barn.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/bats 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/bats 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/bats 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/castle.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/castle_02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/castle_03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/castle_04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/cathedral alt.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/cathedral.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 01 gate.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 02 post.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fence 06.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/field pumpkins 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/field pumpkins 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/field pumpkins 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/field scarecrow.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 3.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 4.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 5.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/fields 6.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/gallows.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 01 masoleum 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 02 masoleum 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 06.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 07.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 08.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 09.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 10.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/graveyard 11.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/ruin01.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/ruin02.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/ruin03.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/ruin04.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/ruin05.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/stable 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/stable 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/stable 3 lean-to.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/stable fence 1.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/stable fence 2.wonderdraft_image
+res://packs/Gothic Horror/sprites/symbols/gothic_horror_sample_color/tower.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/.wonderdraft_symbols
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill01.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill02.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill03.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill04.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill05.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill06.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill07.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/hills/hill08.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/.wonderdraft_symbols
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/01.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/02.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/03.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/04.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/05.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/06.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/07.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/08.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/09.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/10.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/11.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/12.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/13.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/mountains/mountains/14.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/.wonderdraft_symbols
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/7.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/8.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/arch.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/bridge.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort gate alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort gate.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort tower doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort tower no doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort wall long.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/fort wall short.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/lantern single.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/lantern triple 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/lantern triple 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/market 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/market 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/market 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/market table.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/pagoda.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 5 alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace building 6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/palace.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/pavilion alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/pavilion.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/sign 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/sign 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/sign 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/stand lantern.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/stand sign.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/temple alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/temple.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_custom_colors/tower arrow.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/.wonderdraft_symbols
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/7.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/8.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/arch alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/arch.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/bridge alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/bridge.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort gate alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort gate.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort tower doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort tower no doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort wall long.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/fort wall short.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern single white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern single.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern triple 1 white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern triple 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern triple 2 white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/lantern triple 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/market 1 alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/market 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/market 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/market 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/market table.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/pagoda.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 5 alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace building 6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/palace.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/pavilion alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/pavilion.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/sign 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/sign 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/sign 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/stand lantern alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/stand lantern.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/stand sign alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/stand sign.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/temple alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/temple.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_normal/tower arrow.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/.wonderdraft_symbols
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/7.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/8.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/arch.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/bridge.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort gate alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort gate.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort tower doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort tower no doors.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort wall long.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/fort wall short.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern single white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern single.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern triple 1 white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern triple 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern triple 2 white.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/lantern triple 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/market 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/market 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/market 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/market table.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/pagoda.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 4.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 5 alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 5.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace building 6.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/palace.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/pavilion alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/pavilion.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/sign 1.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/sign 2.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/sign 3.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/stand lantern.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/stand sign.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/temple alt.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/temple.wonderdraft_image
+res://packs/Tang Dynasty by Chan/sprites/symbols/tang_dynasty_sample_color/tower arrow.wonderdraft_image
+res://project.binary
+res://scenes/Canvas.tscn.converted.res
+res://scenes/Canvas.tscn.remap
+res://scenes/Editor.tscn.converted.res
+res://scenes/Editor.tscn.remap
+res://scenes/File_Selector.tscn.converted.res
+res://scenes/File_Selector.tscn.remap
+res://scenes/Label.tscn.converted.res
+res://scenes/Label.tscn.remap
+res://scenes/Rotation_Spin_Slider.tscn.converted.res
+res://scenes/Rotation_Spin_Slider.tscn.remap
+res://scenes/Spin_Slider.tscn.converted.res
+res://scenes/Spin_Slider.tscn.remap
+res://scenes/Spin_Slider_F.tscn.converted.res
+res://scenes/Spin_Slider_F.tscn.remap
+res://scripts/cache.gd.remap
+res://scripts/cache.gdc
+res://scripts/canvas.gd.remap
+res://scripts/canvas.gdc
+res://scripts/canvas_container.gd.remap
+res://scripts/canvas_container.gdc
+res://scripts/common.gd.remap
+res://scripts/common.gdc
+res://scripts/cursor.gd.remap
+res://scripts/cursor.gdc
+res://scripts/global.gd.remap
+res://scripts/global.gdc
+res://scripts/history.gd.remap
+res://scripts/history.gdc
+res://scripts/noise/soft_noise.gd.remap
+res://scripts/noise/soft_noise.gdc
+res://scripts/objects/path_v2.gd.remap
+res://scripts/objects/path_v2.gdc
+res://scripts/objects/territory.gd.remap
+res://scripts/objects/territory.gdc
+res://scripts/objects/territory_widget.gd.remap
+res://scripts/objects/territory_widget.gdc
+res://scripts/save/pck_directory.gd.remap
+res://scripts/save/pck_directory.gdc
+res://scripts/save/save_atom.gd.remap
+res://scripts/save/save_atom.gdc
+res://scripts/save/save_system.gd.remap
+res://scripts/save/save_system.gdc
+res://scripts/splines/catmull_rom.gd.remap
+res://scripts/splines/catmull_rom.gdc
+res://scripts/sprite/land_sprite.gd.remap
+res://scripts/sprite/land_sprite.gdc
+res://scripts/sprite/serialized_sprite.gd.remap
+res://scripts/sprite/serialized_sprite.gdc
+res://scripts/tools/box_tool.gd.remap
+res://scripts/tools/box_tool.gdc
+res://scripts/tools/draw_path.gd.remap
+res://scripts/tools/draw_path.gdc
+res://scripts/tools/erase_freshwater.gd.remap
+res://scripts/tools/erase_freshwater.gdc
+res://scripts/tools/erase_landmass.gd.remap
+res://scripts/tools/erase_landmass.gdc
+res://scripts/tools/frame_tool.gd.remap
+res://scripts/tools/frame_tool.gdc
+res://scripts/tools/freshwater_brush.gd.remap
+res://scripts/tools/freshwater_brush.gdc
+res://scripts/tools/grid_tool.gd.remap
+res://scripts/tools/grid_tool.gdc
+res://scripts/tools/label.gd.remap
+res://scripts/tools/label.gdc
+res://scripts/tools/label_tool.gd.remap
+res://scripts/tools/label_tool.gdc
+res://scripts/tools/lake_tool.gd.remap
+res://scripts/tools/lake_tool.gdc
+res://scripts/tools/landmass.gd.remap
+res://scripts/tools/landmass.gdc
+res://scripts/tools/landmass_brush.gd.remap
+res://scripts/tools/landmass_brush.gdc
+res://scripts/tools/landmass_lasso.gd.remap
+res://scripts/tools/landmass_lasso.gdc
+res://scripts/tools/measuring_tool.gd.remap
+res://scripts/tools/measuring_tool.gdc
+res://scripts/tools/move_label.gd.remap
+res://scripts/tools/move_label.gdc
+res://scripts/tools/move_path.gd.remap
+res://scripts/tools/move_path.gdc
+res://scripts/tools/move_sprite.gd.remap
+res://scripts/tools/move_sprite.gdc
+res://scripts/tools/move_windrose.gd.remap
+res://scripts/tools/move_windrose.gdc
+res://scripts/tools/paint_ground.gd.remap
+res://scripts/tools/paint_ground.gdc
+res://scripts/tools/paint_landmass.gd.remap
+res://scripts/tools/paint_landmass.gdc
+res://scripts/tools/paint_water.gd.remap
+res://scripts/tools/paint_water.gdc
+res://scripts/tools/pan_tool.gd.remap
+res://scripts/tools/pan_tool.gdc
+res://scripts/tools/raise_landmass.gd.remap
+res://scripts/tools/raise_landmass.gdc
+res://scripts/tools/rasterizer.gd.remap
+res://scripts/tools/rasterizer.gdc
+res://scripts/tools/river_tool.gd.remap
+res://scripts/tools/river_tool.gdc
+res://scripts/tools/scale.gd.remap
+res://scripts/tools/scale.gdc
+res://scripts/tools/scale_creator.gd.remap
+res://scripts/tools/scale_creator.gdc
+res://scripts/tools/selected_area.gd.remap
+res://scripts/tools/selected_area.gdc
+res://scripts/tools/sprite_brush.gd.remap
+res://scripts/tools/sprite_brush.gdc
+res://scripts/tools/sprite_eraser.gd.remap
+res://scripts/tools/sprite_eraser.gdc
+res://scripts/tools/territory_tool.gd.remap
+res://scripts/tools/territory_tool.gdc
+res://scripts/tools/trace_tool.gd.remap
+res://scripts/tools/trace_tool.gdc
+res://scripts/tools/water.gd.remap
+res://scripts/tools/water.gdc
+res://scripts/tools/windrose.gd.remap
+res://scripts/tools/windrose.gdc
+res://scripts/tools/windrose_tool.gd.remap
+res://scripts/tools/windrose_tool.gdc
+res://scripts/ui/area_creator_dialog.gd.remap
+res://scripts/ui/area_creator_dialog.gdc
+res://scripts/ui/assets_dialog.gd.remap
+res://scripts/ui/assets_dialog.gdc
+res://scripts/ui/box_panel.gd.remap
+res://scripts/ui/box_panel.gdc
+res://scripts/ui/collapser.gd.remap
+res://scripts/ui/collapser.gdc
+res://scripts/ui/color_dialog.gd.remap
+res://scripts/ui/color_dialog.gdc
+res://scripts/ui/contextual_panel.gd.remap
+res://scripts/ui/contextual_panel.gdc
+res://scripts/ui/editor.gd.remap
+res://scripts/ui/editor.gdc
+res://scripts/ui/erase_freshwater_panel.gd.remap
+res://scripts/ui/erase_freshwater_panel.gdc
+res://scripts/ui/erase_landmass_panel.gd.remap
+res://scripts/ui/erase_landmass_panel.gdc
+res://scripts/ui/error_dialog.gd.remap
+res://scripts/ui/error_dialog.gdc
+res://scripts/ui/export_dialog.gd.remap
+res://scripts/ui/export_dialog.gdc
+res://scripts/ui/export_options_dialog.gd.remap
+res://scripts/ui/export_options_dialog.gdc
+res://scripts/ui/file_selector.gd.remap
+res://scripts/ui/file_selector.gdc
+res://scripts/ui/frame_panel.gd.remap
+res://scripts/ui/frame_panel.gdc
+res://scripts/ui/freshwater_brush_panel.gd.remap
+res://scripts/ui/freshwater_brush_panel.gdc
+res://scripts/ui/fx_panel.gd.remap
+res://scripts/ui/fx_panel.gdc
+res://scripts/ui/generate_progress_popup.gd.remap
+res://scripts/ui/generate_progress_popup.gdc
+res://scripts/ui/grid_panel.gd.remap
+res://scripts/ui/grid_panel.gdc
+res://scripts/ui/ground_color_button.gd.remap
+res://scripts/ui/ground_color_button.gdc
+res://scripts/ui/ground_color_container.gd.remap
+res://scripts/ui/ground_color_container.gdc
+res://scripts/ui/ground_color_eraser_button.gd.remap
+res://scripts/ui/ground_color_eraser_button.gdc
+res://scripts/ui/ground_color_panel.gd.remap
+res://scripts/ui/ground_color_panel.gdc
+res://scripts/ui/help_dialog.gd.remap
+res://scripts/ui/help_dialog.gdc
+res://scripts/ui/inspect_dialog.gd.remap
+res://scripts/ui/inspect_dialog.gdc
+res://scripts/ui/label_panel.gd.remap
+res://scripts/ui/label_panel.gdc
+res://scripts/ui/lake_panel.gd.remap
+res://scripts/ui/lake_panel.gdc
+res://scripts/ui/landmass_lasso_panel.gd.remap
+res://scripts/ui/landmass_lasso_panel.gdc
+res://scripts/ui/layers_panel.gd.remap
+res://scripts/ui/layers_panel.gdc
+res://scripts/ui/loading_bar.gd.remap
+res://scripts/ui/loading_bar.gdc
+res://scripts/ui/magic_landmass_panel.gd.remap
+res://scripts/ui/magic_landmass_panel.gdc
+res://scripts/ui/measuring_panel.gd.remap
+res://scripts/ui/measuring_panel.gdc
+res://scripts/ui/move_sprite_panel.gd.remap
+res://scripts/ui/move_sprite_panel.gdc
+res://scripts/ui/naming_dialog.gd.remap
+res://scripts/ui/naming_dialog.gdc
+res://scripts/ui/new_map_dialog.gd.remap
+res://scripts/ui/new_map_dialog.gdc
+res://scripts/ui/news_dialog.gd.remap
+res://scripts/ui/news_dialog.gdc
+res://scripts/ui/paint_landmass_panel.gd.remap
+res://scripts/ui/paint_landmass_panel.gdc
+res://scripts/ui/path_panel.gd.remap
+res://scripts/ui/path_panel.gdc
+res://scripts/ui/path_style_radio.gd.remap
+res://scripts/ui/path_style_radio.gdc
+res://scripts/ui/preferences_dialog.gd.remap
+res://scripts/ui/preferences_dialog.gdc
+res://scripts/ui/quit_save_dialog.gd.remap
+res://scripts/ui/quit_save_dialog.gdc
+res://scripts/ui/resize_map_dialog.gd.remap
+res://scripts/ui/resize_map_dialog.gdc
+res://scripts/ui/river_panel.gd.remap
+res://scripts/ui/river_panel.gdc
+res://scripts/ui/rotation_spin_slider.gd.remap
+res://scripts/ui/rotation_spin_slider.gdc
+res://scripts/ui/save_indicator.gd.remap
+res://scripts/ui/save_indicator.gdc
+res://scripts/ui/scale_creator_panel.gd.remap
+res://scripts/ui/scale_creator_panel.gdc
+res://scripts/ui/spin_slider.gd.remap
+res://scripts/ui/spin_slider.gdc
+res://scripts/ui/sprite_button.gd.remap
+res://scripts/ui/sprite_button.gdc
+res://scripts/ui/sprite_eraser_panel.gd.remap
+res://scripts/ui/sprite_eraser_panel.gdc
+res://scripts/ui/sprite_panel.gd.remap
+res://scripts/ui/sprite_panel.gdc
+res://scripts/ui/territory_panel.gd.remap
+res://scripts/ui/territory_panel.gdc
+res://scripts/ui/theme_dialog.gd.remap
+res://scripts/ui/theme_dialog.gdc
+res://scripts/ui/trace_panel.gd.remap
+res://scripts/ui/trace_panel.gdc
+res://scripts/ui/update_dialog.gd.remap
+res://scripts/ui/update_dialog.gdc
+res://scripts/ui/warlock_panel.gd.remap
+res://scripts/ui/warlock_panel.gdc
+res://scripts/ui/warning_dialog.gd.remap
+res://scripts/ui/warning_dialog.gdc
+res://scripts/ui/water_color_panel.gd.remap
+res://scripts/ui/water_color_panel.gdc
+res://scripts/ui/water_panel.gd.remap
+res://scripts/ui/water_panel.gdc
+res://scripts/ui/welcome_dialog.gd.remap
+res://scripts/ui/welcome_dialog.gdc
+res://scripts/ui/windrose_panel.gd.remap
+res://scripts/ui/windrose_panel.gdc
+res://scripts/ui/wizard_panel.gd.remap
+res://scripts/ui/wizard_panel.gdc
+res://scripts/ui/zoom_dialog.gd.remap
+res://scripts/ui/zoom_dialog.gdc
+res://scripts/web/http.gd.remap
+res://scripts/web/http.gdc
+res://shaders/additive.shader
+res://shaders/colorize.shader
+res://shaders/custom_colors.shader
+res://shaders/custom_colors_2.shader
+res://shaders/custom_colors_preview.shader
+res://shaders/font.shader
+res://shaders/font_outline.shader
+res://shaders/font_sdf.shader
+res://shaders/freshwater.shader
+res://shaders/label_glow_rect.shader
+res://shaders/label_viewport_blur.shader
+res://shaders/landmass.shader
+res://shaders/landmass_heightmap.shader
+res://shaders/landmass_optimized.shader
+res://shaders/mountain.shader
+res://shaders/multiply.shader
+res://shaders/normal.shader
+res://shaders/outline.shader
+res://shaders/postfx_shader.shader
+res://shaders/sdf.shader
+res://shaders/water.shader
+res://shaders/water_tintable.shader
+res://sounds/error.wav.import
+res://sounds/saved.wav.import
+res://splash.png
+res://splash.png.import
+res://sprites/mountains/brushed_colored_hills/.wonderdraft_symbols
+res://sprites/mountains/brushed_colored_hills/hill_01.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_02.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_03.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_04.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_05.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_06.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_07.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_08.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_09.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_10.wonderdraft_image
+res://sprites/mountains/brushed_colored_hills/hill_11.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/.wonderdraft_symbols
+res://sprites/mountains/brushed_colored_mountains_large/mountain_01.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_02.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_03.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_04.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_05.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_06.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_07.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_08.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_09.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_10.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_large/mountain_11.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/.wonderdraft_symbols
+res://sprites/mountains/brushed_colored_mountains_small/mountain_01.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_02.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_03.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_04.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_05.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_06.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_07.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_08.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_09.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_10.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_11.wonderdraft_image
+res://sprites/mountains/brushed_colored_mountains_small/mountain_12.wonderdraft_image
+res://sprites/mountains/inked_hills/.wonderdraft_symbols
+res://sprites/mountains/inked_hills/hill_01.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_02.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_03.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_04.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_05.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_06.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_07.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_08.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_09.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_10.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_11.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_12.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_13.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_14.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_15.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_16.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_17.wonderdraft_image
+res://sprites/mountains/inked_hills/hill_18.wonderdraft_image
+res://sprites/mountains/inked_hills_02/.wonderdraft_symbols
+res://sprites/mountains/inked_hills_02/hill_01.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_02.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_03.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_04.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_05.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_06.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_07.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_08.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_09.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_10.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_11.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_12.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_13.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_14.wonderdraft_image
+res://sprites/mountains/inked_hills_02/hill_15.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/.wonderdraft_symbols
+res://sprites/mountains/inked_mountains_large/mountain_01.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_02.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_03.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_04.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_05.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_06.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_07.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_08.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_09.wonderdraft_image
+res://sprites/mountains/inked_mountains_large/mountain_10.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/.wonderdraft_symbols
+res://sprites/mountains/inked_mountains_small/mountain_s_01.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_02.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_03.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_04.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_05.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_06.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_07.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_08.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_09.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_10.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_11.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_12.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_13.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_14.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_15.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_16.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_17.wonderdraft_image
+res://sprites/mountains/inked_mountains_small/mountain_s_18.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/.wonderdraft_symbols
+res://sprites/mountains/penciled_mountains_large/mountain_01.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_02.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_03.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_04.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_05.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_06.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_07.wonderdraft_image
+res://sprites/mountains/penciled_mountains_large/mountain_08.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/.wonderdraft_symbols
+res://sprites/mountains/penciled_mountains_small/mountain_01.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_02.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_03.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_04.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_05.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_06.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_07.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_08.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_09.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_10.wonderdraft_image
+res://sprites/mountains/penciled_mountains_small/mountain_11.wonderdraft_image
+res://sprites/mountains/penned_hills/.wonderdraft_symbols
+res://sprites/mountains/penned_hills/hill_01.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_02.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_03.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_04.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_05.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_06.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_07.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_08.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_09.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_10.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_11.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_12.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_13.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_14.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_15.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_16.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_17.wonderdraft_image
+res://sprites/mountains/penned_hills/hill_18.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/.wonderdraft_symbols
+res://sprites/mountains/penned_mountains_large/mountain_01.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_02.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_03.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_04.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_05.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_06.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_07.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_08.wonderdraft_image
+res://sprites/mountains/penned_mountains_large/mountain_09.wonderdraft_image
+res://sprites/mountains/penned_mountains_small/.wonderdraft_symbols
+res://sprites/mountains/penned_mountains_small/mountain_01.wonderdraft_image
+res://sprites/mountains/penned_mountains_small/mountain_02.wonderdraft_image
+res://sprites/mountains/penned_mountains_small/mountain_03.wonderdraft_image
+res://sprites/mountains/penned_mountains_small/mountain_04.wonderdraft_image
+res://sprites/mountains/penned_mountains_small/mountain_05.wonderdraft_image
+res://sprites/mountains/playful_hiils/.wonderdraft_symbols
+res://sprites/mountains/playful_hiils/hill_01.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_02.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_03.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_04.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_05.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_06.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_07.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_08.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_09.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_10.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_11.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_12.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_13.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_14.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_15.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_16.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_17.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_18.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_19.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_20.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_21.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_22.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_23.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_24.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_25.wonderdraft_image
+res://sprites/mountains/playful_hiils/hill_26.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/.wonderdraft_symbols
+res://sprites/mountains/playful_jagged_peaks/peak_01.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_02.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_03.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_04.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_05.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_06.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_07.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_08.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_09.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_10.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_11.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_12.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_13.wonderdraft_image
+res://sprites/mountains/playful_jagged_peaks/peak_14.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/.wonderdraft_symbols
+res://sprites/mountains/playful_rounded_mountains/mountain_01.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_02.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_03.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_04.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_05.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_06.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_07.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_08.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_09.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_10.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_11.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_12.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_13.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_14.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_15.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_16.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_17.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_18.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_19.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_20.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_21.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_22.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_23.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_24.wonderdraft_image
+res://sprites/mountains/playful_rounded_mountains/mountain_25.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/.wonderdraft_symbols
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_01.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_02.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_03.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_04.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_05.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_06.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_07.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_08.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_09.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_10.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_11.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_12.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_13.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_14.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_15.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_16.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_17.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_18.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_19.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_20.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_21.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_22.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_23.wonderdraft_image
+res://sprites/mountains/~clouds_comics_color/cloud_comics_col_24.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/.wonderdraft_symbols
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_01.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_02.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_03.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_04.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_05.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_06.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_07.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_08.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_09.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_10.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_11.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_12.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_13.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_14.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_15.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_16.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_17.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_18.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_19.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_20.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_21.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_22.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_23.wonderdraft_image
+res://sprites/mountains/~clouds_comics_monocolor/cloud_comics_mono_24.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/.wonderdraft_symbols
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_01.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_02.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_03.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_04.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_05.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_06.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_07.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_08.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_09.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_10.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_11.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_12.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_13.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_14.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_15.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_16.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_17.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_18.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_19.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_color/clouds_fluffy_color_20.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/.wonderdraft_symbols
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_01.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_02.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_03.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_04.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_05.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_06.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_07.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_08.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_09.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_10.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_11.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_12.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_13.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_14.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_15.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_16.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_17.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_18.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_19.wonderdraft_image
+res://sprites/mountains/~clouds_fluffy_monocolor/clouds_fluffy_mono_20.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/.wonderdraft_symbols
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_01.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_02.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_03.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_04.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_05.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_06.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_07.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_08.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_09.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_10.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_11.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_12.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_13.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_14.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_15.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_16.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_17.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_18.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_19.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_color/clouds_sketch_color_20.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/.wonderdraft_symbols
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_01.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_02.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_03.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_04.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_05.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_06.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_07.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_08.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_09.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_10.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_11.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_12.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_13.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_14.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_15.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_16.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_17.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_18.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_19.wonderdraft_image
+res://sprites/mountains/~clouds_sketch_monocolor/clouds_sketch_mono_20.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/.wonderdraft_symbols
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_01.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_02.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_03.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_04.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_05.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_06.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_07.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_08.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_09.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_10.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_11.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_12.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_13.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_14.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_15.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_16.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_17.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_18.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_19.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_color/clouds_swirl_color_20.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/.wonderdraft_symbols
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_01.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_02.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_03.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_04.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_05.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_06.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_07.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_08.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_09.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_10.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_11.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_12.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_13.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_14.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_15.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_16.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_17.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_18.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_19.wonderdraft_image
+res://sprites/mountains/~clouds_swirl_monocolor/clouds_swirl_mono_20.wonderdraft_image
+res://sprites/symbols/bridges_colored/.wonderdraft_symbols
+res://sprites/symbols/bridges_colored/bridge_01_color.wonderdraft_image
+res://sprites/symbols/bridges_colored/bridge_02_color.wonderdraft_image
+res://sprites/symbols/bridges_colored/bridge_03_color.wonderdraft_image
+res://sprites/symbols/bridges_colored/bridge_04_color.wonderdraft_image
+res://sprites/symbols/bridges_colored/bridge_05_color.wonderdraft_image
+res://sprites/symbols/bridges_paintable/.wonderdraft_symbols
+res://sprites/symbols/bridges_paintable/bridge_01_flat.wonderdraft_image
+res://sprites/symbols/bridges_paintable/bridge_02_flat.wonderdraft_image
+res://sprites/symbols/bridges_paintable/bridge_03_flat.wonderdraft_image
+res://sprites/symbols/bridges_paintable/bridge_04_flat.wonderdraft_image
+res://sprites/symbols/bridges_paintable/bridge_05_flat.wonderdraft_image
+res://sprites/symbols/cliffs/.wonderdraft_symbols
+res://sprites/symbols/cliffs/cliff_01.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_02.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_03.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_04.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_05.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_06.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_07.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_08.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_09.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_10.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_11.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_12.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_13.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_14.wonderdraft_image
+res://sprites/symbols/cliffs/cliff_15.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/.wonderdraft_symbols
+res://sprites/symbols/colored_land_monsters/amphithere.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/basilisk.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/dragon.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/giant.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/unicorn.wonderdraft_image
+res://sprites/symbols/colored_land_monsters/wyvern.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/.wonderdraft_symbols
+res://sprites/symbols/colored_sea_monsters/deep_denizen.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/hippocampus.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/mermaid.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/merman.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/sea_serpent.wonderdraft_image
+res://sprites/symbols/colored_sea_monsters/ziphus.wonderdraft_image
+res://sprites/symbols/colored_ships/.wonderdraft_symbols
+res://sprites/symbols/colored_ships/carrack.wonderdraft_image
+res://sprites/symbols/colored_ships/galleon.wonderdraft_image
+res://sprites/symbols/colored_ships/octant.wonderdraft_image
+res://sprites/symbols/colored_town/.wonderdraft_symbols
+res://sprites/symbols/colored_town/castle_01.wonderdraft_image
+res://sprites/symbols/colored_town/castle_02.wonderdraft_image
+res://sprites/symbols/colored_town/castle_03.wonderdraft_image
+res://sprites/symbols/colored_town/castle_04.wonderdraft_image
+res://sprites/symbols/colored_town/castle_05.wonderdraft_image
+res://sprites/symbols/colored_town/castle_06.wonderdraft_image
+res://sprites/symbols/colored_town/castle_07.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_01.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_02.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_03.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_04.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_05.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_06.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_07.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_08.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_09.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_10.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_11.wonderdraft_image
+res://sprites/symbols/colored_town/hamlet_12.wonderdraft_image
+res://sprites/symbols/colored_town/japanese_castle.wonderdraft_image
+res://sprites/symbols/compass_roses/.wonderdraft_symbols
+res://sprites/symbols/compass_roses/compass_rose_01.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_01b.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_02.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_02b.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_03.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_04.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_05.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_06.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_07.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_08.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_09.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_10.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_11.wonderdraft_image
+res://sprites/symbols/compass_roses/compass_rose_12.wonderdraft_image
+res://sprites/symbols/custom_colored_town/.wonderdraft_symbols
+res://sprites/symbols/custom_colored_town/castle_01.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_02.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_03.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_04.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_05.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_06.wonderdraft_image
+res://sprites/symbols/custom_colored_town/castle_07.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_01.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_02.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_03.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_04.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_05.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_06.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_07.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_08.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_09.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_10.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_11.wonderdraft_image
+res://sprites/symbols/custom_colored_town/hamlet_12.wonderdraft_image
+res://sprites/symbols/custom_colored_town/japanese_castle.wonderdraft_image
+res://sprites/symbols/custom_colors/.wonderdraft_symbols
+res://sprites/symbols/custom_colors/compass_rose_02.wonderdraft_image
+res://sprites/symbols/custom_colors/s1_capital.wonderdraft_image
+res://sprites/symbols/custom_colors/s1_city.wonderdraft_image
+res://sprites/symbols/custom_colors/s1_fortress.wonderdraft_image
+res://sprites/symbols/custom_colors/s1_port.wonderdraft_image
+res://sprites/symbols/custom_colors/s1_town.wonderdraft_image
+res://sprites/symbols/custom_colors/s2_capital.wonderdraft_image
+res://sprites/symbols/custom_colors/s2_city.wonderdraft_image
+res://sprites/symbols/custom_colors/s2_town.wonderdraft_image
+res://sprites/symbols/custom_colors/s3_capital.wonderdraft_image
+res://sprites/symbols/custom_colors/s3_city.wonderdraft_image
+res://sprites/symbols/custom_colors/s3_town.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/.wonderdraft_symbols
+res://sprites/symbols/dead_trees_colored/deadtree_01_color.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_02_color.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_03_color.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_04_color.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_sketch_05.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_sketch_06.wonderdraft_image
+res://sprites/symbols/dead_trees_colored/deadtree_sketch_07.wonderdraft_image
+res://sprites/symbols/dead_trees_paintable/.wonderdraft_symbols
+res://sprites/symbols/dead_trees_paintable/deadtree_01_flat.wonderdraft_image
+res://sprites/symbols/dead_trees_paintable/deadtree_02_flat.wonderdraft_image
+res://sprites/symbols/dead_trees_paintable/deadtree_03_flat.wonderdraft_image
+res://sprites/symbols/dead_trees_paintable/deadtree_04_flat.wonderdraft_image
+res://sprites/symbols/farm_village_colored/.wonderdraft_symbols
+res://sprites/symbols/farm_village_colored/field_01_mill_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_02_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_03_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_04_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_05_fence_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_06_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_07_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_08_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_09_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_10_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_11_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_12_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_13_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_14_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_15_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_16_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/field_17_simple_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/mill_01_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_01_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_02_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_03_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_04_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_05_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_06_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_07_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_08_color.wonderdraft_image
+res://sprites/symbols/farm_village_colored/village_houses_09_color.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/.wonderdraft_symbols
+res://sprites/symbols/farm_village_paintable/field_01_mill_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_02_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_03_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_04_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_05_fence_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_06_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_07_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_08_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_09_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_10_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/field_11_simple_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/mill_01_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_01_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_02_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_03_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_04_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_05_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_06_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_07_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_08_flat.wonderdraft_image
+res://sprites/symbols/farm_village_paintable/village_houses_09_flat.wonderdraft_image
+res://sprites/symbols/inked_castles/.wonderdraft_symbols
+res://sprites/symbols/inked_castles/castle_large_01.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_large_02.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_large_03.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_medium_01.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_medium_02.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_medium_03.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_small_01.wonderdraft_image
+res://sprites/symbols/inked_castles/castle_small_02.wonderdraft_image
+res://sprites/symbols/line_land_monsters/.wonderdraft_symbols
+res://sprites/symbols/line_land_monsters/amphithere.wonderdraft_image
+res://sprites/symbols/line_land_monsters/basilisk.wonderdraft_image
+res://sprites/symbols/line_land_monsters/dragon.wonderdraft_image
+res://sprites/symbols/line_land_monsters/giant.wonderdraft_image
+res://sprites/symbols/line_land_monsters/unicorn.wonderdraft_image
+res://sprites/symbols/line_land_monsters/wyvern.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/.wonderdraft_symbols
+res://sprites/symbols/line_sea_monsters/deep_denizen.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/hippocampus.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/mermaid.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/merman.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/sea_serpent.wonderdraft_image
+res://sprites/symbols/line_sea_monsters/ziphius.wonderdraft_image
+res://sprites/symbols/line_ships/.wonderdraft_symbols
+res://sprites/symbols/line_ships/carrack.wonderdraft_image
+res://sprites/symbols/line_ships/compass.wonderdraft_image
+res://sprites/symbols/line_ships/galleon.wonderdraft_image
+res://sprites/symbols/line_ships/octant.wonderdraft_image
+res://sprites/symbols/modern_buildings/.wonderdraft_symbols
+res://sprites/symbols/modern_buildings/apartment.wonderdraft_image
+res://sprites/symbols/modern_buildings/better-factory.wonderdraft_image
+res://sprites/symbols/modern_buildings/clean-hospital.wonderdraft_image
+res://sprites/symbols/modern_buildings/crappy-factory.wonderdraft_image
+res://sprites/symbols/modern_buildings/house.wonderdraft_image
+res://sprites/symbols/paper_town/.wonderdraft_symbols
+res://sprites/symbols/paper_town/castle_01.wonderdraft_image
+res://sprites/symbols/paper_town/castle_02.wonderdraft_image
+res://sprites/symbols/paper_town/castle_03.wonderdraft_image
+res://sprites/symbols/paper_town/castle_04.wonderdraft_image
+res://sprites/symbols/paper_town/castle_05.wonderdraft_image
+res://sprites/symbols/paper_town/castle_06.wonderdraft_image
+res://sprites/symbols/paper_town/castle_07.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_01.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_02.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_03.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_04.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_05.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_06.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_07.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_08.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_09.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_10.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_11.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_12.wonderdraft_image
+res://sprites/symbols/paper_town/hamlet_13.wonderdraft_image
+res://sprites/symbols/paper_town/japanese_castle.wonderdraft_image
+res://sprites/symbols/playful_town/.wonderdraft_symbols
+res://sprites/symbols/playful_town/block_01.wonderdraft_image
+res://sprites/symbols/playful_town/block_02.wonderdraft_image
+res://sprites/symbols/playful_town/house_01.wonderdraft_image
+res://sprites/symbols/playful_town/house_02.wonderdraft_image
+res://sprites/symbols/playful_town/house_03.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/.wonderdraft_symbols
+res://sprites/symbols/rocks_and_more_colored/mine_01_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/mine_02_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_01_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_02_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_03_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_04_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_05_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_06_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_07_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_08_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_09_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_10_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/rock_11_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/waterfall_01_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/waterfall_02_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_colored/waterfall_03_color.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/.wonderdraft_symbols
+res://sprites/symbols/rocks_and_more_paintable/mine_01_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/mine_02_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_01_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_02_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_03_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_04_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_05_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_06_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_07_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_08_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_09_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_10_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/rock_11_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/waterfall_01_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/waterfall_02_flat.wonderdraft_image
+res://sprites/symbols/rocks_and_more_paintable/waterfall_03_flat.wonderdraft_image
+res://sprites/symbols/ruins_colored/.wonderdraft_symbols
+res://sprites/symbols/ruins_colored/ruin_01_color.wonderdraft_image
+res://sprites/symbols/ruins_colored/ruin_02_color.wonderdraft_image
+res://sprites/symbols/ruins_colored/ruin_03_color.wonderdraft_image
+res://sprites/symbols/ruins_colored/ruin_04_color.wonderdraft_image
+res://sprites/symbols/ruins_colored/ruin_05_color.wonderdraft_image
+res://sprites/symbols/ruins_paintable/.wonderdraft_symbols
+res://sprites/symbols/ruins_paintable/ruin_01_flat.wonderdraft_image
+res://sprites/symbols/ruins_paintable/ruin_02_flat.wonderdraft_image
+res://sprites/symbols/ruins_paintable/ruin_03_flat.wonderdraft_image
+res://sprites/symbols/ruins_paintable/ruin_04_flat.wonderdraft_image
+res://sprites/symbols/ruins_paintable/ruin_05_flat.wonderdraft_image
+res://sprites/symbols/sci-fi_buildings/.wonderdraft_symbols
+res://sprites/symbols/sci-fi_buildings/building01.wonderdraft_image
+res://sprites/symbols/sci-fi_buildings/building02.wonderdraft_image
+res://sprites/symbols/sci-fi_buildings/building03.wonderdraft_image
+res://sprites/symbols/sci-fi_buildings/building04.wonderdraft_image
+res://sprites/symbols/sci-fi_buildings/building05.wonderdraft_image
+res://sprites/symbols/wall_boulders/.wonderdraft_symbols
+res://sprites/symbols/wall_boulders/wall_boulder_01_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_02_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_03_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_04_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_05_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_06_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_07_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_gate_color.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_pillar_left.wonderdraft_image
+res://sprites/symbols/wall_boulders/wall_boulder_pillar_right.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/.wonderdraft_symbols
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_01_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_02_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_03_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_04_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_05_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_06_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_07_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_gate_sample.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_pillar_left.wonderdraft_image
+res://sprites/symbols/wall_boulders_paintable/wall_boulder_pillar_right.wonderdraft_image
+res://sprites/symbols/wall_stone/.wonderdraft_symbols
+res://sprites/symbols/wall_stone/stone_wall_01_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_02_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_03_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_04_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_05_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_06_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_07_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_gate_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_pillar_center_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_pillar_left_color.wonderdraft_image
+res://sprites/symbols/wall_stone/stone_wall_pillar_right_color.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/.wonderdraft_symbols
+res://sprites/symbols/wall_stone_paintable/stone_wall_01_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_02_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_03_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_04_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_05_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_06_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_07_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_gate_sample.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_pillar_left.wonderdraft_image
+res://sprites/symbols/wall_stone_paintable/stone_wall_pillar_right_color.wonderdraft_image
+res://sprites/trees/_hd_cedar/.wonderdraft_symbols
+res://sprites/trees/_hd_cedar/tree_cedar_01.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_02.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_03.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_04.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_05.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_06.wonderdraft_image
+res://sprites/trees/_hd_cedar/tree_cedar_07.wonderdraft_image
+res://sprites/trees/_hd_christmas/.wonderdraft_symbols
+res://sprites/trees/_hd_christmas/tree_xmas_01.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_02.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_03.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_04.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_05.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_06.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_07.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_08.wonderdraft_image
+res://sprites/trees/_hd_christmas/tree_xmas_09.wonderdraft_image
+res://sprites/trees/_hd_hazel/.wonderdraft_symbols
+res://sprites/trees/_hd_hazel/tree_hazel_01.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_02.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_03.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_04.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_05.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_06.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_07.wonderdraft_image
+res://sprites/trees/_hd_hazel/tree_hazel_08.wonderdraft_image
+res://sprites/trees/_hd_larix/.wonderdraft_symbols
+res://sprites/trees/_hd_larix/tree_larix_01.wonderdraft_image
+res://sprites/trees/_hd_larix/tree_larix_02.wonderdraft_image
+res://sprites/trees/_hd_larix/tree_larix_03.wonderdraft_image
+res://sprites/trees/_hd_larix/tree_larix_04.wonderdraft_image
+res://sprites/trees/_hd_larix/tree_larix_05.wonderdraft_image
+res://sprites/trees/_hd_larix/tree_larix_06.wonderdraft_image
+res://sprites/trees/_hd_oak/.wonderdraft_symbols
+res://sprites/trees/_hd_oak/tree_oak_01.wonderdraft_image
+res://sprites/trees/_hd_oak/tree_oak_02.wonderdraft_image
+res://sprites/trees/_hd_oak/tree_oak_03.wonderdraft_image
+res://sprites/trees/_hd_oak/tree_oak_04.wonderdraft_image
+res://sprites/trees/_hd_oak/tree_oak_05.wonderdraft_image
+res://sprites/trees/_hd_oak/tree_oak_06.wonderdraft_image
+res://sprites/trees/_hd_pine/.wonderdraft_symbols
+res://sprites/trees/_hd_pine/tree_pine_01.wonderdraft_image
+res://sprites/trees/_hd_pine/tree_pine_02.wonderdraft_image
+res://sprites/trees/_hd_pine/tree_pine_03.wonderdraft_image
+res://sprites/trees/_hd_pine/tree_pine_04.wonderdraft_image
+res://sprites/trees/_hd_pine/tree_pine_05.wonderdraft_image
+res://sprites/trees/_hd_pine/tree_pine_06.wonderdraft_image
+res://sprites/trees/_hd_willow/.wonderdraft_symbols
+res://sprites/trees/_hd_willow/tree_weepwillow_01.wonderdraft_image
+res://sprites/trees/_hd_willow/tree_weepwillow_02.wonderdraft_image
+res://sprites/trees/_hd_willow/tree_weepwillow_03.wonderdraft_image
+res://sprites/trees/_hd_willow/tree_weepwillow_04.wonderdraft_image
+res://sprites/trees/_hd_willow/tree_weepwillow_05.wonderdraft_image
+res://sprites/trees/_hd_willow/tree_weepwillow_06.wonderdraft_image
+res://sprites/trees/brushed_spruce/.wonderdraft_symbols
+res://sprites/trees/brushed_spruce/tree_01.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_02.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_03.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_04.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_05.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_06.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_07.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_08.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_09.wonderdraft_image
+res://sprites/trees/brushed_spruce/tree_10.wonderdraft_image
+res://sprites/trees/hatch_ash/.wonderdraft_symbols
+res://sprites/trees/hatch_ash/tree_01.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_02.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_03.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_04.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_05.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_06.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_07.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_08.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_09.wonderdraft_image
+res://sprites/trees/hatch_ash/tree_10.wonderdraft_image
+res://sprites/trees/hatch_oak/.wonderdraft_symbols
+res://sprites/trees/hatch_oak/hatch_oak_01.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_02.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_03.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_04.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_05.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_06.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_07.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_08.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_09.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_10.wonderdraft_image
+res://sprites/trees/hatch_oak/hatch_oak_11.wonderdraft_image
+res://sprites/trees/hatch_pine/.wonderdraft_symbols
+res://sprites/trees/hatch_pine/hatch_pine_01.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_02.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_03.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_04.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_05.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_06.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_07.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_08.wonderdraft_image
+res://sprites/trees/hatch_pine/hatch_pine_09.wonderdraft_image
+res://sprites/trees/inked_grass/.wonderdraft_symbols
+res://sprites/trees/inked_grass/grass_01.wonderdraft_image
+res://sprites/trees/inked_grass/grass_02.wonderdraft_image
+res://sprites/trees/inked_grass/grass_03.wonderdraft_image
+res://sprites/trees/inked_grass/grass_04.wonderdraft_image
+res://sprites/trees/inked_grass/grass_05.wonderdraft_image
+res://sprites/trees/inked_grass/grass_06.wonderdraft_image
+res://sprites/trees/inked_grass/grass_07.wonderdraft_image
+res://sprites/trees/inked_grass/grass_08.wonderdraft_image
+res://sprites/trees/inked_grass/grass_09.wonderdraft_image
+res://sprites/trees/inked_grass/grass_10.wonderdraft_image
+res://sprites/trees/inked_grass/grass_11.wonderdraft_image
+res://sprites/trees/inked_grass/grass_12.wonderdraft_image
+res://sprites/trees/inked_grass/grass_13.wonderdraft_image
+res://sprites/trees/inked_grass/grass_14.wonderdraft_image
+res://sprites/trees/inked_oak/.wonderdraft_symbols
+res://sprites/trees/inked_oak/oak_01.wonderdraft_image
+res://sprites/trees/inked_oak/oak_02.wonderdraft_image
+res://sprites/trees/inked_oak/oak_03.wonderdraft_image
+res://sprites/trees/inked_oak/oak_04.wonderdraft_image
+res://sprites/trees/inked_oak/oak_05.wonderdraft_image
+res://sprites/trees/inked_oak/oak_06.wonderdraft_image
+res://sprites/trees/inked_oak/oak_07.wonderdraft_image
+res://sprites/trees/inked_oak/oak_08.wonderdraft_image
+res://sprites/trees/inked_oak/oak_09.wonderdraft_image
+res://sprites/trees/inked_oak/oak_10.wonderdraft_image
+res://sprites/trees/inked_oak/oak_11.wonderdraft_image
+res://sprites/trees/inked_oak/oak_12.wonderdraft_image
+res://sprites/trees/inked_oak/oak_13.wonderdraft_image
+res://sprites/trees/inked_oak/oak_14.wonderdraft_image
+res://sprites/trees/inked_palm/.wonderdraft_symbols
+res://sprites/trees/inked_palm/tree_01.wonderdraft_image
+res://sprites/trees/inked_palm/tree_02.wonderdraft_image
+res://sprites/trees/inked_palm/tree_03.wonderdraft_image
+res://sprites/trees/inked_palm/tree_04.wonderdraft_image
+res://sprites/trees/inked_palm/tree_05.wonderdraft_image
+res://sprites/trees/inked_palm/tree_06.wonderdraft_image
+res://sprites/trees/inked_palm/tree_07.wonderdraft_image
+res://sprites/trees/inked_palm/tree_08.wonderdraft_image
+res://sprites/trees/inked_palm/tree_09.wonderdraft_image
+res://sprites/trees/inked_pine/.wonderdraft_symbols
+res://sprites/trees/inked_pine/pine_01.wonderdraft_image
+res://sprites/trees/inked_pine/pine_02.wonderdraft_image
+res://sprites/trees/inked_pine/pine_03.wonderdraft_image
+res://sprites/trees/inked_pine/pine_04.wonderdraft_image
+res://sprites/trees/inked_pine/pine_05.wonderdraft_image
+res://sprites/trees/inked_pine/pine_06.wonderdraft_image
+res://sprites/trees/inked_pine/pine_07.wonderdraft_image
+res://sprites/trees/inked_pine/pine_08.wonderdraft_image
+res://sprites/trees/inked_pine/pine_09.wonderdraft_image
+res://sprites/trees/inked_pine/pine_10.wonderdraft_image
+res://sprites/trees/inked_pine/pine_11.wonderdraft_image
+res://sprites/trees/inked_pine/pine_12.wonderdraft_image
+res://sprites/trees/inked_sequoia/.wonderdraft_symbols
+res://sprites/trees/inked_sequoia/tree_01.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_02.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_03.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_04.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_05.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_06.wonderdraft_image
+res://sprites/trees/inked_sequoia/tree_07.wonderdraft_image
+res://sprites/trees/inked_shrub/.wonderdraft_symbols
+res://sprites/trees/inked_shrub/shrub_01.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_02.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_03.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_04.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_05.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_06.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_07.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_08.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_09.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_10.wonderdraft_image
+res://sprites/trees/inked_shrub/shrub_11.wonderdraft_image
+res://sprites/trees/leafy_tree/.wonderdraft_symbols
+res://sprites/trees/leafy_tree/tree_01.wonderdraft_image
+res://sprites/trees/leafy_tree/tree_02.wonderdraft_image
+res://sprites/trees/leafy_tree/tree_03.wonderdraft_image
+res://sprites/trees/leafy_tree/tree_04.wonderdraft_image
+res://sprites/trees/leafy_tree/tree_05.wonderdraft_image
+res://sprites/trees/leafy_tree/tree_06.wonderdraft_image
+res://sprites/trees/marshy_grass/.wonderdraft_symbols
+res://sprites/trees/marshy_grass/marshy_grass_01.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_02.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_03.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_04.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_05.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_06.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_07.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_08.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_09.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_10.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_11.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_12.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_13.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_14.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_15.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_16.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_17.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_18.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_19.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_20.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_21.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_22.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_23.wonderdraft_image
+res://sprites/trees/marshy_grass/marshy_grass_24.wonderdraft_image
+res://sprites/trees/penciled_oak/.wonderdraft_symbols
+res://sprites/trees/penciled_oak/oak_01.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_02.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_03.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_04.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_05.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_06.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_07.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_08.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_09.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_10.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_11.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_12.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_13.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_14.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_15.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_16.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_17.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_18.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_19.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_20.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_21.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_22.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_23.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_24.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_25.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_26.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_27.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_28.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_29.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_30.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_31.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_32.wonderdraft_image
+res://sprites/trees/penciled_oak/oak_33.wonderdraft_image
+res://sprites/trees/penciled_pine/.wonderdraft_symbols
+res://sprites/trees/penciled_pine/pine_01.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_02.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_03.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_04.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_05.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_06.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_07.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_08.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_09.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_10.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_11.wonderdraft_image
+res://sprites/trees/penciled_pine/pine_12.wonderdraft_image
+res://sprites/trees/playful_cypress/.wonderdraft_symbols
+res://sprites/trees/playful_cypress/cypress_01.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_02.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_03.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_04.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_05.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_06.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_07.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_08.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_09.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_10.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_11.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_12.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_13.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_14.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_15.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_16.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_17.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_18.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_19.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_20.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_21.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_22.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_23.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_24.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_25.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_26.wonderdraft_image
+res://sprites/trees/playful_cypress/cypress_27.wonderdraft_image
+res://sprites/trees/playful_grass/.wonderdraft_symbols
+res://sprites/trees/playful_grass/grass_01.wonderdraft_image
+res://sprites/trees/playful_grass/grass_02.wonderdraft_image
+res://sprites/trees/playful_grass/grass_03.wonderdraft_image
+res://sprites/trees/playful_grass/grass_04.wonderdraft_image
+res://sprites/trees/playful_grass/grass_05.wonderdraft_image
+res://sprites/trees/playful_grass/grass_06.wonderdraft_image
+res://sprites/trees/playful_grass/grass_07.wonderdraft_image
+res://sprites/trees/playful_grass/grass_08.wonderdraft_image
+res://sprites/trees/playful_grass/grass_09.wonderdraft_image
+res://sprites/trees/playful_grass/grass_10.wonderdraft_image
+res://sprites/trees/playful_grass/grass_11.wonderdraft_image
+res://sprites/trees/playful_grass/grass_12.wonderdraft_image
+res://sprites/trees/playful_grass/grass_13.wonderdraft_image
+res://sprites/trees/playful_grass/grass_14.wonderdraft_image
+res://sprites/trees/playful_grass/grass_15.wonderdraft_image
+res://sprites/trees/playful_grass/grass_16.wonderdraft_image
+res://sprites/trees/playful_grass/grass_17.wonderdraft_image
+res://sprites/trees/playful_grass/grass_18.wonderdraft_image
+res://sprites/trees/playful_grass/grass_19.wonderdraft_image
+res://sprites/trees/playful_grass/grass_20.wonderdraft_image
+res://sprites/trees/toon_cactus/.wonderdraft_symbols
+res://sprites/trees/toon_cactus/cactus_01.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_02.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_03.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_04.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_05.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_06.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_07.wonderdraft_image
+res://sprites/trees/toon_cactus/cactus_08.wonderdraft_image
+res://sprites/trees/toon_oak/.wonderdraft_symbols
+res://sprites/trees/toon_oak/tree_01.wonderdraft_image
+res://sprites/trees/toon_oak/tree_02.wonderdraft_image
+res://sprites/trees/toon_oak/tree_03.wonderdraft_image
+res://sprites/trees/toon_oak/tree_04.wonderdraft_image
+res://sprites/trees/toon_oak/tree_05.wonderdraft_image
+res://sprites/trees/toon_oak/tree_06.wonderdraft_image
+res://sprites/trees/toon_oak/tree_07.wonderdraft_image
+res://sprites/trees/toon_palm/.wonderdraft_symbols
+res://sprites/trees/toon_palm/tree_01.wonderdraft_image
+res://sprites/trees/toon_palm/tree_02.wonderdraft_image
+res://sprites/trees/toon_palm/tree_03.wonderdraft_image
+res://sprites/trees/toon_palm/tree_04.wonderdraft_image
+res://sprites/trees/toon_palm/tree_05.wonderdraft_image
+res://sprites/trees/toon_palm/tree_06.wonderdraft_image
+res://textures/borders/border_dark_dot.wonderdraft_image
+res://textures/borders/border_dash.wonderdraft_image
+res://textures/borders/border_gradient.wonderdraft_image
+res://textures/borders/border_solid.wonderdraft_image
+res://textures/boxes/.wonderdraft_9patch
+res://textures/boxes/checkered_opaque.wonderdraft_image
+res://textures/boxes/double_pen_opaque.wonderdraft_image
+res://textures/boxes/entwined_corner_opaque.wonderdraft_image
+res://textures/boxes/fancy_paper.wonderdraft_image
+res://textures/boxes/old_ink_opaque.wonderdraft_image
+res://textures/boxes/solid_line_opaque.wonderdraft_image
+res://textures/frames/.wonderdraft_9patch
+res://textures/frames/celtic_dotted.wonderdraft_image
+res://textures/frames/celtic_leaves.wonderdraft_image
+res://textures/frames/celtic_woven_1.wonderdraft_image
+res://textures/frames/celtic_woven_2.wonderdraft_image
+res://textures/frames/checkered_opaque.wonderdraft_image
+res://textures/frames/checkered_transparent.wonderdraft_image
+res://textures/frames/double_pen_opaque.wonderdraft_image
+res://textures/frames/double_pen_transparent.wonderdraft_image
+res://textures/frames/double_pen_vignette.wonderdraft_image
+res://textures/frames/entwined_corner_opaque.wonderdraft_image
+res://textures/frames/entwined_corner_transparent.wonderdraft_image
+res://textures/frames/hatch_opaque.wonderdraft_image
+res://textures/frames/hatch_transparent.wonderdraft_image
+res://textures/frames/old_ink_opaque.wonderdraft_image
+res://textures/frames/old_ink_transparent.wonderdraft_image
+res://textures/frames/solid_line_opaque.wonderdraft_image
+res://textures/frames/solid_line_tansparent.wonderdraft_image
+res://textures/ground/Black & White.wonderdraft_image
+res://textures/ground/Equirectangular.wonderdraft_image
+res://textures/ground/Feudal.wonderdraft_image
+res://textures/ground/Paper.wonderdraft_image
+res://textures/ground/Vintage.wonderdraft_image
+res://textures/ground/Worn.wonderdraft_image
+res://textures/lines/gradient.png.import
+res://textures/noise/HDR_L_0.png.import
+res://textures/paths/path_blended.wonderdraft_image
+res://textures/paths/path_circle.wonderdraft_image
+res://textures/paths/path_dash.wonderdraft_image
+res://textures/paths/path_dash_dot.wonderdraft_image
+res://textures/paths/path_dash_dot_dot.wonderdraft_image
+res://textures/paths/path_directional.wonderdraft_image
+res://textures/paths/path_double_paired.wonderdraft_image
+res://textures/paths/path_hash_marks.wonderdraft_image
+res://textures/paths/path_solid.wonderdraft_image
+res://textures/paths/path_solid_outlined.wonderdraft_image
+res://textures/patterns/water_dashes.wonderdraft_image
+res://textures/patterns/water_hatch.wonderdraft_image
+res://textures/patterns/water_hatch_2.wonderdraft_image
+res://textures/rivers/river_glow.png.import
+res://textures/trees/_hd_cedar/.wonderdraft_symbols
+res://textures/trees/_hd_cedar/tree_cedar_01.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_02.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_03.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_04.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_05.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_06.wonderdraft_image
+res://textures/trees/_hd_cedar/tree_cedar_07.wonderdraft_image
+res://textures/trees/_hd_christmas/.wonderdraft_symbols
+res://textures/trees/_hd_christmas/tree_xmas_01.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_02.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_03.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_04.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_05.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_06.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_07.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_08.wonderdraft_image
+res://textures/trees/_hd_christmas/tree_xmas_09.wonderdraft_image
+res://textures/trees/_hd_hazel/.wonderdraft_symbols
+res://textures/trees/_hd_hazel/tree_hazel_01.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_02.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_03.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_04.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_05.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_06.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_07.wonderdraft_image
+res://textures/trees/_hd_hazel/tree_hazel_08.wonderdraft_image
+res://textures/trees/_hd_larix/.wonderdraft_symbols
+res://textures/trees/_hd_larix/tree_larix_01.wonderdraft_image
+res://textures/trees/_hd_larix/tree_larix_02.wonderdraft_image
+res://textures/trees/_hd_larix/tree_larix_03.wonderdraft_image
+res://textures/trees/_hd_larix/tree_larix_04.wonderdraft_image
+res://textures/trees/_hd_larix/tree_larix_05.wonderdraft_image
+res://textures/trees/_hd_larix/tree_larix_06.wonderdraft_image
+res://textures/trees/_hd_oak/.wonderdraft_symbols
+res://textures/trees/_hd_oak/tree_oak_01.wonderdraft_image
+res://textures/trees/_hd_oak/tree_oak_02.wonderdraft_image
+res://textures/trees/_hd_oak/tree_oak_03.wonderdraft_image
+res://textures/trees/_hd_oak/tree_oak_04.wonderdraft_image
+res://textures/trees/_hd_oak/tree_oak_05.wonderdraft_image
+res://textures/trees/_hd_oak/tree_oak_06.wonderdraft_image
+res://textures/trees/_hd_pine/.wonderdraft_symbols
+res://textures/trees/_hd_pine/tree_pine_01.wonderdraft_image
+res://textures/trees/_hd_pine/tree_pine_02.wonderdraft_image
+res://textures/trees/_hd_pine/tree_pine_03.wonderdraft_image
+res://textures/trees/_hd_pine/tree_pine_04.wonderdraft_image
+res://textures/trees/_hd_pine/tree_pine_05.wonderdraft_image
+res://textures/trees/_hd_pine/tree_pine_06.wonderdraft_image
+res://textures/trees/_hd_willow/.wonderdraft_symbols
+res://textures/trees/_hd_willow/tree_weepwillow_01.wonderdraft_image
+res://textures/trees/_hd_willow/tree_weepwillow_02.wonderdraft_image
+res://textures/trees/_hd_willow/tree_weepwillow_03.wonderdraft_image
+res://textures/trees/_hd_willow/tree_weepwillow_04.wonderdraft_image
+res://textures/trees/_hd_willow/tree_weepwillow_05.wonderdraft_image
+res://textures/trees/_hd_willow/tree_weepwillow_06.wonderdraft_image
+res://textures/trees/brushed_spruce/.wonderdraft_symbols
+res://textures/trees/brushed_spruce/tree_01.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_02.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_03.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_04.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_05.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_06.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_07.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_08.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_09.wonderdraft_image
+res://textures/trees/brushed_spruce/tree_10.wonderdraft_image
+res://textures/trees/hatch_ash/.wonderdraft_symbols
+res://textures/trees/hatch_ash/tree_01.wonderdraft_image
+res://textures/trees/hatch_ash/tree_02.wonderdraft_image
+res://textures/trees/hatch_ash/tree_03.wonderdraft_image
+res://textures/trees/hatch_ash/tree_04.wonderdraft_image
+res://textures/trees/hatch_ash/tree_05.wonderdraft_image
+res://textures/trees/hatch_ash/tree_06.wonderdraft_image
+res://textures/trees/hatch_ash/tree_07.wonderdraft_image
+res://textures/trees/hatch_ash/tree_08.wonderdraft_image
+res://textures/trees/hatch_ash/tree_09.wonderdraft_image
+res://textures/trees/hatch_ash/tree_10.wonderdraft_image
+res://textures/trees/hatch_oak/.wonderdraft_symbols
+res://textures/trees/hatch_oak/hatch_oak_01.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_02.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_03.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_04.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_05.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_06.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_07.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_08.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_09.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_10.wonderdraft_image
+res://textures/trees/hatch_oak/hatch_oak_11.wonderdraft_image
+res://textures/trees/hatch_pine/.wonderdraft_symbols
+res://textures/trees/hatch_pine/hatch_pine_01.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_02.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_03.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_04.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_05.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_06.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_07.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_08.wonderdraft_image
+res://textures/trees/hatch_pine/hatch_pine_09.wonderdraft_image
+res://textures/trees/inked_grass/.wonderdraft_symbols
+res://textures/trees/inked_grass/grass_01.wonderdraft_image
+res://textures/trees/inked_grass/grass_02.wonderdraft_image
+res://textures/trees/inked_grass/grass_03.wonderdraft_image
+res://textures/trees/inked_grass/grass_04.wonderdraft_image
+res://textures/trees/inked_grass/grass_05.wonderdraft_image
+res://textures/trees/inked_grass/grass_06.wonderdraft_image
+res://textures/trees/inked_grass/grass_07.wonderdraft_image
+res://textures/trees/inked_grass/grass_08.wonderdraft_image
+res://textures/trees/inked_grass/grass_09.wonderdraft_image
+res://textures/trees/inked_grass/grass_10.wonderdraft_image
+res://textures/trees/inked_grass/grass_11.wonderdraft_image
+res://textures/trees/inked_grass/grass_12.wonderdraft_image
+res://textures/trees/inked_grass/grass_13.wonderdraft_image
+res://textures/trees/inked_grass/grass_14.wonderdraft_image
+res://textures/trees/inked_oak/.wonderdraft_symbols
+res://textures/trees/inked_oak/oak_01.wonderdraft_image
+res://textures/trees/inked_oak/oak_02.wonderdraft_image
+res://textures/trees/inked_oak/oak_03.wonderdraft_image
+res://textures/trees/inked_oak/oak_04.wonderdraft_image
+res://textures/trees/inked_oak/oak_05.wonderdraft_image
+res://textures/trees/inked_oak/oak_06.wonderdraft_image
+res://textures/trees/inked_oak/oak_07.wonderdraft_image
+res://textures/trees/inked_oak/oak_08.wonderdraft_image
+res://textures/trees/inked_oak/oak_09.wonderdraft_image
+res://textures/trees/inked_oak/oak_10.wonderdraft_image
+res://textures/trees/inked_oak/oak_11.wonderdraft_image
+res://textures/trees/inked_oak/oak_12.wonderdraft_image
+res://textures/trees/inked_oak/oak_13.wonderdraft_image
+res://textures/trees/inked_oak/oak_14.wonderdraft_image
+res://textures/trees/inked_palm/.wonderdraft_symbols
+res://textures/trees/inked_palm/tree_01.wonderdraft_image
+res://textures/trees/inked_palm/tree_02.wonderdraft_image
+res://textures/trees/inked_palm/tree_03.wonderdraft_image
+res://textures/trees/inked_palm/tree_04.wonderdraft_image
+res://textures/trees/inked_palm/tree_05.wonderdraft_image
+res://textures/trees/inked_palm/tree_06.wonderdraft_image
+res://textures/trees/inked_palm/tree_07.wonderdraft_image
+res://textures/trees/inked_palm/tree_08.wonderdraft_image
+res://textures/trees/inked_palm/tree_09.wonderdraft_image
+res://textures/trees/inked_pine/.wonderdraft_symbols
+res://textures/trees/inked_pine/pine_01.wonderdraft_image
+res://textures/trees/inked_pine/pine_02.wonderdraft_image
+res://textures/trees/inked_pine/pine_03.wonderdraft_image
+res://textures/trees/inked_pine/pine_04.wonderdraft_image
+res://textures/trees/inked_pine/pine_05.wonderdraft_image
+res://textures/trees/inked_pine/pine_06.wonderdraft_image
+res://textures/trees/inked_pine/pine_07.wonderdraft_image
+res://textures/trees/inked_pine/pine_08.wonderdraft_image
+res://textures/trees/inked_pine/pine_09.wonderdraft_image
+res://textures/trees/inked_pine/pine_10.wonderdraft_image
+res://textures/trees/inked_pine/pine_11.wonderdraft_image
+res://textures/trees/inked_pine/pine_12.wonderdraft_image
+res://textures/trees/inked_sequoia/.wonderdraft_symbols
+res://textures/trees/inked_sequoia/tree_01.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_02.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_03.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_04.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_05.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_06.wonderdraft_image
+res://textures/trees/inked_sequoia/tree_07.wonderdraft_image
+res://textures/trees/inked_shrub/.wonderdraft_symbols
+res://textures/trees/inked_shrub/shrub_01.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_02.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_03.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_04.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_05.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_06.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_07.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_08.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_09.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_10.wonderdraft_image
+res://textures/trees/inked_shrub/shrub_11.wonderdraft_image
+res://textures/trees/leafy_tree/.wonderdraft_symbols
+res://textures/trees/leafy_tree/tree_01.wonderdraft_image
+res://textures/trees/leafy_tree/tree_02.wonderdraft_image
+res://textures/trees/leafy_tree/tree_03.wonderdraft_image
+res://textures/trees/leafy_tree/tree_04.wonderdraft_image
+res://textures/trees/leafy_tree/tree_05.wonderdraft_image
+res://textures/trees/leafy_tree/tree_06.wonderdraft_image
+res://textures/trees/marshy_grass/.wonderdraft_symbols
+res://textures/trees/marshy_grass/marshy_grass_01.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_02.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_03.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_04.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_05.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_06.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_07.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_08.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_09.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_10.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_11.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_12.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_13.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_14.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_15.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_16.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_17.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_18.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_19.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_20.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_21.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_22.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_23.wonderdraft_image
+res://textures/trees/marshy_grass/marshy_grass_24.wonderdraft_image
+res://textures/trees/penciled_oak/.wonderdraft_symbols
+res://textures/trees/penciled_oak/oak_01.wonderdraft_image
+res://textures/trees/penciled_oak/oak_02.wonderdraft_image
+res://textures/trees/penciled_oak/oak_03.wonderdraft_image
+res://textures/trees/penciled_oak/oak_04.wonderdraft_image
+res://textures/trees/penciled_oak/oak_05.wonderdraft_image
+res://textures/trees/penciled_oak/oak_06.wonderdraft_image
+res://textures/trees/penciled_oak/oak_07.wonderdraft_image
+res://textures/trees/penciled_oak/oak_08.wonderdraft_image
+res://textures/trees/penciled_oak/oak_09.wonderdraft_image
+res://textures/trees/penciled_oak/oak_10.wonderdraft_image
+res://textures/trees/penciled_oak/oak_11.wonderdraft_image
+res://textures/trees/penciled_oak/oak_12.wonderdraft_image
+res://textures/trees/penciled_oak/oak_13.wonderdraft_image
+res://textures/trees/penciled_oak/oak_14.wonderdraft_image
+res://textures/trees/penciled_oak/oak_15.wonderdraft_image
+res://textures/trees/penciled_oak/oak_16.wonderdraft_image
+res://textures/trees/penciled_oak/oak_17.wonderdraft_image
+res://textures/trees/penciled_oak/oak_18.wonderdraft_image
+res://textures/trees/penciled_oak/oak_19.wonderdraft_image
+res://textures/trees/penciled_oak/oak_20.wonderdraft_image
+res://textures/trees/penciled_oak/oak_21.wonderdraft_image
+res://textures/trees/penciled_oak/oak_22.wonderdraft_image
+res://textures/trees/penciled_oak/oak_23.wonderdraft_image
+res://textures/trees/penciled_oak/oak_24.wonderdraft_image
+res://textures/trees/penciled_oak/oak_25.wonderdraft_image
+res://textures/trees/penciled_oak/oak_26.wonderdraft_image
+res://textures/trees/penciled_oak/oak_27.wonderdraft_image
+res://textures/trees/penciled_oak/oak_28.wonderdraft_image
+res://textures/trees/penciled_oak/oak_29.wonderdraft_image
+res://textures/trees/penciled_oak/oak_30.wonderdraft_image
+res://textures/trees/penciled_oak/oak_31.wonderdraft_image
+res://textures/trees/penciled_oak/oak_32.wonderdraft_image
+res://textures/trees/penciled_oak/oak_33.wonderdraft_image
+res://textures/trees/penciled_pine/.wonderdraft_symbols
+res://textures/trees/penciled_pine/pine_01.wonderdraft_image
+res://textures/trees/penciled_pine/pine_02.wonderdraft_image
+res://textures/trees/penciled_pine/pine_03.wonderdraft_image
+res://textures/trees/penciled_pine/pine_04.wonderdraft_image
+res://textures/trees/penciled_pine/pine_05.wonderdraft_image
+res://textures/trees/penciled_pine/pine_06.wonderdraft_image
+res://textures/trees/penciled_pine/pine_07.wonderdraft_image
+res://textures/trees/penciled_pine/pine_08.wonderdraft_image
+res://textures/trees/penciled_pine/pine_09.wonderdraft_image
+res://textures/trees/penciled_pine/pine_10.wonderdraft_image
+res://textures/trees/penciled_pine/pine_11.wonderdraft_image
+res://textures/trees/penciled_pine/pine_12.wonderdraft_image
+res://textures/trees/playful_cypress/.wonderdraft_symbols
+res://textures/trees/playful_cypress/cypress_01.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_02.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_03.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_04.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_05.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_06.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_07.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_08.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_09.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_10.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_11.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_12.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_13.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_14.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_15.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_16.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_17.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_18.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_19.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_20.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_21.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_22.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_23.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_24.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_25.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_26.wonderdraft_image
+res://textures/trees/playful_cypress/cypress_27.wonderdraft_image
+res://textures/trees/playful_grass/.wonderdraft_symbols
+res://textures/trees/playful_grass/grass_01.wonderdraft_image
+res://textures/trees/playful_grass/grass_02.wonderdraft_image
+res://textures/trees/playful_grass/grass_03.wonderdraft_image
+res://textures/trees/playful_grass/grass_04.wonderdraft_image
+res://textures/trees/playful_grass/grass_05.wonderdraft_image
+res://textures/trees/playful_grass/grass_06.wonderdraft_image
+res://textures/trees/playful_grass/grass_07.wonderdraft_image
+res://textures/trees/playful_grass/grass_08.wonderdraft_image
+res://textures/trees/playful_grass/grass_09.wonderdraft_image
+res://textures/trees/playful_grass/grass_10.wonderdraft_image
+res://textures/trees/playful_grass/grass_11.wonderdraft_image
+res://textures/trees/playful_grass/grass_12.wonderdraft_image
+res://textures/trees/playful_grass/grass_13.wonderdraft_image
+res://textures/trees/playful_grass/grass_14.wonderdraft_image
+res://textures/trees/playful_grass/grass_15.wonderdraft_image
+res://textures/trees/playful_grass/grass_16.wonderdraft_image
+res://textures/trees/playful_grass/grass_17.wonderdraft_image
+res://textures/trees/playful_grass/grass_18.wonderdraft_image
+res://textures/trees/playful_grass/grass_19.wonderdraft_image
+res://textures/trees/playful_grass/grass_20.wonderdraft_image
+res://textures/trees/toon_cactus/.wonderdraft_symbols
+res://textures/trees/toon_cactus/cactus_01.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_02.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_03.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_04.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_05.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_06.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_07.wonderdraft_image
+res://textures/trees/toon_cactus/cactus_08.wonderdraft_image
+res://textures/trees/toon_oak/.wonderdraft_symbols
+res://textures/trees/toon_oak/tree_01.wonderdraft_image
+res://textures/trees/toon_oak/tree_02.wonderdraft_image
+res://textures/trees/toon_oak/tree_03.wonderdraft_image
+res://textures/trees/toon_oak/tree_04.wonderdraft_image
+res://textures/trees/toon_oak/tree_05.wonderdraft_image
+res://textures/trees/toon_oak/tree_06.wonderdraft_image
+res://textures/trees/toon_oak/tree_07.wonderdraft_image
+res://textures/trees/toon_palm/.wonderdraft_symbols
+res://textures/trees/toon_palm/tree_01.wonderdraft_image
+res://textures/trees/toon_palm/tree_02.wonderdraft_image
+res://textures/trees/toon_palm/tree_03.wonderdraft_image
+res://textures/trees/toon_palm/tree_04.wonderdraft_image
+res://textures/trees/toon_palm/tree_05.wonderdraft_image
+res://textures/trees/toon_palm/tree_06.wonderdraft_image
+res://textures/water/Black & White.wonderdraft_image
+res://textures/water/Equirectangular.wonderdraft_image
+res://textures/water/Feudal.wonderdraft_image
+res://textures/water/Imagination.wonderdraft_image
+res://textures/water/Paper.wonderdraft_image
+res://textures/water/Vintage.wonderdraft_image
+res://textures/water/Worn.wonderdraft_image
+res://themes/Adventure.wonderdraft_theme
+res://themes/Black & White.wonderdraft_theme
+res://themes/Eastward.wonderdraft_theme
+res://themes/Feudal.wonderdraft_theme
+res://themes/Imagination.wonderdraft_theme
+res://themes/Paper.wonderdraft_theme
+res://themes/Pastel.wonderdraft_theme
+res://themes/Terra.wonderdraft_theme
+res://themes/Worn.wonderdraft_theme
+res://wonderdraft_icon.png
+res://wonderdraft_icon.png.import
+res://wonderdraft_icon_16.png.import
+res://wonderdraft_icon_64.png.import
