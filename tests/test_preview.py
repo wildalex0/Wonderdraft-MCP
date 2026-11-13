@@ -223,3 +223,26 @@ def test_preview_rotation_mirror_and_order():
     doc.add("symbol", sym("t/red", 100, 100))
     img = render_preview(doc, cat, scale=1.0)
     assert px(img, 100, 105, 1.0)[1] > 200  # overlap shows the lower (green) one
+
+
+def _ink_box(img, base):
+    """Bounding box (w, h) of pixels that differ clearly from the background image."""
+    diff = np.abs(np.asarray(img, int) - np.asarray(base, int)).sum(axis=2) > 60
+    ys, xs = np.nonzero(diff)
+    return xs.max() - xs.min() + 1, ys.max() - ys.min() + 1
+
+
+def test_preview_label_rotation_is_degrees():
+    base_doc = MapDocument.new(300, 300)
+    base = render_preview(base_doc, None, scale=1.0)
+    boxes = {}
+    for rot in (0.0, 90.0, 1.5708):
+        doc = MapDocument.new(300, 300)
+        place.add_label(doc, "HORIZONTAL", (150, 150), size=24, rotation=rot)
+        boxes[rot] = _ink_box(render_preview(doc, None, scale=1.0), base)
+    w0, h0 = boxes[0.0]
+    w90, h90 = boxes[90.0]
+    assert w0 > 2 * h0           # unrotated text is wide
+    assert h90 > 2 * w90         # 90 (degrees) is vertical
+    w1, h1 = boxes[1.5708]       # 1.57 degrees is still almost flat
+    assert w1 > 2 * h1

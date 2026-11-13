@@ -448,7 +448,8 @@ def _draw_labels(img: Image.Image, doc, bbox, s, tags):
             tmp = Image.new("RGBA", (int(len(text) * size) + 20, int(size * 2 * lines) + 20), (0, 0, 0, 0))
             ImageDraw.Draw(tmp).multiline_text((tmp.width / 2, tmp.height / 2), text, anchor="mm",
                                                align=align, **kw)
-            tmp = tmp.rotate(-math.degrees(rot), Image.Resampling.BICUBIC, expand=True)
+            # label rotation is stored in degrees (symbols use radians)
+            tmp = tmp.rotate(-rot, Image.Resampling.BICUBIC, expand=True)
             layer.paste(tmp, (int(round(cx - tmp.width / 2)), int(round(cy - tmp.height / 2))), tmp)
         tags.append((lid, (cx, cy)))
     img.alpha_composite(layer)

@@ -170,8 +170,12 @@ class FreeLabel(_Model):
     preset: str = Field("Region", description=(
         "Theme label preset: Town, City, Region or Water in the built-in themes (falls back to Region if missing)."))
     size: int | None = Field(None, gt=0, description="Font size override; default from the preset.")
-    rotation: float = Field(0.0, description="Degrees.")
-    curve: float = Field(0.0, description="Text curvature; 0 = straight.")
+    rotation: float = Field(0.0, ge=-360, le=360, description=(
+        "Rotation in degrees, clockwise on screen (90 = reading top to bottom)."))
+    curve: float = Field(0.0, description=(
+        "Wonderdraft's label curve value, stored as-is: 0 = straight text; a non-zero value "
+        "bends the text along an arc, the sign picking the direction (scale not verified; "
+        "start small, e.g. 0.1; the preview draws labels straight)."))
 
 
 class RegionSpec(_Model):

@@ -19,10 +19,14 @@ Conventions
   Wonderdraft places user-pack symbols at).
 * ``density`` (scatter / forest / mountain_range) is the target number of symbols
   per 100x100 px of area; min spacing may reduce the actual count.
+* ``rotation`` arguments are DEGREES, clockwise on screen, for symbols and labels alike.
+  Wonderdraft stores label rotation in degrees but symbol rotation in radians
+  (docs/format.md "Rotation units, GUI-pinned"), so symbols are converted on write.
 """
 from __future__ import annotations
 
 import bisect
+import math
 import re
 from typing import Literal
 
@@ -136,11 +140,17 @@ def _pick_variant(s: SymbolSet, variant: int | None, rng: np.random.Generator) -
     return s.variants[variant]
 
 
+def symbol_rotation(degrees: float) -> float:
+    """Stored symbol rotation (radians, clockwise) for a rotation in degrees."""
+    return math.radians(float(degrees))
+
+
 def _make_symbol(s: SymbolSet, texture: str, pos, scale: float, rotation: float,
                  mirror: bool) -> dict:
+    """``rotation`` in degrees (stored as radians)."""
     k = _base_scale(texture) * float(scale)
     return template.symbol_entry(
-        texture, pos, rotation=rotation, scale=(k, k),
+        texture, pos, rotation=symbol_rotation(rotation), scale=(k, k),
         offset=s.offset, radius=s.radius, type=_TYPE.get(s.category, "symbol"),
         mirror=mirror)
 
@@ -187,6 +197,7 @@ def _insert_symbols(doc: MapDocument, entries: list[dict]) -> list[str]:
 def add_symbol(doc: MapDocument, cat: Catalog, set_key: str, pos, variant: int | None = None,
                scale: float = 1.0, rotation: float = 0.0, mirror: bool = False,
                seed: int = 0) -> str:
+    """One symbol; ``rotation`` is degrees clockwise (stored as radians)."""
     s = cat.get_set(set_key)
     x, y = _require_in_map(doc, pos, "symbol")
     rng = np.random.default_rng(seed)
@@ -281,6 +292,7 @@ def _label_kwargs(doc: MapDocument, preset: str) -> dict:
 
 def add_label(doc: MapDocument, text: str, pos, preset: str = "Town", size: int | None = None,
               rotation: float = 0.0, curve: float = 0.0, color=None) -> str:
+    """One label; ``rotation`` is degrees clockwise (stored as-is)."""
     x, y = _require_in_map(doc, pos, "label")
     kw = _label_kwargs(doc, preset)
     if size is not None:

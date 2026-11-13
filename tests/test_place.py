@@ -322,3 +322,17 @@ def test_symbols_register_packs(cat, tmp_path):
     back = MapDocument.open(doc.save(tmp_path / "m.wonderdraft_map"))
     assert back.root["included_packs"] == ["Other", "Pack"]
     assert back.root["included_default_packs"] == before + ["Arabia"]
+
+
+# ------------------------------------------------------------------ rotation units (GUI-pinned)
+def test_symbol_rotation_degrees_stored_as_radians(cat):
+    import math
+    doc = blank()
+    e = doc.get(place.add_symbol(doc, cat, TOWN, (100, 100), rotation=90))
+    assert e["rotation"] == pytest.approx(math.pi / 2)
+
+
+def test_label_rotation_degrees_stored_as_is():
+    doc = blank()
+    e = doc.get(place.add_label(doc, "Vertical", (100, 100), rotation=90))
+    assert e["rotation"] == 90.0

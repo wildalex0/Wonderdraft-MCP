@@ -1,3 +1,4 @@
+import math
 import shutil
 from pathlib import Path
 
@@ -216,16 +217,17 @@ def test_update_object_conversion():
     server.add_settlement("Town", [200, 150], "town", set_key=TOWN)
     server.update_object("symbol:0", {"position": [10, 20], "scale": [2, 2],
                                       "offset": [1, 2], "outline_color": "#00ff00",
-                                      "sample": [0.1, 0.2, 0.3], "rotation": 0.5})
+                                      "sample": [0.1, 0.2, 0.3], "rotation": 90})
     e = server.session().current.get("symbol:0")
     assert e["position"] == Vector2(10.0, 20.0)
     assert e["scale"] == Vector2(2.0, 2.0) and e["offset"] == Vector2(1.0, 2.0)
     assert e["outline_color"] == Color(0.0, 1.0, 0.0, 1.0)
     assert e["sample"] == Color(0.1, 0.2, 0.3, 1.0)
-    assert e["rotation"] == 0.5
-    server.update_object("label:0", {"color": [1, 0, 0, 0.5], "text": "Renamed"})
+    assert e["rotation"] == pytest.approx(math.pi / 2)  # degrees in, radians stored
+    server.update_object("label:0", {"color": [1, 0, 0, 0.5], "text": "Renamed", "rotation": 90})
     lab = server.session().current.get("label:0")
     assert lab["color"] == Color(1.0, 0.0, 0.0, 0.5) and lab["text"] == "Renamed"
+    assert lab["rotation"] == 90.0  # labels store degrees
     server.add_path([[10, 10], [50, 50]])
     server.update_object("path:0", {"points": [[1, 2], [3.5, 4]], "color": "#0000ff"})
     p = server.session().current.get("path:0")
@@ -380,3 +382,11 @@ def test_real_catalog_new_map_and_preview(tmp_path):
     assert "Adventure" in server.list_themes()["themes"]
     with pytest.raises(ToolError, match="Paper"):
         server.new_map(100, 100, theme="Papr")
+
+
+def test_add_symbol_and_label_rotation_degrees():
+    sample_map()
+    r = server.add_symbol(TOWN, [200, 150], rotation=90)
+    assert server.session().current.get(r["ids"][0])["rotation"] == pytest.approx(math.pi / 2)
+    r = server.add_label("Side", [200, 150], rotation=90)
+    assert server.session().current.get(r["ids"][0])["rotation"] == 90.0

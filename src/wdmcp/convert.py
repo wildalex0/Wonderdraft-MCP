@@ -92,6 +92,9 @@ def convert_fields(kind: str, fields: dict) -> dict:
             out[k] = None if v is None else to_color(v)
         elif k == "points":
             out[k] = format_points(to_points(v))
+        elif k == "rotation":
+            deg = _finite(v, "rotation")
+            out[k] = math.radians(deg) if kind == "symbol" else deg
         else:
             out[k] = v
     return out

@@ -307,7 +307,8 @@ def _symbols(label: str, fn) -> dict:
 def add_symbol(set_key: str, pos: list[float], variant: int | None = None, scale: float = 1.0,
                rotation: float = 0.0, mirror: bool = False, seed: int = 0) -> dict:
     """Place one symbol from a set (key from list_asset_sets) at pos [x, y]. variant picks a
-    sprite by index, otherwise it is random."""
+    sprite by index, otherwise it is random. scale multiplies the set's base size (1 = the
+    size Wonderdraft places it at). rotation is in degrees, clockwise."""
     p = _pos(pos)
     return _symbols("add_symbol", lambda d, c: [place.add_symbol(
         d, c, set_key, p, variant, scale, rotation, mirror, seed)])
@@ -356,7 +357,10 @@ def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: s
 def add_label(text: str, pos: list[float], preset: str = "Town", size: int | None = None,
               rotation: float = 0.0, curve: float = 0.0, color: Color | None = None) -> dict:
     """Add a text label using one of the theme's label presets (Town, City, Region, ...;
-    preset_used says which one matched)."""
+    preset_used says which one matched). size is the font size in px (default from the
+    preset); rotation is in degrees, clockwise (90 = vertical); curve is Wonderdraft's label
+    curve value stored as-is (0 = straight; non-zero bends the text along an arc, the sign
+    picks the direction; start small and check in Wonderdraft, the preview draws it straight)."""
     p = _pos(pos)
     col = convert.to_color(color) if color is not None else None
     s = session()
@@ -393,7 +397,8 @@ def add_territory(points: Points, color: Color, opacity: float = 0.25,
 # ----------------------------------------------------------------- editing
 @tool_errors
 def update_object(id: str, fields: dict) -> dict:
-    """Update fields of one object (id like "label:3", see list_objects). Vectors
+    """Update fields of one object (id like "label:3", see list_objects). rotation is in
+    degrees, clockwise, for symbols and labels alike (symbols are stored in radians). Vectors
     (position, offset, scale) are [x, y]; colours are [r, g, b(, a)] floats 0-1 or "#rrggbb";
     points (path/territory) are [[x, y], ...]. Unknown keys are rejected with the valid list."""
     s = session()
