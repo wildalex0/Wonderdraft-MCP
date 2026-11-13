@@ -86,3 +86,22 @@ The user drew land, one river, one lake and two user-pack symbols in Wonderdraft
 - Land/water layout, coastline, mountains and clouds, symbol placement and scale, settlement labels, paths (dashed vs solid) and territory fill/outline all line up with Wonderdraft.
 - Not reproduced, which is acceptable for an iteration preview: paper/water textures, vignette, coastal hatching, rounded territory corners (`smoothing`), and path/border texture styles.
 - Readability gap: with the Worn theme, low land takes `ground_colors[0]` (olive), which is nearly the same colour as `water_colors[0]`, so coastal land and water blur together. This went to the fix loop.
+
+## Spike C: automating Wonderdraft's PNG export (2026-11-13)
+
+**Result: reliable, 3/3 runs.** Each run took about 9.5 s for a 1920×1080 map and produced byte-identical 3,821,591-byte RGBA PNGs (`tools/wd_export.ps1`).
+
+Sequence:
+1. `Start-Process Wonderdraft.exe "<map path>"`. Wait until the main window title starts with `<map stem>` (about 1.1 s), then allow about 3 s for the first canvas render.
+2. **Ctrl+E** sent with `SendInput` (virtual key + scan code) to the foreground Wonderdraft window. `WScript.Shell.SendKeys` does **not** work: Godot ignores it. This opens Wonderdraft's own (Godot-drawn) **Export Options** dialog (Image: Normal, Format: PNG, Export Trace Image, OK/Cancel).
+3. **Enter** (`SendInput`) confirms it with the defaults. No mouse is needed. A synthetic click on OK also works when the window really is in the foreground.
+4. Wonderdraft then opens a **native Windows save dialog**: top-level `#32770` window titled `Export`, owned by the Wonderdraft process. It can be driven without focus or mouse:
+   - `WM_SETTEXT` with the full output path on the File name edit (class `Edit`, control id **1001**; the address bar's edit has id 41477)
+   - `BM_CLICK` on the Save button (control id **1**)
+5. Poll until the output file exists and its size is stable, then `CloseMainWindow` (force-kill after 5 s).
+
+Caveats:
+- Steps 2–3 need Wonderdraft to be the **foreground** window and send real keystrokes, so typing during those ~2 s can interfere.
+- Windows' foreground-lock can refuse `SetForegroundWindow`. When the native dialog is open, refocusing the main window sends keystrokes to it instead of the dialog, which is why step 4 uses window messages.
+- Capturing the native dialog needs `CopyFromScreen` on its own rect, because `PrintWindow` on the main window doesn't include it.
+- Godot draws the Export Options dialog itself, so UIA/pywinauto can't see its controls (as expected). Only keystrokes or clicks work there.
