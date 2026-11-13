@@ -20,12 +20,12 @@ from wdmcp.codec import dump_map_bytes, load_map_bytes
 
 from .points import parse_points
 
-_REPO = Path(__file__).resolve().parents[3]
-# Task 5 switches this to src/wdmcp/model/blank.wonderdraft_map in one line.
-TEMPLATE_PATH = _REPO / "tests" / "fixtures" / "testmap.wonderdraft_map"
+from . import raster_spec
 
-# RGBA used to fill new rasters ("all water"); alpha 0 until Spike B settles it.
-ALL_WATER_FILL = (0, 0, 0, 0)
+# Packaged blank map saved by Wonderdraft (all-water rasters, no objects).
+TEMPLATE_PATH = Path(__file__).parent / "blank.wonderdraft_map"
+
+ALL_WATER_FILL = raster_spec.WATER_FILL
 
 RASTERS = ("mask", "ground", "water_tint")
 Kind = Literal["symbol", "label", "path", "territory"]
