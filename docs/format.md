@@ -79,3 +79,10 @@ The user drew land, one river, one lake and two user-pack symbols in Wonderdraft
 `tools/make_placement_demo.py` (continent, built-in mountain range, built-in forest, built-in and user-pack settlements, a free label, a path and a territory) was opened in Wonderdraft 1.1.8.
 - **Pack registration is required.** Wonderdraft loads user packs only when they are listed in `root["included_packs"]`. With the list empty, which is the blank template's default, a `user://assets/<pack>/...` symbol fails with "couldn't load" (the user saw this error). Built-in pack textures (`res://packs/<pack>/...`) correspond to `included_default_packs`. Placement now registers packs automatically.
 - With registration in place, everything renders: mountains, trees, both settlements (built-in Stonebridge, T.A's-kit Mossgrove), labels in the theme preset font, the path (`path_blended`) and the territory (`border_dash`, fill at opacity). Settlement labels sit below the sprite: the label y is `pos.y + offset.y + sprite_h*scale/2 + 0.35*font size`.
+
+## Task 9: preview vs Wonderdraft (2026-11-13)
+
+`tools/render_preview.py` takes 0.19 s on the test map at scale 0.5. Compared side by side with Wonderdraft screenshots of the same maps:
+- Land/water layout, coastline, mountains and clouds, symbol placement and scale, settlement labels, paths (dashed vs solid) and territory fill/outline all line up with Wonderdraft.
+- Not reproduced, which is acceptable for an iteration preview: paper/water textures, vignette, coastal hatching, rounded territory corners (`smoothing`), and path/border texture styles.
+- Readability gap: with the Worn theme, low land takes `ground_colors[0]` (olive), which is nearly the same colour as `water_colors[0]`, so coastal land and water blur together. This went to the fix loop.
