@@ -50,7 +50,7 @@ Polygon = Annotated[list[Point], Field(min_length=3, description=(
 Polyline = Annotated[list[Point], Field(min_length=2, description=(
     "Open line [[x, y], ...] in map pixels; >= 2 points, in order."))]
 ColorSpec = Annotated[str | list[float], Field(description=(
-    "Colour as '#rrggbb', or [r, g, b] / [r, g, b, a] floats 0-1."))]
+    "Colour as '#rrggbb', or [r, g, b] / [r, g, b, a] floats 0-1 (0-255 values are rejected)."))]
 
 
 class _Model(BaseModel):

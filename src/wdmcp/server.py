@@ -314,9 +314,9 @@ def paint_ground(polygon: Points, color_index: int, softness: float = 0.5) -> di
 
 
 # ----------------------------------------------------------------- placement
-def _symbols(label: str, fn, what: str | None = None) -> dict:
-    """Run a symbol-placing op; fn(doc, cat) -> ids or (ids, dropped). ``what`` replaces the
-    default "Placed N symbol(s)" opening of the summary."""
+def _symbols(label: str, fn, what=None) -> dict:
+    """Run a symbol-placing op; fn(doc, cat) -> ids or (ids, dropped). ``what(ids)`` replaces
+    the default "Placed N symbol(s)" opening of the summary."""
     s = session()
     with s.mutation(label) as doc:
         before = _packs(doc)
@@ -326,7 +326,7 @@ def _symbols(label: str, fn, what: str | None = None) -> dict:
     extra: dict[str, Any] = {"packs_registered": added}
     if dropped is not None:
         extra["dropped"] = dropped
-    msg = what.format(ids=ids) if what else f"Placed {len(ids)} symbol(s)"
+    msg = what(ids) if what else f"Placed {len(ids)} symbol(s)"
     if dropped:
         msg += f", dropped {dropped} (off-map or on water)"
     msg += ". " + ID_NOTE
@@ -390,8 +390,11 @@ def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: s
     multiplies the kind's default size."""
     _check_seed(seed)
     p = _pos(pos)
-    what = (f"Placed {kind} {name!r}: symbol {{ids[0]}}" +
-            (" with its name label {ids[1]}" if label else ""))
+
+    def what(ids):
+        return (f"Placed {kind} {name!r}: symbol {ids[0]}" +
+                (f" with its name label {ids[1]}" if label else ""))
+
     return _symbols("add_settlement", lambda d, c: place.add_settlement(
         d, c, name, p, kind, set_key, label, seed, scale, variant), what)
 
@@ -400,7 +403,8 @@ def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: s
 def add_label(text: str, pos: list[float], preset: str = "Town", size: int | None = None,
               rotation: float = 0.0, curve: float = 0.0, color: Color | None = None) -> dict:
     """Add a text label using one of the theme's label presets (Town, City, Region, ...;
-    preset_used says which one matched). size is the font size in px (default from the
+    preset_used says which one matched). color is "#rrggbb" or [r, g, b(, a)] floats 0-1
+    (0-255 values are rejected with a hint). size is the font size in px (default from the
     preset); rotation is in degrees, clockwise (90 = vertical); curve is Wonderdraft's label
     curve value stored as-is (0 = straight; non-zero bends the text along an arc, the sign
     picks the direction; start small and check in Wonderdraft, the preview draws it straight)."""
@@ -439,7 +443,8 @@ def add_path(points: Points, style: str = "path_blended", width: float = 4.0,
 def add_territory(points: Points, color: Color, opacity: float = 0.25,
                   style: str = "border_dash", width: float = 10.0, smoothing: float = 0.2) -> dict:
     """Add a filled, bordered territory polygon; points outside the map are clamped
-    (clamped = how many). opacity is the fill opacity 0-1. style is one of Wonderdraft's
+    (clamped = how many). color is "#rrggbb" or [r, g, b(, a)] floats 0-1 (0-255 values are
+    rejected with a hint). opacity is the fill opacity 0-1. style is one of Wonderdraft's
     border textures: border_dark_dot, border_dash, border_gradient, border_solid. width is
     the border width in px."""
     pts = convert.to_points(points)

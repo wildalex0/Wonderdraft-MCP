@@ -12,9 +12,6 @@ from wdmcp.model.points import format_points
 
 _HEX = re.compile(r"^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$")
 
-# Entry keys that hold a Color; custom_colors / custom_color_mode are passed through as-is.
-COLOR_KEYS = ("color", "outline_color", "glow_color", "sample")
-VECTOR_KEYS = ("position", "offset", "scale")
 
 
 def _finite(v: Any, what: str) -> float:
@@ -28,7 +25,10 @@ def _finite(v: Any, what: str) -> float:
 
 
 def to_color(v: Any) -> Color:
-    """``"#rrggbb[aa]"``, ``[r, g, b]`` or ``[r, g, b, a]`` (floats 0-1) -> Color."""
+    """``"#rrggbb[aa]"``, ``[r, g, b]`` or ``[r, g, b, a]`` (floats 0-1) -> Color.
+
+    Components outside 0-1 are rejected, never rescaled: a component above 1 is taken to be a
+    0-255 value and the error suggests the equivalent hex form."""
     if isinstance(v, Color):
         return v
     if isinstance(v, str):

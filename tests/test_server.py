@@ -645,3 +645,10 @@ def test_paths_returned_are_absolute(tmp_path, monkeypatch):
     assert Path(r["path"]).is_absolute()
     r = server.export_image("out.png", via="preview")
     assert Path(r["path"]).is_absolute() and (tmp_path / "out.png").is_file()
+
+
+def test_settlement_name_with_braces():
+    sample_map()
+    r = server.add_settlement("{Old} Ford", [200, 150], "town", set_key=TOWN)
+    assert "'{Old} Ford'" in r["summary"]
+    assert server.session().current.get(r["ids"][1])["text"] == "{Old} Ford"
