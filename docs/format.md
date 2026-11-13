@@ -29,3 +29,23 @@ GUI automation notes, which feed into Spike C:
 - `WScript.Shell.SendKeys("^s")` with the window activated had **no effect**.
 - A synthetic mouse click (`SetCursorPos` + `mouse_event`) on the **Save** menu item **did** save.
 - Screen coordinates: the virtual screen spans several monitors, so the screenshot origin is `VirtualScreen.Left/Top` (here −1080, 0). Map window coordinates come from `GetWindowRect`.
+
+## Spike B: raster semantics (2026-11-13)
+
+Synthetic probes (`tools/make_probe.py`) were opened in Wonderdraft. Captures use `tools/wd_launch.ps1`, which calls `PrintWindow` and runs DPI-aware, so the window can be captured while it is covered.
+
+| Probe | Raster content | What Wonderdraft draws |
+|---|---|---|
+| a | mask alpha ramp 0→255 (left→right), RGB 0 | One straight coastline at **x = 49.7%**, i.e. alpha ≈ 127/128. Left (low alpha) is **water**: the water texture with the coastline hatch on the water side. Right is **land**: ground texture. There is no visible height shading. |
+| b | alpha 255, RGB=1 stripe | All land. The RGB=1 stripe has **no visible effect**. |
+| c | alpha 255, `ground` red square (A=255) | The red square is drawn opaquely over the land texture. `ground` is direct RGBA colour paint. |
+| d | alpha 0 left / 255 right, `water_tint` blue square across the coast | Blue is drawn **only on the water side**, clipped at the coast, with a soft fade at the coastline. `water_tint` is direct RGBA tint over water. |
+| e | ramp + RGB=1 horizontal band | Same as a. RGB=1 does not change land or water. |
+
+Cross-check against the test map: thresholding its mask at `alpha >= 128` reproduces the rendered land and water exactly, including lakes and islands.
+
+- **Land/water:** land ⇔ `mask.alpha >= 128` when `water_level = 0.5`. Alpha is a height field: water is 0–127, land is 128–255. The test map stores a noise field on both sides.
+- **Brush plateaus seen in the test map:** 153 (painted land), 102 (erased to water), 255 (raised). In the raised stroke, RGB is also set to 1.
+- **Mask RGB:** binary 0 or 1. It is set by the raise tool and has no rendering effect in our probes. We write 0, except to mirror the raise tool.
+- **`ground`:** RGBA paint over land. Alpha is opacity, and (0,0,0,0) means no paint.
+- **`water_tint`:** RGBA tint over water. (0,0,0,0) means none.
