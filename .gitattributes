@@ -1,0 +1,3 @@
+*.wonderdraft_map binary
+*.png binary
+*.py text eol=lf

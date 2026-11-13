@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wdmcp"
+version = "0.1.0"
+description = "MCP server for reading and writing Wonderdraft .wonderdraft_map files"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = ["mcp>=2.3,<3", "numpy", "pillow", "pydantic"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+wdmcp = "wdmcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wdmcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["gui: drives the real Wonderdraft app; needs WDMCP_GUI_TESTS=1"]

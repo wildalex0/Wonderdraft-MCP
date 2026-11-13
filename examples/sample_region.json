@@ -1,0 +1,53 @@
+{
+  "name": "The Aldmere Marches",
+  "width": 1920,
+  "height": 1080,
+  "theme": "Adventure",
+  "seed": 7,
+  "scale": "region",
+  "frame": true,
+  "land": [
+    {"polygon": [[240, 200], [600, 120], [1100, 150], [1500, 130], [1750, 330], [1700, 650],
+                 [1550, 900], [1100, 960], [700, 930], [380, 880], [200, 600]],
+     "roughness": 0.25}
+  ],
+  "mountains": [
+    {"polyline": [[1150, 330], [1330, 400], [1560, 370]], "width": 90, "density": 5}
+  ],
+  "rivers": [
+    {"points": [[1250, 420], [1180, 600], [1230, 800], [1150, 930], [1130, 1010]], "width": 7},
+    {"points": [[520, 320], [400, 400], [300, 430], [180, 440]], "width": 5}
+  ],
+  "lakes": [
+    {"polygon": [[860, 520], [940, 500], [990, 560], [930, 610], [850, 590]], "roughness": 0.4}
+  ],
+  "ground": [
+    {"polygon": [[420, 640], [760, 620], [800, 840], [460, 860]], "color_index": 1, "softness": 0.8}
+  ],
+  "forests": [
+    {"polygon": [[420, 360], [700, 340], [760, 520], [500, 580]], "density": 6},
+    {"polygon": [[900, 700], [1250, 720], [1300, 850], [950, 860]], "density": 6}
+  ],
+  "settlements": [
+    {"name": "Eldmoor", "kind": "city", "pos": [780, 400]},
+    {"name": "Saltreach", "kind": "port", "pos": [1090, 890]},
+    {"name": "Graycrag", "kind": "castle", "pos": [1500, 540]},
+    {"name": "Old Harrow", "kind": "ruin", "pos": [500, 740]},
+    {"name": "Wren's Ferry", "kind": "village", "pos": [1290, 640]}
+  ],
+  "roads": [
+    {"points": [[780, 400], [900, 450], [1080, 470], [1200, 520], [1290, 640]], "width": 4},
+    {"points": [[780, 400], [740, 560], [820, 700], [950, 820], [1090, 890]], "width": 4}
+  ],
+  "realms": [
+    {"name": "The Marchlands", "polygon": [[300, 300], [900, 220], [920, 870], [440, 850], [270, 600]],
+     "color": "#3b6fb6"},
+    {"name": "Kingdom of Aldmere", "polygon": [[960, 180], [1500, 170], [1680, 360], [1650, 640],
+                                             [1500, 880], [980, 900]],
+     "color": [0.75, 0.25, 0.2]}
+  ],
+  "labels": [
+    {"text": "The Pale Sea", "pos": [960, 1035], "preset": "Water"},
+    {"text": "Greywall Mountains", "pos": [1360, 330], "preset": "Region"}
+  ]
+}

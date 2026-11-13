@@ -37,7 +37,7 @@ So the deliverable is **two linked things**:
 - **Container:** Godot `FileAccessCompressed`. Layout: `"GCPF"` magic, `u32 mode` (0 = FastLZ), `u32 block_size` (4096), `u32 uncompressed_size`, then one `u32` compressed size per block, then the blocks, then a trailing `"GCPF"` magic.
 - **Payload:** Godot 3 `store_var` encoding, i.e. a `u32` length followed by one binary Variant: a Dictionary with 28 keys.
   - Reals are 64-bit when float32 cannot hold the value exactly (e.g. `water_stain`).
-  - Ints are 64-bit when outside the int32 range (e.g. `noise_seed`).
+  - Ints are always written 64-bit by Wonderdraft, even small ones like `version` (corrected 2026-11-13 in Task 2; see `docs/format.md`).
 - **Top-level keys:** `version, map_width, map_height, water_level, water_flip_x, water_flip_y, water_offset, water_stain, windroses, theme, layers, paths, territories, symbols, labels, sharpen_labels, mask, ground, water_tint, trace, grid, frame, scale, boxes, load_default_symbols, load_default_not_symbols, included_default_packs, included_packs`.
 - **Raster layers:** `mask`, `ground` and `water_tint` are Godot `Image` objects. Each is RGBA8 at the map size. In `mask`, alpha ranges over 44–255 and looks like elevation/coast, and RGB ∈ {0,1} on about 4% of pixels (meaning unknown). The meaning of these layers is **unverified**; see Spike B.
 - **Points:** `paths[].points` and `territories[].points` are **strings** in Godot `str()` form: `'[ Vector2( 526, 297 ), Vector2( 539, 340 ) ]'`.
