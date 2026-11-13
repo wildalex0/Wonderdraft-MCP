@@ -45,7 +45,7 @@ def _loop_noise(n: int, rng: np.random.Generator, wavelength: float = 3.0) -> np
 
     Octave k has k cells around the loop, starting at 8 (base wavelength = 1/8 of the
     outline) and doubling while the wavelength stays >= ``wavelength`` samples (max 8
-    octaves). Persistence 0.5.
+    octaves). Persistence ``PERSIST`` (0.6).
     """
     t = np.arange(n, dtype=np.float64) / n
     out = np.zeros(n)

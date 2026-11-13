@@ -615,3 +615,33 @@ def test_tool_schema_seed_minimum():
     tools = {t.name: t for t in asyncio.run(server.mcp.list_tools())}
     schema = getattr(tools["add_river"], "inputSchema", None) or tools["add_river"].input_schema
     assert schema["properties"]["seed"]["minimum"] == 0
+
+
+def test_preview_scale_capped_to_8192():
+    sample_map()  # 400x300
+    img, text = server.render_preview(scale=30)
+    import io as _io
+    from PIL import Image as _I
+    im = _I.open(_io.BytesIO(img.data))
+    assert max(im.size) <= 8192 and "capped" in text
+
+
+def test_settlement_summary_wording():
+    sample_map()
+    r = server.add_settlement("Dreifurt", [200, 150], "town", set_key=TOWN)
+    assert r["summary"].startswith(f"Placed town 'Dreifurt': symbol {r['ids'][0]} with its name "
+                                   f"label {r['ids'][1]}")
+    r = server.add_settlement("Quiet", [220, 150], "town", set_key=TOWN, label=False)
+    assert "label" not in r["summary"].split(".")[0]
+
+
+def test_paths_returned_are_absolute(tmp_path, monkeypatch):
+    from pathlib import Path
+    monkeypatch.chdir(tmp_path)
+    sample_map()
+    r = server.save_map("rel.wonderdraft_map")
+    assert Path(r["path"]).is_absolute() and Path(r["path"]) == tmp_path / "rel.wonderdraft_map"
+    r = server.open_map("rel.wonderdraft_map")
+    assert Path(r["path"]).is_absolute()
+    r = server.export_image("out.png", via="preview")
+    assert Path(r["path"]).is_absolute() and (tmp_path / "out.png").is_file()

@@ -41,6 +41,7 @@ SettlementKind = Literal["city", "town", "village", "castle", "fort", "ruin", "p
                          "temple", "mine"]
 KINDS = ("symbol", "label", "path", "territory")
 MAX_MAP_SIDE = 8192
+MAX_PREVIEW_SIDE = 8192
 MIN_MAP_SIDE = 64
 ID_NOTE = ("Symbol ids are positional and shift when symbols are inserted or removed; "
            "the ids returned here are valid now.")
@@ -162,7 +163,7 @@ def save_map(path: str | None = None) -> dict:
     absolute path and the backup (or null)."""
     s = session()
     doc = s.doc()
-    target = Path(path).expanduser() if path else doc.path
+    target = Path(path).expanduser().resolve() if path else doc.path
     if target is None:
         raise ValueError("this map has not been saved yet; pass a path to save_map")
     if target.suffix == "":
@@ -275,7 +276,9 @@ def generate_landmass(coverage: float = 0.4, seed: Seed = 0,
 
 @tool_errors
 def raise_area(polygon: Points, amount: float) -> dict:
-    """Raise (or lower, if negative) land height inside a polygon. Water is untouched."""
+    """Raise (or lower, if negative) land height inside a polygon. amount is in land-height
+    units: land height runs from 0 (sea level) to 1 (highest), so 0.1 raises by a tenth of the
+    full range; results are clamped to 0-1. Water is untouched and never becomes land."""
     pts = convert.to_points(polygon, "polygon")
     return _terrain("raise_area", lambda d: terrain.raise_area(d, pts, amount),
                     "Adjusted land height: {n} pixels changed.")
@@ -292,7 +295,9 @@ def add_lake(polygon: Points, roughness: float = 0.3, seed: Seed = 0) -> dict:
 
 @tool_errors
 def add_river(points: Points, width: float = 3.0, seed: Seed = 0) -> dict:
-    """Add a meandering river through points (first point is the source); land only."""
+    """Add a meandering river through points (first point is the source; end it in the sea
+    or a lake); drawn on land only. width is in px at full width; the river narrows towards
+    its source over its first few widths."""
     _check_seed(seed)
     pts = convert.to_points(points)
     return _terrain("add_river", lambda d: terrain.add_river(d, pts, width, seed),
@@ -309,8 +314,9 @@ def paint_ground(polygon: Points, color_index: int, softness: float = 0.5) -> di
 
 
 # ----------------------------------------------------------------- placement
-def _symbols(label: str, fn) -> dict:
-    """Run a symbol-placing op; fn(doc, cat) -> ids or (ids, dropped)."""
+def _symbols(label: str, fn, what: str | None = None) -> dict:
+    """Run a symbol-placing op; fn(doc, cat) -> ids or (ids, dropped). ``what`` replaces the
+    default "Placed N symbol(s)" opening of the summary."""
     s = session()
     with s.mutation(label) as doc:
         before = _packs(doc)
@@ -320,7 +326,7 @@ def _symbols(label: str, fn) -> dict:
     extra: dict[str, Any] = {"packs_registered": added}
     if dropped is not None:
         extra["dropped"] = dropped
-    msg = f"Placed {len(ids)} symbol(s)"
+    msg = what.format(ids=ids) if what else f"Placed {len(ids)} symbol(s)"
     if dropped:
         msg += f", dropped {dropped} (off-map or on water)"
     msg += ". " + ID_NOTE
@@ -344,8 +350,10 @@ def add_symbol(set_key: str, pos: list[float], variant: int | None = None, scale
 @tool_errors
 def scatter_symbols(set_key: str, polygon: Points, density: float, min_spacing: float | None = None,
                     land_only: bool = True, seed: Seed = 0, scale: float = 1.0) -> dict:
-    """Scatter symbols (Poisson-disk) inside a polygon. Returns the placed ids and how many
-    samples were dropped."""
+    """Scatter symbols (Poisson-disk) inside a polygon. density is symbols per 100x100 px of
+    area (min_spacing in px, default from the set's radius, may lower the count). scale
+    multiplies the set's base size. Returns the placed ids and how many samples were dropped
+    (off-map, or on water with land_only)."""
     _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _symbols("scatter_symbols", lambda d, c: place.scatter(
@@ -355,7 +363,8 @@ def scatter_symbols(set_key: str, polygon: Points, density: float, min_spacing: 
 @tool_errors
 def add_mountain_range(set_key: str, polyline: Points, width: float, density: float,
                        seed: Seed = 0) -> dict:
-    """Place mountains in a ribbon of the given width (px) along a polyline (land only)."""
+    """Place mountains in a ribbon of the given width (px) along a polyline (land only).
+    density is symbols per 100x100 px of ribbon area."""
     _check_seed(seed)
     line = convert.to_points(polyline, "polyline")
     return _symbols("add_mountain_range", lambda d, c: place.mountain_range(
@@ -364,7 +373,8 @@ def add_mountain_range(set_key: str, polyline: Points, width: float, density: fl
 
 @tool_errors
 def add_forest(set_key: str, polygon: Points, density: float, seed: Seed = 0) -> dict:
-    """Fill a polygon with trees from a tree set (land only)."""
+    """Fill a polygon with trees from a tree set (land only). density is trees per
+    100x100 px of area."""
     _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _symbols("add_forest", lambda d, c: place.forest(d, c, set_key, pts, density, seed))
@@ -380,8 +390,10 @@ def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: s
     multiplies the kind's default size."""
     _check_seed(seed)
     p = _pos(pos)
+    what = (f"Placed {kind} {name!r}: symbol {{ids[0]}}" +
+            (" with its name label {ids[1]}" if label else ""))
     return _symbols("add_settlement", lambda d, c: place.add_settlement(
-        d, c, name, p, kind, set_key, label, seed, scale, variant))
+        d, c, name, p, kind, set_key, label, seed, scale, variant), what)
 
 
 @tool_errors
@@ -548,7 +560,7 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
     s = session()
     cat = s.catalog
     res = region.build(spec, cat)
-    target = Path(out_path).expanduser()
+    target = Path(out_path).expanduser().resolve()
     if target.suffix == "":
         target = target.with_name(target.name + ".wonderdraft_map")
     bak = res.doc.save(target)
@@ -566,7 +578,8 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
         msg += f" The existing file was backed up to {bak.name}."
     if res.warnings:
         msg += " Warnings: " + "; ".join(res.warnings) + "."
-    msg += " Returned ids cover labels, paths, territories and settlement symbols; "            "use list_objects for mountain and forest symbols. " + ID_NOTE
+    msg += (" Returned ids cover labels, paths, territories and settlement symbols; "
+            "use list_objects for mountain and forest symbols. " + ID_NOTE)
     return {"ids": res.ids, "summary": msg, "counts": c, "warnings": res.warnings,
             "path": str(saved), "backup": str(bak) if bak else None,
             "replaced_unsaved_map": replaced}
@@ -582,6 +595,7 @@ def region_spec_schema() -> dict:
 def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
                    show_ids: bool = False) -> list:
     """Render the map to a PNG you can see (also saved to disk; the path is in the text).
+    scale is output px per map px (the output is capped at 8192 px on its longest side).
     bbox [x0, y0, x1, y1] in map pixels zooms in; show_ids tags objects with their ids."""
     s = session()
     doc = s.doc()
@@ -592,6 +606,11 @@ def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
         if len(bbox) != 4:
             raise ValueError("bbox must be [x0, y0, x1, y1]")
         box = tuple(int(v) for v in bbox)
+    bw, bh = (box[2] - box[0], box[3] - box[1]) if box else (doc.width, doc.height)
+    note = ""
+    if max(bw, bh) * scale > MAX_PREVIEW_SIDE and max(bw, bh) > 0:
+        scale = MAX_PREVIEW_SIDE / max(bw, bh)
+        note = f" Scale was capped at {scale:.4g} to keep the image within {MAX_PREVIEW_SIDE} px."
     img = _render_preview(doc, s.catalog, scale=scale, bbox=box, show_ids=show_ids)
     buf = io.BytesIO()
     img.save(buf, format="PNG")
@@ -602,7 +621,7 @@ def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
     except OSError:
         path = s.temp_preview_path()
         path.write_bytes(data)
-    text = f"Preview {img.width}x{img.height} (scale {scale}). Saved: {path}"
+    text = f"Preview {img.width}x{img.height} (scale {scale:.4g}).{note} Saved: {path}"
     return [Image(data=data, format="png"), text]
 
 
@@ -618,7 +637,7 @@ def export_image(path: str, format: Literal["png", "jpg"] = "png",
     via="preview" writes a full-scale render from this server instead."""
     s = session()
     doc = s.doc()
-    out = Path(path).expanduser()
+    out = Path(path).expanduser().resolve()
     suffixes = {"png": (".png",), "jpg": (".jpg", ".jpeg")}[format]
     if out.suffix == "":
         out = out.with_name(out.name + suffixes[0])

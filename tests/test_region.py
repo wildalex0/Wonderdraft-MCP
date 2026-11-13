@@ -340,3 +340,10 @@ def test_build_region_reports_backup_of_existing_file(tmp_path):
     r = server.build_region(small_spec(), str(out))
     baks = list(tmp_path.glob("*.bak"))
     assert len(baks) == 1 and r["backup"] == str(baks[0]) and baks[0].name in r["summary"]
+
+
+def test_build_region_summary_and_absolute_path(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    r = server.build_region(small_spec(), "rel_build")
+    assert Path(r["path"]).is_absolute() and r["path"].endswith("rel_build.wonderdraft_map")
+    assert "settlement symbols; use list_objects" in r["summary"]
