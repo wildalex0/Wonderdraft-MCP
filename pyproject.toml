@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wdmcp"
+version = "0.1.0"
+description = "MCP server for reading and writing Wonderdraft .wonderdraft_map files"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["mcp", "numpy", "pillow", "pydantic"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+wdmcp = "wdmcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wdmcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
