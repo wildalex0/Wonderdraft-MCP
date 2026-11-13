@@ -180,6 +180,88 @@ def test_input_struct_size():
     assert ctypes.sizeof(wa.INPUT) == 40
 
 
+def test_popen_isolates_stdio(monkeypatch, tmp_path):
+    import subprocess
+    exe = tmp_path / "Wonderdraft.exe"
+    exe.write_bytes(b"")
+    m = tmp_path / "m.wonderdraft_map"
+    m.write_bytes(b"x")
+    monkeypatch.setenv("WDMCP_EXE", str(exe))
+    monkeypatch.setattr(wa.sys, "platform", "win32")
+    monkeypatch.setattr(wa, "_wonderdraft_running", lambda: False)
+    seen = {}
+
+    class FakeProc:
+        pid = 1
+
+        def poll(self):
+            return 1
+
+    def fake_popen(args, **kw):
+        seen.update(kw)
+        return FakeProc()
+    monkeypatch.setattr(wa.subprocess, "Popen", fake_popen)
+    with pytest.raises(ExportError, match="exited"):
+        export_via_app(m, tmp_path / "o.png")
+    assert seen["stdin"] == seen["stdout"] == seen["stderr"] == subprocess.DEVNULL
+    assert seen["creationflags"] == getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x200)
+
+
+class Dialog:
+    """Fakes for _open_export_dialog: scripted dialog lookups, recorded keys, fake clock."""
+
+    def __init__(self, monkeypatch, finds, waits):
+        self.keys, self.finds, self.waits, self.t = [], list(finds), list(waits), 0.0
+        monkeypatch.setattr(wa, "_send_keys", lambda ch: self.keys.append(ch[0][-1]))
+        monkeypatch.setattr(wa, "_foreground", lambda h: True)
+        monkeypatch.setattr(wa, "_find_dialog", lambda pid: self.finds.pop(0) if self.finds else None)
+        monkeypatch.setattr(wa, "_wait_dialog", lambda pid, t, d=None: self.waits.pop(0))
+        monkeypatch.setattr(wa, "_clock", lambda: self.t)
+        monkeypatch.setattr(wa, "_sleep", lambda s, d=None: setattr(self, "t", self.t + s))
+
+
+CTRL_E_ENTER = [0x45, 0x0D]
+
+
+def test_open_dialog_first_attempt_no_retry(monkeypatch):
+    d = Dialog(monkeypatch, finds=[None], waits=[99])
+    wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == CTRL_E_ENTER
+
+
+def test_open_dialog_present_before_retry_sends_nothing_more(monkeypatch):
+    d = Dialog(monkeypatch, finds=[None, 99], waits=[None])
+    wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == CTRL_E_ENTER
+
+
+def test_open_dialog_retry_sends_esc_first(monkeypatch):
+    d = Dialog(monkeypatch, finds=[None, None, None], waits=[None, 99])
+    wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == CTRL_E_ENTER + [0x1B] + CTRL_E_ENTER
+
+
+def test_open_dialog_both_attempts_fail(monkeypatch):
+    d = Dialog(monkeypatch, finds=[], waits=[None, None])
+    with pytest.raises(ExportError, match="did not appear after 2 attempts"):
+        wa._open_export_dialog(1, 2, deadline=100)
+    assert d.keys == CTRL_E_ENTER + [0x1B] + CTRL_E_ENTER
+
+
+def test_open_dialog_respects_deadline(monkeypatch):
+    Dialog(monkeypatch, finds=[], waits=[None, None])
+    with pytest.raises(ExportError, match="timed out"):
+        wa._open_export_dialog(1, 2, deadline=0)
+
+
+def test_format_suffix_mismatch(tmp_path):
+    sample_map()
+    with pytest.raises(ToolError, match="does not match"):
+        server.export_image(str(tmp_path / "o.jpg"), format="png", via="preview")
+    with pytest.raises(ToolError, match="does not match"):
+        server.export_image(str(tmp_path / "o.png"), format="jpg", via="preview")
+
+
 # ------------------------------------------------------------------ real GUI
 @pytest.mark.gui
 @pytest.mark.skipif(os.environ.get("WDMCP_GUI_TESTS") != "1",

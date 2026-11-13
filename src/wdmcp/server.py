@@ -7,7 +7,9 @@ import copy
 import io
 import logging
 import math
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Literal
 
@@ -529,15 +531,22 @@ def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
 @tool_errors
 def export_image(path: str, format: Literal["png", "jpg"] = "png",
                  via: Literal["wonderdraft", "preview"] = "wonderdraft") -> dict:
-    """Export the open map as an image file at path (never overwrites an existing file).
-    via="wonderdraft" drives the real Wonderdraft app (~10 s, Windows only; close Wonderdraft
-    first and do not type meanwhile) and needs the map saved with no unsaved edits.
+    """Export the open map as an image file at path (never overwrites an existing file; a
+    .png/.jpg suffix must match format, and is added if missing).
+    via="wonderdraft" drives the real Wonderdraft app (Windows only) and takes about 15-20 s:
+    close Wonderdraft first and do not type meanwhile. It needs the map saved with no
+    unsaved edits. If automation is unavailable or fails, nothing is written and the result has
+    via="instructions" with manual steps (open the map, press Ctrl+E) in the summary.
     via="preview" writes a full-scale render from this server instead."""
     s = session()
     doc = s.doc()
     out = Path(path).expanduser()
+    suffixes = {"png": (".png",), "jpg": (".jpg", ".jpeg")}[format]
     if out.suffix == "":
-        out = out.with_name(out.name + (".png" if format == "png" else ".jpg"))
+        out = out.with_name(out.name + suffixes[0])
+    elif out.suffix.lower() not in suffixes:
+        raise ValueError(f"the file suffix {out.suffix!r} does not match format={format!r}; "
+                         f"use a {suffixes[0]} name or change format")
     if out.exists():
         raise ValueError(f"{out} already exists; choose a new file name (nothing was overwritten)")
     if not out.parent.is_dir():
@@ -556,19 +565,20 @@ def export_image(path: str, format: Literal["png", "jpg"] = "png",
             return _result([], "Automated export needs Wonderdraft installed on Windows "
                                "(set WDMCP_EXE if it is elsewhere). " + manual,
                            path=None, via="instructions", width=None, height=None)
-        png = out if format == "png" else out.with_name(f".{out.stem}.wdmcp-tmp.png")
+        tmp_dir = Path(tempfile.mkdtemp(prefix=".wdmcp-export-", dir=out.parent))
         try:
+            png = out if format == "png" else tmp_dir / "export.png"
             try:
                 export_via_app(doc.path, png)
             except ExportError as e:
-                png.unlink(missing_ok=True)
+                if png == out:
+                    png.unlink(missing_ok=True)  # only a partial file we asked Wonderdraft to make
                 return _result([], f"Automated export failed: {e} " + manual,
                                path=None, via="instructions", width=None, height=None)
             img = PILImage.open(png)
             img.load()
         finally:
-            if png != out:
-                png.unlink(missing_ok=True)
+            shutil.rmtree(tmp_dir, ignore_errors=True)
         if format == "jpg":
             note = " Wonderdraft exported a PNG, which was converted to JPG (quality 92)."
     if format == "jpg":

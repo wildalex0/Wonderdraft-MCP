@@ -51,7 +51,7 @@ existing file.
 
 - `via="wonderdraft"` (default) drives the real Wonderdraft app (Windows only) for a
   pixel-exact export: it launches Wonderdraft with the saved map, sends Ctrl+E and Enter, fills
-  in the save dialog, then closes Wonderdraft. It takes about 10 seconds. **Do not type while it
+  in the save dialog, then closes Wonderdraft. It takes about 15-20 seconds. **Do not type while it
   runs**: it sends Ctrl+E/Enter to the foreground window. Wonderdraft must not already be
   running, and the map must be saved with no unsaved edits (call `save_map` first). JPG is a PNG
   export converted with Pillow (quality 92). If automation is unavailable or fails, the tool

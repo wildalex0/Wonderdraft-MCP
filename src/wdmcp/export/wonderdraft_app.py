@@ -21,6 +21,7 @@ DIALOG_TITLE = "Export"
 EDIT_ID = 1001
 SAVE_BUTTON_ID = 1
 POLL_INTERVAL = 0.7
+READY_SECONDS = 6.0  # the map window must have existed this long before keys are sent
 log = logging.getLogger("wdmcp")
 
 
@@ -34,6 +35,23 @@ def _exe() -> Path:
 
 def is_supported() -> bool:
     return sys.platform == "win32" and _exe().is_file()
+
+
+def _clock() -> float:
+    return time.monotonic()
+
+
+def _sleep(seconds: float, deadline: float | None = None) -> None:
+    """Sleep, but never past ``deadline`` (a _clock() time)."""
+    if deadline is not None:
+        seconds = min(seconds, deadline - _clock())
+    if seconds > 0:
+        time.sleep(seconds)
+
+
+def _check_deadline(deadline: float, what: str) -> None:
+    if _clock() >= deadline:
+        raise ExportError(f"timed out while {what}")
 
 
 # ------------------------------------------------------------- pure helpers
@@ -79,6 +97,10 @@ def _user32():
     u.AttachThreadInput.argtypes = [wintypes.DWORD, wintypes.DWORD, wintypes.BOOL]
     u.MapVirtualKeyW.argtypes = [wintypes.UINT, wintypes.UINT]
     u.MapVirtualKeyW.restype = wintypes.UINT
+    u.SendMessageTimeoutW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM,
+                                      wintypes.LPARAM, wintypes.UINT, wintypes.UINT,
+                                      ctypes.POINTER(ctypes.c_size_t)]
+    u.SendMessageTimeoutW.restype = ctypes.c_ssize_t
     u.keybd_event.argtypes = [wintypes.BYTE, wintypes.BYTE, wintypes.DWORD, ctypes.c_size_t]
     return u, enum_proc
 
@@ -224,50 +246,73 @@ def _find_dialog(pid: int) -> int | None:
     return None
 
 
-def _wait_dialog(pid: int, timeout: float) -> int | None:
-    end = time.monotonic() + timeout
+def _wait_dialog(pid: int, timeout: float, deadline: float | None = None) -> int | None:
+    end = _clock() + timeout
+    if deadline is not None:
+        end = min(end, deadline)
     while True:
         dlg = _find_dialog(pid)
-        if dlg is not None or time.monotonic() >= end:
+        if dlg is not None or _clock() >= end:
             return dlg
-        time.sleep(0.25)
+        _sleep(0.25, end)
 
 
-def _open_export_dialog(pid: int, main: int) -> None:
-    """Ctrl+E then Enter; if the native dialog does not show within 5 s, retry once."""
+def _wait_responsive(hwnd: int, deadline: float) -> None:
+    """Poll until the window's message loop answers a WM_NULL within 1 s."""
+    u, _ = _user32()
+    result = ctypes.c_size_t(0)
+    while not u.SendMessageTimeoutW(hwnd, 0, 0, 0, 0x2, 1000, ctypes.byref(result)):  # SMTO_ABORTIFHUNG
+        _check_deadline(deadline, "waiting for Wonderdraft to respond")
+        _sleep(0.25, deadline)
+
+
+def _open_export_dialog(pid: int, main: int, deadline: float = float("inf")) -> None:
+    """Ctrl+E then Enter. If the native dialog does not show within 5 s, retry once
+    (Esc first, to close a possibly open Export Options popup). Never sends keys while the
+    native dialog is already open."""
     for attempt in (1, 2):
+        if _find_dialog(pid) is not None:
+            log.info("export dialog already open (before attempt %d)", attempt)
+            return
+        _check_deadline(deadline, "opening the Export dialog")
         fg = _foreground(main)
         log.info("export attempt %d: foreground=%s", attempt, fg)
         if not fg:
-            if attempt == 2:
-                raise ExportError("could not bring Wonderdraft to the foreground")
             continue
-        time.sleep(0.3)
+        _sleep(0.3, deadline)
+        if attempt == 2:
+            _send_keys([[0x1B]])  # Esc
+            _sleep(0.5, deadline)
+            if _find_dialog(pid) is not None:
+                return
         _send_keys([[0x11, 0x45]])  # Ctrl+E
-        time.sleep(1.5)
+        _sleep(1.5, deadline)
         _send_keys([[0x0D]])  # Enter: accept the Export Options defaults
-        if _wait_dialog(pid, 5.0) is not None:
+        if _wait_dialog(pid, 5.0, deadline) is not None:
             log.info("export dialog appeared (attempt %d)", attempt)
             return
         log.info("export dialog not seen after attempt %d", attempt)
+    raise ExportError("the Export dialog did not appear after 2 attempts")
 
 
 def _close(proc: subprocess.Popen, grace: float = 5.0) -> None:
-    if proc.poll() is not None:
-        return
+    """Ask Wonderdraft to close; kill it if it is still alive (also on Ctrl+C)."""
     try:
-        u, _ = _user32()
-        for hwnd, _cls, _t in _find_windows(proc.pid, visible_only=False):
-            u.PostMessageW(hwnd, 0x0010, 0, 0)  # WM_CLOSE
-        proc.wait(timeout=grace)
-    except Exception:
-        pass
-    if proc.poll() is None:
-        proc.kill()
-        try:
-            proc.wait(timeout=5)
-        except subprocess.SubprocessError:
-            pass
+        if proc.poll() is None:
+            try:
+                u, _ = _user32()
+                for hwnd, _cls, _t in _find_windows(proc.pid, visible_only=False):
+                    u.PostMessageW(hwnd, 0x0010, 0, 0)  # WM_CLOSE
+                proc.wait(timeout=grace)
+            except Exception:
+                pass
+    finally:
+        if proc.poll() is None:
+            proc.kill()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.SubprocessError:
+                pass
 
 
 # ------------------------------------------------------------------- entry
@@ -287,8 +332,11 @@ def export_via_app(map_path, out_path, timeout: float = 120) -> Path:
     if _wonderdraft_running():
         raise ExportError("Wonderdraft is already running. Close it first: the automation "
                           "needs a fresh instance.")
-    deadline = time.monotonic() + timeout
-    proc = subprocess.Popen([str(exe), str(map_p)])
+    deadline = _clock() + timeout
+    proc = subprocess.Popen(
+        [str(exe), str(map_p)], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        creationflags=getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x200))
     try:
         stem = map_p.stem
         main = None
@@ -297,13 +345,17 @@ def export_via_app(map_path, out_path, timeout: float = 120) -> Path:
                 raise ExportError("Wonderdraft exited before the map window appeared")
             main = next((h for h, _c, t in _find_windows(proc.pid) if title_matches(t, stem)), None)
             if main is None:
-                if time.monotonic() > deadline:
-                    raise ExportError(f"timed out after {timeout:.0f} s waiting for the map window")
-                time.sleep(0.5)
-        time.sleep(3)  # let the canvas finish its first render
-        _open_export_dialog(proc.pid, main)
+                _check_deadline(deadline, "waiting for the map window")
+                _sleep(0.5, deadline)
+        shown = _clock()
+        _wait_responsive(main, deadline)
+        _sleep(READY_SECONDS - (_clock() - shown), deadline)  # let the canvas settle
+        _open_export_dialog(proc.pid, main, deadline)
+        remaining = deadline - _clock()
+        if remaining <= 0:
+            raise ExportError(f"timed out after {timeout:.0f} s opening the Export dialog")
         _fill_save_dialog(proc.pid, str(out_p),
-                          timeout=min(15.0, max(1.0, deadline - time.monotonic())))
+                          timeout=min(15.0, remaining))
         size = wait_for_stable_size(
             lambda: out_p.stat().st_size if out_p.exists() else None, deadline=deadline)
         if size is None:
