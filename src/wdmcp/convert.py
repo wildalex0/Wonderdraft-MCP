@@ -44,6 +44,12 @@ def to_color(v: Any) -> Color:
         raise ValueError(f"bad colour {v!r}; use '#rrggbb' or [r, g, b] floats 0-1") from None
     if len(vals) not in (3, 4):
         raise ValueError(f"colour needs 3 or 4 components, got {len(vals)}")
+    if any(x > 1.0 for x in vals):
+        hexed = "#" + "".join(f"{min(max(int(round(x)), 0), 255):02x}" for x in vals[:3])
+        raise ValueError(f"colour components are floats 0-1, got {list(v)!r}; this looks like "
+                         f"0-255: divide by 255 or use the hex form {hexed!r}")
+    if any(x < 0.0 for x in vals):
+        raise ValueError(f"colour components must be between 0 and 1, got {list(v)!r}")
     return Color(*vals) if len(vals) == 4 else Color(*vals, 1.0)
 
 

@@ -187,7 +187,8 @@ class RegionSpec(_Model):
     width: int = Field(1920, ge=64, le=8192, description="Map width in px.")
     height: int = Field(1080, ge=64, le=8192, description="Map height in px.")
     theme: str = Field("Adventure", description="Built-in theme name (list_themes).")
-    seed: int = Field(0, description="Master seed; every generated element derives its own from it.")
+    seed: int = Field(0, ge=0, le=2**32 - 1, description=(
+        "Master seed (0 to 2^32-1); every generated element derives its own from it."))
     scale: Literal["world", "region"] = Field(
         "region", description="world: small symbols for a whole-world map; region: larger symbols.")
     land: list[LandShape] = Field(default_factory=list, description=(

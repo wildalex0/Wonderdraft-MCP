@@ -582,3 +582,36 @@ def test_replacing_maps_keeps_only_one_previous(session):
     assert session.current.width == 110
     with pytest.raises(ToolError, match="Nothing to undo"):
         server.undo()
+
+
+def test_colour_0_255_rejected_with_hint():
+    from wdmcp import convert
+    with pytest.raises(ValueError, match="0-255.*#c81e1e"):
+        convert.to_color([200, 30, 30])
+    with pytest.raises(ValueError, match="between 0 and 1"):
+        convert.to_color([-0.1, 0.5, 0.5])
+    assert convert.to_color([1, 0.5, 0]) == Color(1.0, 0.5, 0.0, 1.0)
+    sample_map()
+    with pytest.raises(ToolError, match="0-255"):
+        server.add_label("x", [10, 10], color=[255, 0, 0])
+
+
+def test_seeds_must_be_non_negative():
+    sample_map()
+    with pytest.raises(ToolError, match="seed"):
+        server.add_river([[100, 100], [200, 100]], seed=-1)
+    with pytest.raises(ToolError, match="seed"):
+        server.add_symbol(TOWN, [100, 100], seed=2**40)
+    from pydantic import ValidationError
+    from wdmcp import region
+    with pytest.raises(ValidationError):
+        region.RegionSpec(name="x", seed=-3)
+    props = region.RegionSpec.model_json_schema()["properties"]["seed"]
+    assert props["minimum"] == 0
+
+
+def test_tool_schema_seed_minimum():
+    import asyncio
+    tools = {t.name: t for t in asyncio.run(server.mcp.list_tools())}
+    schema = getattr(tools["add_river"], "inputSchema", None) or tools["add_river"].input_schema
+    assert schema["properties"]["seed"]["minimum"] == 0

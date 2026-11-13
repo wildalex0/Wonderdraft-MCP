@@ -11,10 +11,11 @@ import shutil
 import sys
 import tempfile
 from pathlib import Path
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from mcp.server.mcpserver import Image, MCPServer
 from PIL import Image as PILImage
+from pydantic import Field
 from mcp.server.mcpserver.exceptions import ToolError
 
 from wdmcp import convert, region
@@ -32,6 +33,9 @@ from wdmcp.session import Session, tool_errors
 log = logging.getLogger("wdmcp")
 
 Points = list[list[float]]
+MAX_SEED = 2**32 - 1
+Seed = Annotated[int, Field(ge=0, le=MAX_SEED, description=(
+    "Random seed (0 to 2^32-1); the same seed gives the same result."))]
 Color = str | list[float]
 SettlementKind = Literal["city", "town", "village", "castle", "fort", "ruin", "port",
                          "temple", "mine"]
@@ -91,6 +95,11 @@ def _packs(doc: MapDocument) -> list[str]:
 
 def _packs_added(before: list[str], doc: MapDocument) -> list[str]:
     return [p for p in _packs(doc) if p not in before]
+
+
+def _check_seed(seed) -> None:
+    if isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed <= MAX_SEED:
+        raise ValueError(f"seed must be an integer from 0 to {MAX_SEED}, got {seed!r}")
 
 
 def _finite(*vals: float) -> None:
@@ -245,18 +254,20 @@ def _terrain(label: str, fn, summary: str) -> dict:
 
 @tool_errors
 def paint_land(polygon: Points, mode: Literal["add", "subtract"] = "add",
-               roughness: float = 0.5, seed: int = 0) -> dict:
+               roughness: float = 0.5, seed: Seed = 0) -> dict:
     """Paint (add) or erase (subtract) land inside a polygon [[x, y], ...] with a natural,
     noise-displaced coastline. roughness 0 gives straight edges."""
+    _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _terrain("paint_land", lambda d: terrain.paint_land(d, pts, mode, roughness, seed),
                     f"{mode} land: {{n}} pixels changed.")
 
 
 @tool_errors
-def generate_landmass(coverage: float = 0.4, seed: int = 0,
+def generate_landmass(coverage: float = 0.4, seed: Seed = 0,
                       kind: Literal["continent", "archipelago", "island"] = "continent") -> dict:
     """Replace the whole map's terrain with generated land; coverage is the land fraction (0-1)."""
+    _check_seed(seed)
     return _terrain("generate_landmass",
                     lambda d: terrain.generate_landmass(d, coverage, seed, kind),
                     f"Generated a {kind} (coverage {coverage}): {{n}} pixels changed.")
@@ -271,16 +282,18 @@ def raise_area(polygon: Points, amount: float) -> dict:
 
 
 @tool_errors
-def add_lake(polygon: Points, roughness: float = 0.3, seed: int = 0) -> dict:
+def add_lake(polygon: Points, roughness: float = 0.3, seed: Seed = 0) -> dict:
     """Add a freshwater lake inside a polygon (only shows on land)."""
+    _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _terrain("add_lake", lambda d: terrain.add_lake(d, pts, roughness, seed),
                     "Added lake: {n} pixels changed.")
 
 
 @tool_errors
-def add_river(points: Points, width: float = 3.0, seed: int = 0) -> dict:
+def add_river(points: Points, width: float = 3.0, seed: Seed = 0) -> dict:
     """Add a meandering river through points (first point is the source); land only."""
+    _check_seed(seed)
     pts = convert.to_points(points)
     return _terrain("add_river", lambda d: terrain.add_river(d, pts, width, seed),
                     "Added river: {n} pixels changed.")
@@ -318,10 +331,11 @@ def _symbols(label: str, fn) -> dict:
 
 @tool_errors
 def add_symbol(set_key: str, pos: list[float], variant: int | None = None, scale: float = 1.0,
-               rotation: float = 0.0, mirror: bool = False, seed: int = 0) -> dict:
+               rotation: float = 0.0, mirror: bool = False, seed: Seed = 0) -> dict:
     """Place one symbol from a set (key from list_asset_sets) at pos [x, y]. variant picks a
     sprite by index, otherwise it is random. scale multiplies the set's base size (1 = the
     size Wonderdraft places it at). rotation is in degrees, clockwise."""
+    _check_seed(seed)
     p = _pos(pos)
     return _symbols("add_symbol", lambda d, c: [place.add_symbol(
         d, c, set_key, p, variant, scale, rotation, mirror, seed)])
@@ -329,9 +343,10 @@ def add_symbol(set_key: str, pos: list[float], variant: int | None = None, scale
 
 @tool_errors
 def scatter_symbols(set_key: str, polygon: Points, density: float, min_spacing: float | None = None,
-                    land_only: bool = True, seed: int = 0, scale: float = 1.0) -> dict:
+                    land_only: bool = True, seed: Seed = 0, scale: float = 1.0) -> dict:
     """Scatter symbols (Poisson-disk) inside a polygon. Returns the placed ids and how many
     samples were dropped."""
+    _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _symbols("scatter_symbols", lambda d, c: place.scatter(
         d, c, set_key, pts, density, min_spacing, land_only, seed, scale))
@@ -339,28 +354,31 @@ def scatter_symbols(set_key: str, polygon: Points, density: float, min_spacing: 
 
 @tool_errors
 def add_mountain_range(set_key: str, polyline: Points, width: float, density: float,
-                       seed: int = 0) -> dict:
+                       seed: Seed = 0) -> dict:
     """Place mountains in a ribbon of the given width (px) along a polyline (land only)."""
+    _check_seed(seed)
     line = convert.to_points(polyline, "polyline")
     return _symbols("add_mountain_range", lambda d, c: place.mountain_range(
         d, c, set_key, line, width, density, seed))
 
 
 @tool_errors
-def add_forest(set_key: str, polygon: Points, density: float, seed: int = 0) -> dict:
+def add_forest(set_key: str, polygon: Points, density: float, seed: Seed = 0) -> dict:
     """Fill a polygon with trees from a tree set (land only)."""
+    _check_seed(seed)
     pts = convert.to_points(polygon, "polygon")
     return _symbols("add_forest", lambda d, c: place.forest(d, c, set_key, pts, density, seed))
 
 
 @tool_errors
 def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: str | None = None,
-                   label: bool = True, seed: int = 0, scale: float = 1.0,
+                   label: bool = True, seed: Seed = 0, scale: float = 1.0,
                    variant: int | None = None) -> dict:
     """Place a settlement symbol and (optionally) its name label just below it. Returns
     [symbol_id, label_id]. Each kind has a curated default sprite (seed picks among its
     variants); set_key overrides the set and variant picks one sprite by index. scale
     multiplies the kind's default size."""
+    _check_seed(seed)
     p = _pos(pos)
     return _symbols("add_settlement", lambda d, c: place.add_settlement(
         d, c, name, p, kind, set_key, label, seed, scale, variant))
@@ -385,12 +403,13 @@ def add_label(text: str, pos: list[float], preset: str = "Town", size: int | Non
 
 @tool_errors
 def add_path(points: Points, style: str = "path_blended", width: float = 4.0,
-             color: Color | None = None, roughness: float = 0.33, seed: int = 0) -> dict:
+             color: Color | None = None, roughness: float = 0.33, seed: Seed = 0) -> dict:
     """Add a road/path along points; points outside the map are clamped to its edge
     (clamped = how many). style is one of Wonderdraft's path textures: path_blended,
     path_circle, path_dash, path_dash_dot, path_dash_dot_dot, path_directional,
     path_double_paired, path_hash_marks, path_solid, path_solid_outlined. width in px;
     roughness is the wobble (0 = smooth, ~0.3 default)."""
+    _check_seed(seed)
     pts = convert.to_points(points)
     col = convert.to_color(color) if color is not None else None
     s = session()
