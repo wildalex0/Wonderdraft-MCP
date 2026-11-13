@@ -50,6 +50,17 @@ class AssetNotFound(Exception):
         super().__init__(msg)
 
 
+class PckNotFound(ValueError):
+    """Wonderdraft.pck (built-in assets and themes) could not be found."""
+
+    def __init__(self, path: str | None):
+        self.path = path
+        super().__init__(
+            f"Wonderdraft's asset file Wonderdraft.pck was not found at {path}. Install "
+            f"Wonderdraft 1.1.8 there, or set the WDMCP_PCK environment variable to the full "
+            f"path of Wonderdraft.pck (and restart the server).")
+
+
 @dataclass
 class SymbolSet:
     key: str
@@ -106,8 +117,13 @@ class Catalog:
             self._index_user()
 
     @classmethod
-    def load(cls, pck_path=None, user_dir=None) -> "Catalog":
+    def load(cls, pck_path=None, user_dir=None, *, require_pck: bool = True) -> "Catalog":
+        """Index the pck (``pck_path``, else $WDMCP_PCK, else the default install path) and the
+        user pack folder. A missing pck raises PckNotFound unless ``require_pck`` is False
+        (then only user packs are indexed and styles/themes cannot be validated)."""
         pck = _env_or(pck_path, "WDMCP_PCK", DEFAULT_PCK)
+        if require_pck and not (pck and Path(pck).is_file()):
+            raise PckNotFound(pck)
         appdata = os.environ.get("APPDATA")
         default_user = str(Path(appdata) / "Wonderdraft" / "assets") if appdata else None
         udir = _env_or(user_dir, "WDMCP_USER_DIR", default_user)

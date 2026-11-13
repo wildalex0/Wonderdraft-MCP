@@ -75,7 +75,7 @@ def test_user_pack_synthetic(tmp_path):
     d2.mkdir(parents=True)
     Image.new("RGBA", (4, 4)).save(d2 / "a.png")
     (d2 / ".wonderdraft_symbols").write_text('{"name":"Tt","radius":7,"extra":1}')
-    c = Catalog.load(tmp_path / "none.pck", tmp_path)
+    c = Catalog.load(tmp_path / "none.pck", tmp_path, require_pck=False)
     s = c.get_set("user://assets/P/sprites/symbols/Set A")
     assert (s.radius, s.draw_mode, s.offset, s.name) == (50.0, "normal", (0.0, 0.0), "Set A")
     assert s.variants == ["user://assets/P/sprites/symbols/Set A/1"]
@@ -93,12 +93,12 @@ def test_env_overrides(tmp_path, monkeypatch):
     Image.new("RGBA", (2, 2)).save(d / "1.png")
     monkeypatch.setenv("WDMCP_PCK", str(tmp_path / "none.pck"))
     monkeypatch.setenv("WDMCP_USER_DIR", str(tmp_path))
-    c = Catalog.load()
+    c = Catalog.load(require_pck=False)
     assert [s.key for s in c.sets()] == ["user://assets/P/sprites/symbols/S"]
 
 
 def test_missing_user_dir_is_ok(tmp_path):
-    c = Catalog.load(tmp_path / "none.pck", tmp_path / "nodir")
+    c = Catalog.load(tmp_path / "none.pck", tmp_path / "nodir", require_pck=False)
     assert c.sets() == []
 
 
@@ -155,7 +155,7 @@ def test_user_pack_dotted_set_names(tmp_path):
         d.mkdir(parents=True)
         for f in files:
             Image.new("RGBA", (2, 2)).save(d / f)
-    c = Catalog.load(tmp_path / "none.pck", tmp_path)
+    c = Catalog.load(tmp_path / "none.pck", tmp_path, require_pck=False)
     sets = c.sets()
     keys = [s.key for s in sets]
     assert len(set(keys)) == 3
@@ -166,3 +166,26 @@ def test_user_pack_dotted_set_names(tmp_path):
         assert c.image(s.variants[0]).size == (2, 2)
     assert "user://assets/P/sprites/symbols/St. Johns/house.v2" in c.get_set(
         "user://assets/P/sprites/symbols/St. Johns").variants
+
+
+def test_missing_pck_raises_clear_error(tmp_path, monkeypatch):
+    from wdmcp.assets.catalog import PckNotFound
+    missing = tmp_path / "gone.pck"
+    with pytest.raises(PckNotFound) as ei:
+        Catalog.load(missing, tmp_path)
+    assert "WDMCP_PCK" in str(ei.value) and str(missing) in str(ei.value)
+    monkeypatch.setenv("WDMCP_PCK", str(missing))
+    with pytest.raises(PckNotFound, match="WDMCP_PCK"):
+        Catalog.load()
+
+
+def test_server_explains_missing_pck(tmp_path, monkeypatch):
+    from mcp.server.mcpserver.exceptions import ToolError
+    from wdmcp import server
+    monkeypatch.setenv("WDMCP_PCK", str(tmp_path / "gone.pck"))
+    server.reset_session()
+    try:
+        with pytest.raises(ToolError, match="WDMCP_PCK"):
+            server.list_themes()
+    finally:
+        server.reset_session()
