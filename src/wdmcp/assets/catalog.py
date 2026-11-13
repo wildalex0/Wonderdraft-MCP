@@ -20,6 +20,23 @@ Category = Literal["symbols", "mountains", "trees"]
 CATEGORIES: tuple[str, ...] = ("symbols", "mountains", "trees")
 DEFAULT_PCK = r"C:\Program Files\Wonderdraft\Wonderdraft.pck"
 SYMBOLS_FILE = ".wonderdraft_symbols"
+# Built-in style textures of Wonderdraft 1.1.8 (res://textures/<kind>/<name>), for docs and
+# tests; validation uses the names indexed from the pck itself. Spellings are the pck's own
+# (sic "solid_line_tansparent").
+TEXTURE_KINDS: tuple[str, ...] = ("paths", "borders", "frames")
+BUILTIN_TEXTURES: dict[str, tuple[str, ...]] = {
+    "paths": ("path_blended", "path_circle", "path_dash", "path_dash_dot", "path_dash_dot_dot",
+              "path_directional", "path_double_paired", "path_hash_marks", "path_solid",
+              "path_solid_outlined"),
+    "borders": ("border_dark_dot", "border_dash", "border_gradient", "border_solid"),
+    "frames": ("celtic_dotted", "celtic_leaves", "celtic_woven_1", "celtic_woven_2",
+               "checkered_opaque", "checkered_transparent", "double_pen_opaque",
+               "double_pen_transparent", "double_pen_vignette", "entwined_corner_opaque",
+               "entwined_corner_transparent", "hatch_opaque", "hatch_transparent",
+               "old_ink_opaque", "old_ink_transparent", "solid_line_opaque",
+               "solid_line_tansparent"),
+}
+_TEXTURE = re.compile(r"^res://textures/(paths|borders|frames)/([^/.][^/]*)\.wonderdraft_image$")
 _BUILTIN_SET = re.compile(r"^res://(?:packs/([^/]+)/)?sprites/(symbols|mountains|trees)/([^/]+)/(.+)$")
 
 
@@ -82,6 +99,7 @@ class Catalog:
         self._sets: dict[str, SymbolSet] = {}
         self._themes: dict[str, dict] | None = None
         self._names: dict[str, list[str]] | None = None
+        self._textures: dict[str, list[str]] = {k: [] for k in TEXTURE_KINDS}
         if pck is not None:
             self._index_pck()
         if user_dir is not None and user_dir.is_dir():
@@ -102,6 +120,10 @@ class Catalog:
         meta: dict[str, tuple[str | None, str, str]] = {}
         symbols: set[str] = set()
         for p in self._pck.paths():
+            t = _TEXTURE.match(p)
+            if t:
+                self._textures[t.group(1)].append(t.group(2))
+                continue
             if p.endswith("/" + SYMBOLS_FILE):
                 symbols.add(p)
             elif p.endswith(".wonderdraft_image"):
@@ -173,6 +195,46 @@ class Catalog:
             if k not in out:
                 out.append(k)
         return out[:5]
+
+    # -- style textures (paths, borders, frames) ------------------------------
+    def texture_names(self, kind: str) -> list[str] | None:
+        """Built-in texture names of ``kind`` (paths|borders|frames) from the pck, or None when
+        no pck is loaded (then names cannot be validated)."""
+        if kind not in TEXTURE_KINDS:
+            raise ValueError(f"unknown texture kind {kind!r}")
+        if self._pck is None:
+            return None
+        return sorted(self._textures[kind])
+
+    def resolve_texture(self, kind: str, name: str) -> str:
+        """Validate a style name and return what the map stores: ``res://textures/<kind>/<name>``
+        for paths and borders, the bare name for frames. Accepts the bare name or the full res
+        path, and ``user://assets/<pack>/textures/<kind>/<name>`` for an existing user-pack
+        PNG. Raises AssetNotFound with close matches. Without a pck nothing is validated."""
+        name = str(name).strip()
+        prefix = f"res://textures/{kind}/"
+        names = self.texture_names(kind)
+        if name.startswith(USER_TEXTURE_PREFIX) and kind != "frames":
+            if names is None or self._user_texture_exists(name, kind):
+                return name
+            raise AssetNotFound(name, [])
+        bare = name[len(prefix):] if name.startswith(prefix) else name
+        out = bare if kind == "frames" else prefix + bare
+        if names is None or bare in names:
+            return out
+        close = difflib.get_close_matches(bare, names, n=5, cutoff=0.4)
+        raise AssetNotFound(name, close or names[:5])
+
+    def _user_texture_exists(self, texture: str, kind: str) -> bool:
+        if self._user_dir is None:
+            return False
+        rel = texture[len(USER_TEXTURE_PREFIX):]
+        parts = rel.split("/")
+        if len(parts) != 4 or parts[1:3] != ["textures", kind]:
+            return False
+        root = self._user_dir.resolve()
+        f = (root / (rel + ".png")).resolve()
+        return f.is_relative_to(root) and f.is_file()
 
     def image(self, texture: str) -> Image.Image:
         data = None

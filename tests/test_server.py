@@ -405,3 +405,41 @@ def test_save_map_backup_once_and_brackets(tmp_path):
     r2 = server.save_map()
     assert r2["backup"] is None
     assert len(list(tmp_path.glob("*.bak"))) == 1
+
+
+def test_path_and_territory_report_clamped():
+    sample_map()
+    r = server.add_path([[-50, 10], [100, 100], [500, 100]])
+    assert r["clamped"] == 2 and "clamped" in r["summary"]
+    r = server.add_territory([[10, 10], [100, 10], [100, 100]], "#ff0000")
+    assert r["clamped"] == 0
+    with pytest.raises(ToolError, match="opacity"):
+        server.add_territory([[10, 10], [100, 10], [100, 100]], "#ff0000", opacity=2)
+
+
+def test_set_frame_validates_with_real_catalog():
+    from pathlib import Path as _P
+    from wdmcp.assets.catalog import DEFAULT_PCK, Catalog
+    if not _P(DEFAULT_PCK).is_file():
+        pytest.skip("Wonderdraft.pck not present")
+    server.reset_session(Catalog.load(DEFAULT_PCK, _P("nonexistent-user-dir")))
+    server.new_map(200, 100)
+    with pytest.raises(ToolError, match="celtic"):
+        server.set_frame(True, texture="celtic_dots")
+    server.set_frame(True, texture="hatch_opaque")
+    assert server.session().current.root["frame"]["texture"] == "hatch_opaque"
+    with pytest.raises(ToolError, match="path_"):
+        server.add_path([[10, 10], [50, 50]], style="dirt_road")
+
+
+def test_style_names_listed_in_docs():
+    from wdmcp import region
+    from wdmcp.assets.catalog import BUILTIN_TEXTURES
+    road = region.RegionSpec.model_json_schema()["$defs"]["Road"]["properties"]["style"]["description"]
+    for n in BUILTIN_TEXTURES["paths"]:
+        assert n in server.add_path.__doc__ and n in road
+    assert "dirt_road" not in road
+    for n in BUILTIN_TEXTURES["borders"]:
+        assert n in server.add_territory.__doc__
+    for n in BUILTIN_TEXTURES["frames"]:
+        assert n in server.set_frame.__doc__

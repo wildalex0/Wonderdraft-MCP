@@ -374,25 +374,42 @@ def add_label(text: str, pos: list[float], preset: str = "Town", size: int | Non
 @tool_errors
 def add_path(points: Points, style: str = "path_blended", width: float = 4.0,
              color: Color | None = None, roughness: float = 0.33, seed: int = 0) -> dict:
-    """Add a road/path along points; points outside the map are clamped to its edge."""
+    """Add a road/path along points; points outside the map are clamped to its edge
+    (clamped = how many). style is one of Wonderdraft's path textures: path_blended,
+    path_circle, path_dash, path_dash_dot, path_dash_dot_dot, path_directional,
+    path_double_paired, path_hash_marks, path_solid, path_solid_outlined. width in px;
+    roughness is the wobble (0 = smooth, ~0.3 default)."""
     pts = convert.to_points(points)
     col = convert.to_color(color) if color is not None else None
     s = session()
+    clamped: list[int] = []
     with s.mutation("add_path") as doc:
-        id_ = place.add_path(doc, pts, style, width, col, roughness, seed)
-    return _result([id_], f"Added path with {len(pts)} points.")
+        id_ = place.add_path(doc, pts, style, width, col, roughness, seed, cat=s.catalog,
+                             clamped=clamped)
+    msg = f"Added path with {len(pts)} points."
+    if clamped[0]:
+        msg += f" {clamped[0]} point(s) outside the map were clamped to its edge."
+    return _result([id_], msg, clamped=clamped[0])
 
 
 @tool_errors
 def add_territory(points: Points, color: Color, opacity: float = 0.25,
                   style: str = "border_dash", width: float = 10.0, smoothing: float = 0.2) -> dict:
-    """Add a filled, bordered territory polygon; points outside the map are clamped."""
+    """Add a filled, bordered territory polygon; points outside the map are clamped
+    (clamped = how many). opacity is the fill opacity 0-1. style is one of Wonderdraft's
+    border textures: border_dark_dot, border_dash, border_gradient, border_solid. width is
+    the border width in px."""
     pts = convert.to_points(points)
     col = convert.to_color(color)
     s = session()
+    clamped: list[int] = []
     with s.mutation("add_territory") as doc:
-        id_ = place.add_territory(doc, pts, col, opacity, style, width, smoothing)
-    return _result([id_], f"Added territory with {len(pts)} points.")
+        id_ = place.add_territory(doc, pts, col, opacity, style, width, smoothing,
+                                  cat=s.catalog, clamped=clamped)
+    msg = f"Added territory with {len(pts)} points."
+    if clamped[0]:
+        msg += f" {clamped[0]} point(s) outside the map were clamped to its edge."
+    return _result([id_], msg, clamped=clamped[0])
 
 
 # ----------------------------------------------------------------- editing
@@ -456,13 +473,19 @@ def apply_theme(name: str) -> dict:
 
 @tool_errors
 def set_frame(enabled: bool, texture: str | None = None, size: float | None = None) -> dict:
-    """Turn the decorative map frame on/off; texture (e.g. "celtic_dotted") and size optional."""
+    """Turn the decorative map frame on/off; texture and size are optional. texture is one
+    of Wonderdraft's frames: celtic_dotted, celtic_leaves, celtic_woven_1, celtic_woven_2,
+    checkered_opaque, checkered_transparent, double_pen_opaque, double_pen_transparent,
+    double_pen_vignette, entwined_corner_opaque, entwined_corner_transparent, hatch_opaque,
+    hatch_transparent, old_ink_opaque, old_ink_transparent, solid_line_opaque,
+    solid_line_tansparent (sic)."""
     s = session()
+    tex = place.resolve_style(s.catalog, "frames", texture) if texture is not None else None
     with s.mutation("set_frame") as doc:
         f = doc.root["frame"]
         f["enabled"] = bool(enabled)
-        if texture is not None:
-            f["texture"] = texture
+        if tex is not None:
+            f["texture"] = tex
         if size is not None:
             _finite(size)
             f["size"] = float(size)

@@ -338,3 +338,48 @@ def test_label_rotation_degrees_stored_as_is():
     doc = blank()
     e = doc.get(place.add_label(doc, "Vertical", (100, 100), rotation=90))
     assert e["rotation"] == 90.0
+
+
+# ------------------------------------------------------------------ style validation
+def _pck_cat():
+    from wdmcp.assets.catalog import DEFAULT_PCK
+    import os
+    pck = os.environ.get("WDMCP_PCK", DEFAULT_PCK)
+    if not Path(pck).is_file():
+        pytest.skip("Wonderdraft.pck not present")
+    return Catalog.load(pck, Path("nonexistent-user-dir"))
+
+
+def test_styles_validated_against_pck():
+    from wdmcp.assets.catalog import BUILTIN_TEXTURES
+    real = _pck_cat()
+    for kind, names in BUILTIN_TEXTURES.items():
+        assert real.texture_names(kind) == list(names)
+    doc = blank()
+    i = place.add_path(doc, [(10, 10), (50, 50)], "path_dash", cat=real)
+    assert doc.get(i)["style"] == "res://textures/paths/path_dash"
+    i = place.add_path(doc, [(10, 10), (50, 50)], "res://textures/paths/path_solid", cat=real)
+    assert doc.get(i)["style"] == "res://textures/paths/path_solid"
+    with pytest.raises(AssetNotFound) as ei:
+        place.add_path(doc, [(10, 10), (50, 50)], "dirt_road", cat=real)
+    assert ei.value.suggestions
+    with pytest.raises(AssetNotFound, match="border_dash"):
+        place.add_territory(doc, FULL, (1, 0, 0), style="border_dashed", cat=real)
+    assert real.resolve_texture("frames", "hatch_opaque") == "hatch_opaque"
+    with pytest.raises(AssetNotFound):
+        real.resolve_texture("frames", ".wonderdraft_9patch")
+    assert len(doc.list("path")) == 2 and doc.list("territory") == []
+
+
+def test_styles_unvalidated_without_pck(cat):
+    doc = blank()
+    i = place.add_path(doc, [(10, 10), (50, 50)], "anything", cat=cat)
+    assert doc.get(i)["style"] == "res://textures/paths/anything"
+
+
+def test_territory_opacity_range(cat):
+    doc = blank()
+    with pytest.raises(ValueError, match="opacity"):
+        place.add_territory(doc, FULL, (1, 0, 0), opacity=1.5)
+    with pytest.raises(ValueError, match="opacity"):
+        place.add_territory(doc, FULL, (1, 0, 0), opacity=-0.1)

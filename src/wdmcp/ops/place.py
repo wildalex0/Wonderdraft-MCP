@@ -393,12 +393,28 @@ def add_settlement(doc: MapDocument, cat: Catalog, name: str, pos,
 
 # ------------------------------------------------------------------ paths & territories
 def _res(prefix: str, style: str) -> str:
-    return style if style.startswith("res://") else f"res://textures/{prefix}/{style}"
+    return style if style.startswith(("res://", "user://")) else f"res://textures/{prefix}/{style}"
+
+
+def resolve_style(cat: Catalog | None, kind: str, style: str) -> str:
+    """Stored texture for a path/border/frame style, validated against the catalogue's pck
+    when it has one (AssetNotFound with close matches otherwise)."""
+    resolver = getattr(cat, "resolve_texture", None)
+    if resolver is not None:
+        return resolver(kind, style)
+    return style if kind == "frames" else _res(kind, style)
 
 
 def add_path(doc: MapDocument, points, style: str = "path_blended", width: float = 4.0,
-             color=None, roughness: float = 0.33, seed: int = 0) -> str:
-    pts, _ = clamp_points(doc, points)
+             color=None, roughness: float = 0.33, seed: int = 0, cat: Catalog | None = None,
+             clamped: list[int] | None = None) -> str:
+    """Path through ``points`` (clamped to the map). ``style`` is a texture name under
+    res://textures/paths (validated when ``cat`` has a pck). The number of clamped points
+    is appended to ``clamped`` when given."""
+    tex = resolve_style(cat, "paths", style)
+    pts, moved = clamp_points(doc, points)
+    if clamped is not None:
+        clamped.append(moved)
     if len(pts) < 2:
         raise ValueError("a path needs at least 2 distinct points")
     rng = np.random.default_rng(seed)
@@ -407,16 +423,24 @@ def add_path(doc: MapDocument, points, style: str = "path_blended", width: float
     if c is not None:
         kw["color"] = c
     return doc.add("path", template.path_entry(
-        pts, style=_res("paths", style), width=width, roughness=roughness,
+        pts, style=tex, width=width, roughness=roughness,
         noise_seed=int(rng.integers(0, 2**31 - 1)), **kw))
 
 
 def add_territory(doc: MapDocument, points, color, opacity: float = 0.25,
                   style: str = "border_dash", width: float = 10.0,
-                  smoothing: float = 0.2) -> str:
-    pts, _ = clamp_points(doc, points)
+                  smoothing: float = 0.2, cat: Catalog | None = None,
+                  clamped: list[int] | None = None) -> str:
+    """Filled, bordered territory; ``opacity`` in [0, 1]; ``style`` is a texture name under
+    res://textures/borders (validated when ``cat`` has a pck)."""
+    if not (0.0 <= float(opacity) <= 1.0):
+        raise ValueError(f"opacity must be between 0 and 1, got {opacity}")
+    tex = resolve_style(cat, "borders", style)
+    pts, moved = clamp_points(doc, points)
+    if clamped is not None:
+        clamped.append(moved)
     if len(pts) < 3:
         raise ValueError("a territory needs at least 3 distinct points")
     return doc.add("territory", template.territory_entry(
         pts, color=_color(color), smoothing=smoothing, opacity=opacity,
-        style=_res("borders", style), width=width))
+        style=tex, width=width))

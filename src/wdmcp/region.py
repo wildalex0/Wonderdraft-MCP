@@ -138,7 +138,10 @@ class Settlement(_Model):
 class Road(_Model):
     """A road or path through points."""
     points: Polyline
-    style: str = Field("path_blended", description="Path texture name (e.g. path_blended, dirt_road).")
+    style: str = Field("path_blended", description=(
+        "Path texture: path_blended, path_circle, path_dash, path_dash_dot, path_dash_dot_dot, "
+        "path_directional, path_double_paired, path_hash_marks, path_solid or "
+        "path_solid_outlined."))
     width: float = Field(4.0, gt=0, description="Width in px.")
     color: ColorSpec | None = Field(None, description="Override colour; default is the style's own.")
     roughness: float = Field(0.33, ge=0, le=2, description="Wobble 0-1.")
@@ -404,13 +407,13 @@ class _Builder:
         for r in self.spec.roads:
             color = convert.to_color(r.color) if r.color is not None else None
             place.add_path(self.doc, [tuple(p) for p in r.points], r.style, r.width, color,
-                           r.roughness, self.seed())
+                           r.roughness, self.seed(), cat=self.cat)
             self.counts["roads"] += 1
 
     def realms(self):
         for r in self.spec.realms:
             place.add_territory(self.doc, [tuple(p) for p in r.polygon],
-                                convert.to_color(r.color), r.opacity)
+                                convert.to_color(r.color), r.opacity, cat=self.cat)
             self.counts["realms"] += 1
         for r in self.spec.realms:
             cx, cy = polygon_centroid(r.polygon)
