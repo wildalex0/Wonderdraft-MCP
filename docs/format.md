@@ -121,10 +121,15 @@ The controller then opened the map in **Wonderdraft 1.1.8** and exported it with
 
 ## Known gaps (from the acceptance run and controller checks)
 1. **Map size.** Saved maps are about 89 MB at 3000×2400 because `fastlz.compress` is literal-only; Wonderdraft's own saves are about 30× smaller. A real FastLZ level-1 compressor is needed.
+   *Addressed in the final review:* a greedy level-1 compressor. The testmap writes at 9.1% of its payload (2.35 MB; Wonderdraft's own file is 2.37 MB), and a blank 3000×2400 map at 1.4%. Wonderdraft loading these files is still to be confirmed in the GUI.
 2. **Backup clutter.** Every `save_map` onto the same path writes another `.bak`. The acceptance run left three 89 MB backups.
+   *Fixed:* at most one `.bak` per file per session, and none for files this process wrote.
 3. **Label rotation units.** Tools and schema say degrees, but the value is stored as Godot radians, so small numbers spin text.
+   *Fixed:* see "Rotation units, GUI-pinned" below.
 4. **`build_region` dropped a river stretch silently.** The Aldengau's first segment from the city did not draw, and there was no warning. Re-adding it with `add_river` worked.
+   *Addressed:* the source taper now ramps over at most 6 widths. It used to ramp over 35% of the whole river, so long rivers stayed thin for hundreds of px. `build_region` also warns when a river draws far fewer pixels than expected or runs over sea before its mouth.
 5. **`update_object` can't change a symbol's variant.** Guessing a `texture` name picked the wrong sprite. Remove plus `add_symbol(variant=…)` works.
+   *Fixed:* `update_object` accepts `variant`.
 6. **Missing knobs.** `add_mountain_range` has no symbol scale, and river width can't be edited after building.
 7. **Scale-appropriate default sets.** The default "hills" are tiny tufts and the default mountains are alpine peaks.
 8. **Export on large maps.** The first Ctrl+E is still sometimes ignored; the guarded retry covers it.
