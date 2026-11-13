@@ -63,8 +63,16 @@ def write(payload: bytes, block_size: int = 4096) -> bytes:
     chunks = [payload[i:i + block_size] for i in range(0, total, block_size)]
     if total % block_size == 0:
         chunks.append(b"")
-    # Godot zero-pads any block shorter than 16 bytes to 16 before compressing.
-    blocks = [fastlz.compress(c.ljust(16, b"\x00")) for c in chunks]
+    # Godot zero-pads any block shorter than 16 bytes to 16 before compressing. Rasters
+    # repeat whole blocks (open sea, plain ground), so identical blocks are compressed once.
+    memo: dict[bytes, bytes] = {}
+    blocks = []
+    for c in chunks:
+        c = c.ljust(16, b"\x00")
+        z = memo.get(c)
+        if z is None:
+            z = memo[c] = fastlz.compress(c)
+        blocks.append(z)
     head = MAGIC + struct.pack("<III", MODE_FASTLZ, block_size, total)
     sizes = struct.pack(f"<{len(blocks)}I", *map(len, blocks))
     return head + sizes + b"".join(blocks) + MAGIC

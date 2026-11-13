@@ -105,3 +105,85 @@ def test_bad_magic_raises():
 def test_truncated_raises(fixture_bytes):
     with pytest.raises(gcpf.GcpfError):
         gcpf.read(fixture_bytes[:1000])
+
+
+# ---------------------------------------------------------------- level-1 compressor
+def _level1_ops(z: bytes):
+    """Walk a level-1 stream; yield ("lit", n) / ("match", length, dist). Checks strictness."""
+    ip, first = 0, True
+    while ip < len(z):
+        ctrl = z[ip]
+        if first:
+            assert ctrl >> 5 == 0, "first byte must carry level 1 (top bits 0)"
+            first = False
+        ip += 1
+        if ctrl < 32:
+            yield ("lit", ctrl + 1)
+            ip += ctrl + 1
+        else:
+            length = (ctrl >> 5) + 2
+            if ctrl >> 5 == 7:
+                length = 9 + z[ip]
+                ip += 1
+            dist = ((ctrl & 31) << 8) + z[ip] + 1
+            ip += 1
+            yield ("match", length, dist)
+    assert ip == len(z)
+
+
+import os  # noqa: E402
+import random  # noqa: E402
+
+_rng = random.Random(7)
+EDGE_LENGTHS = [0, 1, 2, 3, 4, 5, 8, 9, 15, 16, 17, 31, 32, 33, 263, 264, 265, 266, 267, 268,
+                527, 528, 529, 530, 4095, 4096, 4097, 8191, 8192, 8193, 8194, 20000]
+
+
+@pytest.mark.parametrize("n", EDGE_LENGTHS)
+def test_compress_roundtrip_edge_lengths(n):
+    for data in (b"q" * n, bytes(_rng.choice(b"ab") for _ in range(n)), os.urandom(n),
+                 (b"RGBA" * (n // 4 + 1))[:n]):
+        z = fastlz.compress(data)
+        assert fastlz.decompress(z) == data
+        ops = list(_level1_ops(z))
+        if data:
+            assert ops[0][0] == "lit" and ops[-1][0] == "lit"
+        for op in ops:
+            if op[0] == "match":
+                assert 3 <= op[1] <= 264 and 1 <= op[2] <= 8191
+
+
+def test_compress_roundtrip_kinds():
+    cases = [b"", b"a", os.urandom(4096), b"x" * 4096, bytes(range(256)) * 16,
+             b"abc" * 1000 + os.urandom(100) + b"abc" * 1000,
+             os.urandom(5000) * 3,                    # repeats beyond 4096, near the 8191 cap
+             os.urandom(9000) * 2,                    # repeat distance > 8191: no match allowed
+             b"\x00" * 100_000]                        # long run over many 264-byte matches
+    for data in cases:
+        assert fastlz.decompress(fastlz.compress(data)) == data
+
+
+def test_compress_long_runs_use_matches():
+    z = fastlz.compress(b"x" * 4096)
+    assert len(z) < 60
+    ops = list(_level1_ops(z))
+    assert sum(1 for o in ops if o[0] == "match" and o[1] == 264) >= 15
+
+
+def test_compress_testmap_blocks_roundtrip(fixture_bytes, payload):
+    blocks = [payload[i:i + 4096] for i in range(0, 4096 * 400, 4096)]
+    for b in blocks[::7]:
+        assert fastlz.decompress(fastlz.compress(b)) == b
+
+
+def test_write_is_much_smaller_than_payload(payload):
+    out = gcpf.write(payload)
+    assert len(out) < 0.15 * len(payload)
+    assert gcpf.read(out) == payload
+
+
+@pytest.mark.parametrize("name", ["testmap.wonderdraft_map", "autosave_exact_multiple.wonderdraft_map",
+                                  "probe_gui.wonderdraft_map"])
+def test_byte_exact_gate_every_fixture(name):
+    p = gcpf.read((Path(__file__).parent / "fixtures" / name).read_bytes())
+    assert gcpf.read(gcpf.write(p)) == p
