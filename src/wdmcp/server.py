@@ -14,7 +14,7 @@ from typing import Any, Literal
 from mcp.server.mcpserver import Image, MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 
-from wdmcp import convert
+from wdmcp import convert, region
 from wdmcp.assets.catalog import CATEGORIES
 from wdmcp.assets.themes import apply_theme as _apply_theme
 from wdmcp.codec.types import Vector2
@@ -457,6 +457,39 @@ def set_frame(enabled: bool, texture: str | None = None, size: float | None = No
                        f"(texture {f['texture']!r}, size {f['size']}).")
 
 
+# ----------------------------------------------------------------- one-shot build
+@tool_errors
+def build_region(spec: region.RegionSpec, out_path: str) -> dict:
+    """Build a complete first-draft map from a RegionSpec (see region_spec_schema), save it
+    to out_path and make it the open map, so the edit tools and render_preview work next.
+    Order: land, mountains, rivers/lakes, ground, forests, settlements, roads, realms, labels.
+    A settlement on water is moved to land within 60 px (see warnings)."""
+    s = session()
+    cat = s.catalog
+    res = region.build(spec, cat)
+    target = Path(out_path).expanduser()
+    if target.suffix == "":
+        target = target.with_name(target.name + ".wonderdraft_map")
+    saved = res.doc.save(target)
+    s.set_current(res.doc, dirty=False)
+    c = res.counts
+    msg = (f"Built {spec.name!r} ({spec.width}x{spec.height}, theme {spec.theme!r}) and saved it to "
+           f"{saved}: {c['settlements']} settlements, {c['realms']} realms, {c['roads']} roads, "
+           f"{c['rivers']} rivers, {c['lakes']} lakes, {c['mountain_symbols']} mountain symbols, "
+           f"{c['forest_symbols']} forest symbols, {c['labels']} labels. "
+           f"It is the open map: call render_preview to see it, then refine with the edit tools.")
+    if res.warnings:
+        msg += " Warnings: " + "; ".join(res.warnings) + "."
+    msg += " Returned ids cover labels, paths, territories and settlement symbols; "            "use list_objects for mountain and forest symbols. " + ID_NOTE
+    return {"ids": res.ids, "summary": msg, "counts": c, "warnings": res.warnings,
+            "path": str(saved)}
+
+
+def region_spec_schema() -> dict:
+    """JSON Schema of the RegionSpec that build_region takes (field meanings included)."""
+    return region.RegionSpec.model_json_schema()
+
+
 # ----------------------------------------------------------------- output
 @tool_errors
 def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
@@ -505,6 +538,7 @@ TOOLS = [
     add_symbol, scatter_symbols, add_mountain_range, add_forest, add_settlement,
     add_label, add_path, add_territory,
     update_object, move_objects, remove_objects, apply_theme, set_frame,
+    build_region, region_spec_schema,
     render_preview, undo,
 ]
 for _fn in TOOLS:
