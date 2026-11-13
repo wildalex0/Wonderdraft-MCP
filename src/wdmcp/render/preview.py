@@ -5,6 +5,7 @@ Everything is composited at output resolution: rasters are box-downscaled first.
 from __future__ import annotations
 
 import math
+import weakref
 from collections import OrderedDict
 
 import numpy as np
@@ -20,25 +21,54 @@ _DEF_GROUND = (0.90, 0.82, 0.67, 1.0)
 _MAGENTA = (255, 0, 255)
 _BOX = Image.Resampling.BOX
 
-_SPRITE_CACHE_MAX = 512
-_sprite_cache: OrderedDict = OrderedDict()  # (id(cat), texture, w, h) -> RGBA image
+_SPRITE_CACHE_BYTES = 256 * 1024 * 1024
+_SPRITE_MAX_SIDE = 2048
 _RAW_CACHE_MAX = 128
-_raw_cache: OrderedDict = OrderedDict()  # (id(cat), texture) -> RGBA image | None (missing)
 _font_cache: dict = {}
 _MISS = object()
 
 
-def _lru_get(cache, key):
-    v = cache.get(key, _MISS)
-    if v is not _MISS:
-        cache.move_to_end(key)
-    return v
+class _Cache:
+    """Decoded and resized sprites for ONE catalog; dies with it (incl. missing-texture memory)."""
+
+    def __init__(self):
+        self.raw: OrderedDict = OrderedDict()    # texture -> RGBA image | None (missing)
+        self.sized: OrderedDict = OrderedDict()  # (texture, w, h) -> RGBA image
+        self.bytes = 0
+
+    def get(self, cache, key):
+        v = cache.get(key, _MISS)
+        if v is not _MISS:
+            cache.move_to_end(key)
+        return v
+
+    def put_raw(self, key, im):
+        self.raw[key] = im
+        if len(self.raw) > _RAW_CACHE_MAX:
+            self.raw.popitem(last=False)
+
+    def put_sized(self, key, im):
+        self.sized[key] = im
+        self.bytes += im.width * im.height * 4
+        while self.bytes > _SPRITE_CACHE_BYTES and len(self.sized) > 1:
+            _k, old = self.sized.popitem(last=False)
+            self.bytes -= old.width * old.height * 4
 
 
-def _lru_put(cache, key, val, limit):
-    cache[key] = val
-    if len(cache) > limit:
-        cache.popitem(last=False)
+_catalog_caches: "weakref.WeakKeyDictionary" = weakref.WeakKeyDictionary()
+_none_cache = _Cache()
+
+
+def _cache_for(cat) -> _Cache:
+    if cat is None:
+        return _none_cache
+    try:
+        c = _catalog_caches.get(cat)
+        if c is None:
+            c = _catalog_caches[cat] = _Cache()
+        return c
+    except TypeError:  # not weak-referenceable / hashable: no caching
+        return _Cache()
 
 
 def _rgba(c, default):
@@ -117,7 +147,7 @@ def _edge(b: np.ndarray) -> np.ndarray:
 
 
 def _ground_rgb(height01: np.ndarray, colors) -> np.ndarray:
-    pal = np.array([c[:3] for c in colors], np.float32) * 255
+    pal = np.asarray(colors, np.float32)
     if len(pal) == 1:
         return np.broadcast_to(pal[0], height01.shape + (3,)).copy()
     t = np.clip(height01, 0, 1) * (len(pal) - 1)
@@ -138,28 +168,83 @@ def _paint_layer(raster: np.ndarray, bbox, out_size):
     return np.clip(rgb, 0, 255), af
 
 
+_OK_DIST = 70.0       # Euclidean RGB distance at/above which a theme is left alone
+_MIN_MEAN_DIFF = 60.0  # target mean |dRGB| for themes that have to be adjusted
+
+
+def _dist(a, b) -> float:
+    return float(np.linalg.norm(np.asarray(a, np.float32) - np.asarray(b, np.float32)))
+
+
+def _mean_diff(a, b) -> float:
+    return float(np.mean(np.abs(np.asarray(a, np.float32) - np.asarray(b, np.float32))))
+
+
+def _ensure_contrast(water, gcols, coast):
+    """Return (water_rgb, land_palette_rgb), both 0-255, so coastal land never blends into water.
+
+    Themes that already contrast (hue or brightness, e.g. teal water vs tan land) are returned
+    unchanged. Otherwise the water is darkened and pushed towards blue in fixed steps until the
+    mean |dRGB| is >= 60; if that is not enough the land is lightened. The check uses the
+    open water and the shore-lit water (after the coastal halo) against the two lowest ground colours.
+    """
+    pal = np.array([c[:3] for c in gcols], np.float32) * 255
+    water = np.array(water[:3], np.float32) * 255
+    halo = 0.6 * coast[3]
+    cw = np.array(coast[:3], np.float32) * 255
+    low = slice(0, 2)
+
+    def shore(w):
+        return w * (1 - halo) + cw * halo
+
+    def ok(w, p, strict):
+        return all(_dist(x, c) >= _OK_DIST and (not strict or _mean_diff(x, c) >= _MIN_MEAN_DIFF)
+                   for x in (w, shore(w)) for c in p[low])
+
+    if ok(water, pal, False):
+        return water, pal
+    for i in range(1, 15):
+        k = 1.0 - 0.05 * i
+        w = water * k
+        w[0] *= k  # extra red drop pushes towards blue
+        w[2] = min(255.0, water[2] * (1.0 + 0.02 * i))
+        if ok(w, pal, True):
+            return w, pal
+    w = water * 0.3
+    w[2] = min(255.0, water[2] * 0.6)
+    for i in range(1, 11):
+        p = pal + (255.0 - pal) * (0.05 * i)
+        if ok(w, p, True):
+            return w, p
+    return w, pal + (255.0 - pal) * 0.5
+
+
 def _base_layer(doc, theme, bbox, out_size) -> np.ndarray:
     ow, oh = out_size
     mask = doc.raster("mask")
-    water = np.array(_theme_first(theme, "water_colors", _DEF_WATER)[:3], np.float32) * 255
-    alpha = _channel(mask[..., 3], bbox, out_size)
-    land_w = np.clip((alpha - 120.0) / 16.0, 0, 1)  # soft land coverage
+    coast = _theme_color(theme, "coastline_color", (0.6, 0.77, 0.72, 0.7))
+    water, gpal = _ensure_contrast(_theme_first(theme, "water_colors", _DEF_WATER),
+                                   _theme_list(theme, "ground_colors", _DEF_GROUND), coast)
+    a_full = mask[..., 3]
+    is_land_full = a_full >= raster_spec.SEA_LEVEL_ALPHA
+    land_w = _channel(is_land_full, bbox, out_size)  # exact coverage, so the coast stays crisp
+    land_alpha = _channel(np.where(is_land_full, a_full, 0), bbox, out_size)
+    water_depth = _channel(np.where(is_land_full, 0, a_full), bbox, out_size)
     out = np.empty((oh, ow, 3), np.float32)
     out[:] = water
-    coast = _theme_color(theme, "coastline_color", (0.6, 0.77, 0.72, 0.7))
     # lighter shallow water near the shore (mask alpha rises towards land)
-    halo = np.where(alpha < 128, alpha / 127.0, 0.0) * coast[3] * 0.6
+    halo = water_depth / 127.0 * coast[3] * 0.6
     _blend(out, np.array(coast[:3], np.float32) * 255, halo)
     tint = _paint_layer(doc.raster("water_tint"), bbox, out_size)
     if tint is not None:
         _blend(out, tint[0], tint[1] * (1 - land_w))
-    gcols = _theme_list(theme, "ground_colors", _DEF_GROUND)
-    land = _ground_rgb(np.clip((alpha - 128.0) / 127.0, 0, 1), gcols)
+    h01 = (land_alpha / np.maximum(land_w, 1e-3) - 128.0) / 127.0
+    land = _ground_rgb(np.clip(h01, 0, 1), gpal)
     ground = _paint_layer(doc.raster("ground"), bbox, out_size)
     if ground is not None:
         _blend(land, ground[0], ground[1])
     _blend(out, land, land_w)
-    is_land = alpha >= raster_spec.SEA_LEVEL_ALPHA
+    is_land = land_w >= 0.5
     outline = _theme_color(theme, "landmass_outline_color", (0.24, 0.22, 0.16, 1.0))
     _blend(out, np.array(outline[:3], np.float32) * 255, _edge(is_land) * 0.9)
     fw = _channel(mask[..., raster_spec.FRESHWATER_CHANNEL], bbox, out_size) / 255.0
@@ -249,21 +334,26 @@ def _draw_paths(img: Image.Image, doc, bbox, s, tags):
 
 # -- symbols ------------------------------------------------------------------
 def _raw_sprite(cat, texture):
-    key = (id(cat), texture)
-    v = _lru_get(_raw_cache, key)
+    cache = _cache_for(cat)
+    v = cache.get(cache.raw, texture)
     if v is not _MISS:
         return v
     try:
         im = cat.image(texture).convert("RGBA")
     except (AssetNotFound, OSError):
         im = None
-    _lru_put(_raw_cache, key, im, _RAW_CACHE_MAX)
+    cache.put_raw(texture, im)
     return im
 
 
 def _sized_sprite(cat, texture, w, h):
-    key = (id(cat), texture, w, h)
-    v = _lru_get(_sprite_cache, key)
+    longest = max(w, h)
+    if longest > _SPRITE_MAX_SIDE:
+        k = _SPRITE_MAX_SIDE / longest
+        w, h = max(1, int(w * k)), max(1, int(h * k))
+    cache = _cache_for(cat)
+    key = (texture, w, h)
+    v = cache.get(cache.sized, key)
     if v is not _MISS:
         return v
     raw = _raw_sprite(cat, texture)
@@ -277,7 +367,7 @@ def _sized_sprite(cat, texture, w, h):
     al = p[..., 3:4]
     rgb = np.where(al > 0, p[..., :3] * 255.0 / np.maximum(al, 1), 0)
     out = Image.fromarray(np.concatenate([np.clip(rgb, 0, 255), al], -1).astype(np.uint8), "RGBA")
-    _lru_put(_sprite_cache, key, out, _SPRITE_CACHE_MAX)
+    cache.put_sized(key, out)
     return out
 
 
@@ -286,7 +376,7 @@ def _is_sample_color(cat, texture, memo) -> bool:
     if d not in memo:
         try:
             memo[d] = cat.get_set(d).draw_mode == "sample_color"
-        except (AssetNotFound, AttributeError):
+        except AssetNotFound:
             memo[d] = False
     return memo[d]
 
