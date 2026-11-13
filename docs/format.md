@@ -65,3 +65,11 @@ The user drew land, one river, one lake and two user-pack symbols in Wonderdraft
   `user://` is `%APPDATA%\Wonderdraft\`. The packs are listed in `included_packs`.
 - Placed user symbols had `radius` 107/96, `offset` (0,0)/(0,−63) and `scale` 0.25 (Wonderdraft's default brush size). Both `draw_mode` and `custom_color_mode` are absent (None) on these entries.
 - The `ground` and `water_tint` layers were untouched, so both stay all-zero.
+
+## Task 7 GUI check: painted terrain renders in Wonderdraft (2026-11-13)
+
+`tools/make_continent.py out/continent.wonderdraft_map` (blank template with theme Worn) was opened in Wonderdraft 1.1.8:
+- The **continent** renders as land, with Wonderdraft's coastline outline and coastal effects. The coast forms at our alpha ≥ 128 edge as predicted.
+- The **lake** and **river** written to mask R render as freshwater (theme freshwater colour plus outline). This confirms writing freshwater synthetically works.
+- The **ground** stroke renders as a soft green patch over land.
+- Quality note: with roughness 0.6 the coastline still reads as a polygon with gentle wobble, not a fractal coast, and the river looks like straight segments. This went to the Task 7 fix loop.
