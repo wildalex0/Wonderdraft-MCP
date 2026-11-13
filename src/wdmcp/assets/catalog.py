@@ -130,7 +130,7 @@ class Catalog:
                     if not pngs:
                         continue
                     base = f"sprites/{cat}/{set_dir.name}"
-                    key = user_pack_texture(pack_dir.name, base)
+                    key = f"{USER_TEXTURE_PREFIX}{pack_dir.name}/{base}"  # no splitext: dots are legal in set names
                     sf = set_dir / SYMBOLS_FILE
                     try:
                         raw = sf.read_bytes() if sf.is_file() else None

@@ -125,10 +125,44 @@ def test_unknown_theme_suggests(cat):
 
 def test_apply_theme_changes_label_presets(cat):
     doc = MapDocument.new(800, 600)
-    apply_theme(doc, cat.themes()["Pastel"])
+    import copy
+    theme = cat.themes()["Pastel"]
+    theme_copy = copy.deepcopy(theme)
+    before_cg = copy.deepcopy(doc.root["theme"]["color_grading"])
+    apply_theme(doc, theme)
     t = doc.root["theme"]
     assert set(t["label_presets"]) == {"Town", "City", "Water", "Terrain"}  # brief said Region; Pastel has Terrain
     assert isinstance(t["coastline_color"], Color)
     assert all(isinstance(c, Color) for c in t["ground_colors"])
     assert isinstance(t["label_presets"]["Town"]["font_color"], Color)
     assert isinstance(t["label_presets"]["Town"]["font_size"], float)
+    assert doc.root["theme"]["color_grading"] == before_cg  # absent from theme JSON
+    assert theme == theme_copy  # input not mutated
+
+
+def test_apply_theme_names_match_colors(cat):
+    doc = MapDocument.new(800, 600)
+    theme = next(t for t in cat.themes().values() if "ground_color_names" not in t)
+    apply_theme(doc, theme)
+    t = doc.root["theme"]
+    assert len(t["ground_color_names"]) == len(t["ground_colors"]) == len(theme["ground_colors"])
+    assert len(t["water_color_names"]) == len(t["water_colors"])
+
+
+def test_user_pack_dotted_set_names(tmp_path):
+    for sname, files in {"St. Johns": ["a.png", "house.v2.png"], "Set 1.a": ["x.png"], "Set 1.b": ["x.png"]}.items():
+        d = tmp_path / "P" / "sprites" / "symbols" / sname
+        d.mkdir(parents=True)
+        for f in files:
+            Image.new("RGBA", (2, 2)).save(d / f)
+    c = Catalog.load(tmp_path / "none.pck", tmp_path)
+    sets = c.sets()
+    keys = [s.key for s in sets]
+    assert len(set(keys)) == 3
+    assert "user://assets/P/sprites/symbols/St. Johns" in keys
+    for s in sets:
+        assert c.get_set(s.key) is s
+        assert all(v.startswith(s.key + "/") for v in s.variants)
+        assert c.image(s.variants[0]).size == (2, 2)
+    assert "user://assets/P/sprites/symbols/St. Johns/house.v2" in c.get_set(
+        "user://assets/P/sprites/symbols/St. Johns").variants

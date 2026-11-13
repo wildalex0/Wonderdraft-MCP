@@ -69,3 +69,14 @@ def apply_theme(doc: MapDocument, theme_json: dict) -> None:
         if key not in theme:
             continue
         theme[key] = _convert(copy.deepcopy(value), theme[key], key)
+    _sync_names(theme, "ground_colors", "ground_color_names")
+    _sync_names(theme, "water_colors", "water_color_names")
+
+
+def _sync_names(theme: dict, colors_key: str, names_key: str) -> None:
+    """Wonderdraft pairs names with colours by index: trim or pad names to match."""
+    if names_key not in theme or colors_key not in theme:
+        return
+    names, n = list(theme[names_key]), len(theme[colors_key])
+    names = names[:n] + [f"Color {i}" for i in range(len(names) + 1, n + 1)]
+    theme[names_key] = names
