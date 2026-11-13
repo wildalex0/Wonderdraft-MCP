@@ -383,3 +383,68 @@ def test_territory_opacity_range(cat):
         place.add_territory(doc, FULL, (1, 0, 0), opacity=1.5)
     with pytest.raises(ValueError, match="opacity"):
         place.add_territory(doc, FULL, (1, 0, 0), opacity=-0.1)
+
+
+# ------------------------------------------------------------------ sample colours
+PAINT = "res://sprites/symbols/paintable_x"
+
+
+def _paint_cat():
+    from wdmcp.assets.catalog import VariantMeta
+    c = fake_catalog()
+    c._sets[PAINT] = SymbolSet(
+        PAINT, None, "symbols", "paintable", 50.0, (0.0, 0.0), "normal",
+        [f"{PAINT}/bw", f"{PAINT}/col"],
+        {"bw": VariantMeta("BW", 47.0, (-4.0, -23.0), "sample_color"),
+         "col": VariantMeta("Col", 30.0, (0.0, -10.0), "normal")})
+    return c
+
+
+def test_sample_color_variant_gets_land_colour_and_meta():
+    c = _paint_cat()
+    doc = land_doc()
+    e = doc.get(place.add_symbol(doc, c, PAINT, (200, 150), variant=0))
+    assert e["radius"] == 47.0 and e["offset"] == Vector2(-4.0, -23.0)
+    s = e["sample"]
+    assert isinstance(s, Color) and s.a == 1.0
+    pal = [(g.r, g.g, g.b) for g in doc.root["theme"]["ground_colors"]]
+    lo = [min(p[i] for p in pal) - 0.02 for i in range(3)]
+    hi = [max(p[i] for p in pal) + 0.02 for i in range(3)]
+    assert all(lo[i] <= (s.r, s.g, s.b)[i] <= hi[i] for i in range(3))
+    e2 = doc.get(place.add_symbol(doc, c, PAINT, (210, 150), variant=1))
+    assert e2["sample"] is None and e2["radius"] == 30.0
+    e3 = doc.get(place.add_symbol(doc, c, TOWN, (220, 150)))
+    assert e3["sample"] is None
+
+
+def test_land_colour_follows_ground_paint_and_water_fallback():
+    from wdmcp.model.land_color import land_color_at
+    doc = land_doc()
+    gc = doc.root["theme"]["ground_colors"]
+    c0 = land_color_at(doc, 5, 5)  # open sea, no land within 64 px -> first ground colour
+    assert (c0.r, c0.g, c0.b) == pytest.approx((gc[0].r, gc[0].g, gc[0].b), abs=1e-6)
+    near = land_color_at(doc, 45, 150)  # water next to the coast -> nearest land
+    assert near.a == 1.0
+    k = len(gc) - 1
+    terrain.paint_ground(doc, [(150, 100), (250, 100), (250, 200), (150, 200)], k, softness=0)
+    p = land_color_at(doc, 200, 150)
+    assert (p.r, p.g, p.b) == pytest.approx((gc[k].r, gc[k].g, gc[k].b), abs=0.01)
+
+
+def test_recolor_symbols_repairs_old_entries():
+    c = _paint_cat()
+    doc = land_doc()
+    j = place.add_symbol(doc, c, TOWN, (100, 100))
+    i = place.add_symbol(doc, c, PAINT, (200, 150), variant=0)  # lower: inserted after j
+    e = doc.get(i)
+    e["sample"] = None                                  # as written by older versions
+    e["radius"], e["offset"] = 50.0, Vector2(0.0, 0.0)
+    counts = place.recolor_symbols(doc, c)
+    assert counts == {"checked": 2, "recolored": 1, "reoffset": 1, "unknown": 0}
+    assert isinstance(e["sample"], Color) and e["radius"] == 47.0
+    assert e["offset"] == Vector2(-4.0, -23.0) and doc.get(j)["sample"] is None
+    before = e["sample"]
+    assert place.recolor_symbols(doc, c)["recolored"] == 0   # already set: left alone
+    e["sample"] = Color(0, 0, 0, 1)
+    assert place.recolor_symbols(doc, c, [i], overwrite=True)["recolored"] == 1
+    assert e["sample"] == before

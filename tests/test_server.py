@@ -389,7 +389,8 @@ def test_server_registers_all_tools():
                 "raise_area", "add_lake", "add_river", "paint_ground", "add_symbol",
                 "scatter_symbols", "add_mountain_range", "add_forest", "add_settlement",
                 "add_label", "add_path", "add_territory", "update_object", "move_objects",
-                "remove_objects", "apply_theme", "set_frame", "render_preview", "undo"}
+                "remove_objects", "recolor_symbols", "apply_theme", "set_frame", "render_preview",
+                "undo"}
     assert expected <= names
 
 
@@ -652,3 +653,23 @@ def test_settlement_name_with_braces():
     r = server.add_settlement("{Old} Ford", [200, 150], "town", set_key=TOWN)
     assert "'{Old} Ford'" in r["summary"]
     assert server.session().current.get(r["ids"][1])["text"] == "{Old} Ford"
+
+
+def test_recolor_symbols_tool_is_undoable():
+    from wdmcp.assets.catalog import VariantMeta
+    cat = server.session().catalog
+    key = "res://sprites/symbols/paint_y"
+    cat._sets[key] = SymbolSet(key, None, "symbols", "p", 50.0, (0.0, 0.0), "normal", [key + "/a"],
+                               {"a": VariantMeta("A", 47.0, (-4.0, -23.0), "sample_color")})
+    sample_map()
+    sid = server.add_symbol(key, [200, 150])["ids"][0]
+    assert server.session().current.get(sid)["sample"] is not None
+    server.session().current.get(sid)["sample"] = None
+    r = server.recolor_symbols()
+    assert r["recolored"] == 1 and server.session().current.get(sid)["sample"] is not None
+    server.undo()
+    assert server.session().current.get(sid)["sample"] is None
+    # changing the sprite to a normal one clears the tint
+    server.recolor_symbols()
+    server.update_object(sid, {"texture": TOWN + "/v0"})
+    assert server.session().current.get(sid)["sample"] is None

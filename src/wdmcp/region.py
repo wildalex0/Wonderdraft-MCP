@@ -459,6 +459,9 @@ def build(spec: RegionSpec, cat: Catalog) -> RegionResult:
     b.roads()
     b.realms()
     b.labels()
+    # sample colours were taken at placement time; ground paint and lakes came later, so
+    # resample every paintable symbol against the finished terrain
+    place.recolor_symbols(b.doc, cat, overwrite=True)
     return RegionResult(b.doc, b.counts, b.warnings, b.final_ids())
 
 

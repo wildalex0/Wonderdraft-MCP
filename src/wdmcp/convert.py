@@ -191,8 +191,9 @@ def convert_fields(kind: str, fields: dict, entry: dict | None = None, cat=None)
       built-in sprites and 0.25 for user packs).
     * ``texture`` / ``variant`` (symbols): ``variant`` picks a sprite by index from the set of
       ``texture`` (a set key or sprite, if given) or else of the current texture, resolved via
-      the catalogue. A different set also brings its offset, radius and type unless those are
-      given; the size multiplier is kept. Validated when the catalogue knows the set.
+      the catalogue. A new sprite brings its own offset, radius and type unless those are
+      given; the size multiplier is kept. Validated when the catalogue knows the set. (The
+      server then sets ``sample`` for sample_color sprites, see recolor_symbols.)
     * ``style`` (paths/territories): a path or border texture name, validated like add_path.
     * ``sample`` may be a colour or null; ``custom_colors`` / ``custom_color_mode`` only null.
     """
@@ -242,10 +243,10 @@ def convert_fields(kind: str, fields: dict, entry: dict | None = None, cat=None)
             new_tex, new_set = _resolve_symbol_texture(entry or {"texture": tex}, tex,
                                                        fields.get("variant"), cat)
         out["texture"] = new_tex
-        old_set = _set_for(cat, old_tex) if old_tex else None
-        if new_set is not None and new_set is not old_set:
-            for key, val in (("offset", Vector2(*new_set.offset)),
-                             ("radius", float(new_set.radius)),
+        if new_set is not None and new_tex != old_tex:
+            m = new_set.meta(new_tex)  # per-variant metadata, falling back to the set's
+            for key, val in (("offset", Vector2(*m.offset)),
+                             ("radius", float(m.radius)),
                              ("type", place._TYPE.get(new_set.category, "symbol"))):
                 out.setdefault(key, val)
     new_base = place._base_scale(new_tex)

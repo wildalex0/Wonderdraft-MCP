@@ -246,3 +246,23 @@ def test_preview_label_rotation_is_degrees():
     assert h90 > 2 * w90         # 90 (degrees) is vertical
     w1, h1 = boxes[1.5708]       # 1.57 degrees is still almost flat
     assert w1 > 2 * h1
+
+
+def test_preview_tints_sample_color_variants_per_variant():
+    from wdmcp.assets.catalog import VariantMeta
+    from wdmcp.codec.types import Color
+
+    class MetaCat(FakeCat):
+        def variant_meta(self, texture):
+            mode = "sample_color" if texture.endswith("/bw") else "normal"
+            return VariantMeta("x", 20.0, (0.0, 0.0), mode)
+
+    white = Image.new("RGBA", (20, 20), (255, 255, 255, 255))
+    cat = MetaCat(images={"s/bw": white, "s/col": white})
+    doc = MapDocument.new(200, 200)
+    doc.add("symbol", {**sym("s/bw", 60, 100), "sample": Color(0.0, 1.0, 0.0, 1.0)})
+    doc.add("symbol", {**sym("s/col", 140, 100), "sample": Color(0.0, 1.0, 0.0, 1.0)})
+    img = render_preview(doc, cat, scale=1.0)
+    bw, col = px(img, 60, 100, 1.0), px(img, 140, 100, 1.0)
+    assert bw[1] > 200 and bw[0] < 60 and bw[2] < 60   # tinted green
+    assert col.min() > 200                              # normal sprite stays white

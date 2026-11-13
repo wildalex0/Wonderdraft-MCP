@@ -61,6 +61,17 @@ class PckNotFound(ValueError):
             f"path of Wonderdraft.pck (and restart the server).")
 
 
+@dataclass(frozen=True)
+class VariantMeta:
+    """Placement metadata of one sprite: what Wonderdraft writes into a new symbol entry
+    (``radius``; ``offset`` = (offset_x, offset_y)) and how it is drawn (``draw_mode``:
+    "sample_color" sprites are black-and-white art tinted by the entry's ``sample``)."""
+    name: str
+    radius: float
+    offset: tuple[float, float]
+    draw_mode: str
+
+
 @dataclass
 class SymbolSet:
     key: str
@@ -71,6 +82,17 @@ class SymbolSet:
     offset: tuple[float, float]
     draw_mode: str
     variants: list[str] = field(default_factory=list)
+    # per-variant metadata keyed by sprite file stem (e.g. "mine_01_flat", "1")
+    variant_meta: dict[str, VariantMeta] = field(default_factory=dict)
+
+    def meta(self, texture: str) -> VariantMeta:
+        """Metadata for one of this set's sprites, falling back to the set level."""
+        stem = texture.rsplit("/", 1)[-1]
+        m = self.variant_meta.get(stem)
+        if m is None and self.variant_meta:
+            low = {k.lower(): v for k, v in self.variant_meta.items()}
+            m = low.get(stem.lower())
+        return m or VariantMeta(self.name, self.radius, self.offset, self.draw_mode)
 
 
 def _num(v, default: float) -> float:
@@ -79,22 +101,41 @@ def _num(v, default: float) -> float:
     return float(v)
 
 
+def _meta_from(d: dict, base: VariantMeta) -> VariantMeta:
+    name = d["name"] if isinstance(d.get("name"), str) and d["name"] else base.name
+    mode = d["draw_mode"] if isinstance(d.get("draw_mode"), str) and d["draw_mode"] else base.draw_mode
+    return VariantMeta(name, _num(d.get("radius"), base.radius),
+                       (_num(d.get("offset_x"), base.offset[0]),
+                        _num(d.get("offset_y"), base.offset[1])), mode)
+
+
 def _parse_symbols(raw: bytes | None, fallback_name: str):
-    name, radius, ox, oy, mode = fallback_name, 50.0, 0.0, 0.0, "normal"
+    """Parse a ``.wonderdraft_symbols`` file. Two shapes exist:
+
+    * flat: ``{"name", "radius", "offset_x", "offset_y", "draw_mode"}`` for the whole set;
+    * per variant: ``{"<sprite stem>": {...same keys...}, ...}`` (``*_paintable`` sets, many
+      packs, user packs such as ``"1": {...}`` for ``1.png``).
+
+    Returns (name, radius, offset, draw_mode, variant_meta). For a per-variant file without
+    top-level values, the set-level values are taken from its first variant (sorted by stem)
+    so set-wide uses (e.g. scatter spacing) stay sensible."""
+    base = VariantMeta(fallback_name, 50.0, (0.0, 0.0), "normal")
+    per: dict[str, VariantMeta] = {}
     if raw:
         try:
             data = json.loads(raw.decode("utf-8-sig"))
         except ValueError:  # includes UnicodeDecodeError
             data = None
         if isinstance(data, dict):
-            if isinstance(data.get("name"), str) and data["name"]:
-                name = data["name"]
-            radius = _num(data.get("radius"), radius)
-            ox = _num(data.get("offset_x"), ox)
-            oy = _num(data.get("offset_y"), oy)
-            if isinstance(data.get("draw_mode"), str) and data["draw_mode"]:
-                mode = data["draw_mode"]
-    return name, radius, (ox, oy), mode
+            flat = {k: v for k, v in data.items() if not isinstance(v, dict)}
+            nested = {k: v for k, v in data.items() if isinstance(v, dict)}
+            if flat:
+                base = _meta_from(flat, base)
+            elif nested:
+                first = _meta_from(nested[sorted(nested)[0]], base)
+                base = VariantMeta(base.name, first.radius, first.offset, first.draw_mode)
+            per = {k: _meta_from(v, base) for k, v in nested.items()}
+    return base.name, base.radius, base.offset, base.draw_mode, per
 
 
 def _env_or(arg, var: str, default: str | None) -> str | None:
@@ -153,8 +194,9 @@ class Catalog:
             pack, cat, setname = meta[d]
             sym = d + "/" + SYMBOLS_FILE
             raw = self._pck.read(sym) if sym in symbols else None
-            name, radius, offset, mode = _parse_symbols(raw, setname)
-            self._sets[d] = SymbolSet(d, pack, cat, name, radius, offset, mode, sorted(variants))
+            name, radius, offset, mode, per = _parse_symbols(raw, setname)
+            self._sets[d] = SymbolSet(d, pack, cat, name, radius, offset, mode, sorted(variants),
+                                      per)
 
     def _index_user(self) -> None:
         for pack_dir in sorted(p for p in self._user_dir.iterdir() if p.is_dir()):
@@ -174,9 +216,10 @@ class Catalog:
                         raw = sf.read_bytes() if sf.is_file() else None
                     except OSError:
                         raw = None
-                    name, radius, offset, mode = _parse_symbols(raw, set_dir.name)
+                    name, radius, offset, mode, per = _parse_symbols(raw, set_dir.name)
                     variants = sorted(user_pack_texture(pack_dir.name, f"{base}/{n}") for n in pngs)
-                    self._sets[key] = SymbolSet(key, pack_dir.name, cat, name, radius, offset, mode, variants)
+                    self._sets[key] = SymbolSet(key, pack_dir.name, cat, name, radius, offset, mode,
+                                                variants, per)
 
     # -- queries ----------------------------------------------------------
     def sets(self, category: str | None = None, query: str | None = None) -> list[SymbolSet]:
@@ -195,6 +238,15 @@ class Catalog:
         if s is not None:
             return s
         raise AssetNotFound(key, self._suggest(key))
+
+    def set_of(self, texture: str) -> SymbolSet | None:
+        """The set a sprite texture belongs to, or None."""
+        return self._sets.get(texture.rsplit("/", 1)[0])
+
+    def variant_meta(self, texture: str) -> VariantMeta | None:
+        """Per-sprite metadata (falling back to its set's), or None for an unknown set."""
+        s = self.set_of(texture)
+        return s.meta(texture) if s is not None else None
 
     def _suggest(self, key: str) -> list[str]:
         """Close matches against full keys and each set's last path segment; returns full keys."""

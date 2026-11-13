@@ -19,6 +19,10 @@ Conventions
   Wonderdraft places user-pack symbols at).
 * ``density`` (scatter / forest / mountain_range) is the target number of symbols
   per 100x100 px of area; min spacing may reduce the actual count.
+* Each new entry takes ``radius`` and ``offset`` from its sprite's own metadata (sets can
+  define them per variant). Sprites with draw_mode "sample_color" (black-and-white art) get
+  ``sample`` = the land colour under them (wdmcp.model.land_color), which Wonderdraft uses to
+  tint them; other sprites keep ``sample`` None.
 * ``rotation`` arguments are DEGREES, clockwise on screen, for symbols and labels alike.
   Wonderdraft stores label rotation in degrees but symbol rotation in radians
   (docs/format.md "Rotation units, GUI-pinned"), so symbols are converted on write.
@@ -36,6 +40,7 @@ from wdmcp.assets.catalog import AssetNotFound, Catalog, SymbolSet
 from wdmcp.codec.types import Color
 from wdmcp.model import raster_spec as rs
 from wdmcp.model import template
+from wdmcp.model.land_color import land_color_at
 from wdmcp.model.document import MapDocument
 from wdmcp.ops import scatter as _sc
 
@@ -145,14 +150,69 @@ def symbol_rotation(degrees: float) -> float:
     return math.radians(float(degrees))
 
 
-def _make_symbol(s: SymbolSet, texture: str, pos, scale: float, rotation: float,
-                 mirror: bool) -> dict:
-    """``rotation`` in degrees (stored as radians)."""
+SAMPLE_COLOR = "sample_color"
+OLD_DEFAULT_RADIUS = 50.0          # what the catalogue used to report for per-variant sets
+OLD_DEFAULT_OFFSET = (0.0, 0.0)
+
+
+def _make_symbol(doc: MapDocument, s: SymbolSet, texture: str, pos, scale: float,
+                 rotation: float, mirror: bool) -> dict:
+    """``rotation`` in degrees (stored as radians). Radius/offset come from the sprite's
+    metadata; sample_color sprites get the land colour under ``pos`` as ``sample``."""
     k = _base_scale(texture) * float(scale)
+    m = s.meta(texture)
+    sample = land_color_at(doc, pos[0], pos[1]) if m.draw_mode == SAMPLE_COLOR else None
     return template.symbol_entry(
         texture, pos, rotation=symbol_rotation(rotation), scale=(k, k),
-        offset=s.offset, radius=s.radius, type=_TYPE.get(s.category, "symbol"),
-        mirror=mirror)
+        offset=m.offset, radius=m.radius, type=_TYPE.get(s.category, "symbol"),
+        mirror=mirror, sample=sample)
+
+
+def set_sample_for_sprite(doc: MapDocument, cat: Catalog, e: dict) -> None:
+    """Set ``e["sample"]`` for its (new) sprite: the land colour for sample_color sprites,
+    None for others. Left alone when the catalogue does not know the sprite."""
+    meta_of = getattr(cat, "variant_meta", None)
+    m = meta_of(str(e["texture"])) if meta_of is not None else None
+    if m is not None:
+        e["sample"] = (land_color_at(doc, e["position"].x, e["position"].y)
+                       if m.draw_mode == SAMPLE_COLOR else None)
+
+
+def recolor_symbols(doc: MapDocument, cat: Catalog, ids: list[str] | None = None,
+                    overwrite: bool = False) -> dict[str, int]:
+    """Repair symbols placed before per-variant metadata and sample colours were supported.
+
+    For each symbol (all, or ``ids``) whose sprite the catalogue knows:
+    * a sample_color sprite without ``sample`` (or any, with ``overwrite``) gets the land colour
+      under it;
+    * an entry still holding the old wrong defaults (radius 50, offset (0, 0)) gets the sprite's
+      own radius and offset when its metadata differs.
+    Returns counts: checked, recolored, reoffset, unknown (sprite not in the catalogue)."""
+    if ids is None:
+        targets = [e for _, e in doc.list("symbol")]
+    else:
+        targets = [doc.get(i) for i in dict.fromkeys(ids)]
+        if any(i.partition(":")[0] != "symbol" for i in ids):
+            raise ValueError("recolor_symbols only takes symbol ids")
+    counts = {"checked": 0, "recolored": 0, "reoffset": 0, "unknown": 0}
+    meta_of = getattr(cat, "variant_meta", None)
+    for e in targets:
+        counts["checked"] += 1
+        m = meta_of(str(e["texture"])) if meta_of is not None else None
+        if m is None:
+            counts["unknown"] += 1
+            continue
+        if m.draw_mode == SAMPLE_COLOR and (overwrite or e.get("sample") is None):
+            e["sample"] = land_color_at(doc, e["position"].x, e["position"].y)
+            counts["recolored"] += 1
+        off = e.get("offset")
+        if (float(e.get("radius", 0.0)) == OLD_DEFAULT_RADIUS and off is not None
+                and (off.x, off.y) == OLD_DEFAULT_OFFSET
+                and (m.radius, m.offset) != (OLD_DEFAULT_RADIUS, OLD_DEFAULT_OFFSET)):
+            e["radius"] = float(m.radius)
+            e["offset"] = template._v(m.offset)
+            counts["reoffset"] += 1
+    return counts
 
 
 def pack_of_texture(texture: str) -> tuple[Literal["user", "builtin"], str] | None:
@@ -202,7 +262,7 @@ def add_symbol(doc: MapDocument, cat: Catalog, set_key: str, pos, variant: int |
     x, y = _require_in_map(doc, pos, "symbol")
     rng = np.random.default_rng(seed)
     tex = _pick_variant(s, variant, rng)
-    return _insert_symbols(doc, [_make_symbol(s, tex, (x, y), scale, rotation, mirror)])[0]
+    return _insert_symbols(doc, [_make_symbol(doc, s, tex, (x, y), scale, rotation, mirror)])[0]
 
 
 def _place_points(doc: MapDocument, s: SymbolSet, pts: np.ndarray, rng, land_only: bool,
@@ -218,7 +278,7 @@ def _place_points(doc: MapDocument, s: SymbolSet, pts: np.ndarray, rng, land_onl
             dropped += 1
             continue
         tex = _pick_variant(s, None, rng)
-        entries.append(_make_symbol(s, tex, (float(x), float(y)), scale,
+        entries.append(_make_symbol(doc, s, tex, (float(x), float(y)), scale,
                                     0.0, bool(rng.integers(0, 2))))
     return _insert_symbols(doc, entries), dropped
 

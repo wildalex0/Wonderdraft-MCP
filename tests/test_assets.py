@@ -189,3 +189,42 @@ def test_server_explains_missing_pck(tmp_path, monkeypatch):
             server.list_themes()
     finally:
         server.reset_session()
+
+
+# ------------------------------------------------------------------ per-variant metadata
+def test_parse_symbols_flat_and_per_variant():
+    from wdmcp.assets.catalog import VariantMeta, _parse_symbols
+    flat = b'{"name": "Penned", "radius": 32, "offset_x": 0, "offset_y": -14, "draw_mode": "sample_color"}'
+    name, radius, offset, mode, per = _parse_symbols(flat, "dir")
+    assert (name, radius, offset, mode, per) == ("Penned", 32.0, (0.0, -14.0), "sample_color", {})
+    nested = (b'{"mine_01_flat": {"name": "Mine", "radius": 47, "offset_x": -4, "offset_y": -23,'
+              b' "draw_mode": "sample_color"}, "rock_01_flat": {"name": "Rock", "radius": 20,'
+              b' "offset_x": 1, "offset_y": 2, "draw_mode": "normal"}}')
+    name, radius, offset, mode, per = _parse_symbols(nested, "rocks")
+    assert per["mine_01_flat"] == VariantMeta("Mine", 47.0, (-4.0, -23.0), "sample_color")
+    assert per["rock_01_flat"].draw_mode == "normal"
+    assert name == "rocks" and radius == 47.0  # set level from the first variant
+    _, _, _, _, per = _parse_symbols('\ufeff{"1": {"name": "House", "radius": 107}}'.encode(), "H")
+    assert per["1"] == VariantMeta("House", 107.0, (0.0, 0.0), "normal")
+
+
+def test_user_pack_per_variant_metadata(tmp_path):
+    d = tmp_path / "Kit" / "sprites" / "symbols" / "Houses"
+    d.mkdir(parents=True)
+    for n in ("1", "2"):
+        Image.new("RGBA", (4, 4)).save(d / f"{n}.png")
+    (d / ".wonderdraft_symbols").write_text(
+        '{"1": {"name": "House", "radius": 107, "offset_x": 0, "offset_y": 5, '
+        '"draw_mode": "sample_color"}, "2": {"radius": 9, "draw_mode": "normal"}}')
+    c = Catalog.load(tmp_path / "none.pck", tmp_path, require_pck=False)
+    m = c.variant_meta("user://assets/Kit/sprites/symbols/Houses/1")
+    assert (m.radius, m.offset, m.draw_mode) == (107.0, (0.0, 5.0), "sample_color")
+    assert c.variant_meta("user://assets/Kit/sprites/symbols/Houses/2").radius == 9.0
+    assert c.variant_meta("user://assets/Kit/sprites/symbols/Nope/1") is None
+
+
+def test_real_pck_paintable_variant_meta(cat):
+    m = cat.variant_meta("res://sprites/symbols/rocks_and_more_paintable/mine_01_flat")
+    assert (m.radius, m.offset, m.draw_mode) == (47.0, (-4.0, -23.0), "sample_color")
+    m = cat.variant_meta("res://sprites/mountains/penned_mountains_large/mountain_03")
+    assert (m.radius, m.offset, m.draw_mode) == (32.0, (0.0, -14.0), "sample_color")

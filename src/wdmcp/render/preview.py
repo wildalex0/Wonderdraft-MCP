@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw, ImageFont
 from wdmcp.assets.catalog import AssetNotFound
 from wdmcp.codec.types import Color
 from wdmcp.model import raster_spec
+from wdmcp.model.land_color import ground_rgb as _ground_rgb
 from wdmcp.model.points import parse_points
 
 _DEF_WATER = (0.57, 0.80, 0.72, 1.0)
@@ -144,16 +145,6 @@ def _edge(b: np.ndarray) -> np.ndarray:
     p = np.pad(b, 1, mode="edge")
     inner = p[:-2, 1:-1] & p[2:, 1:-1] & p[1:-1, :-2] & p[1:-1, 2:]
     return b & ~inner
-
-
-def _ground_rgb(height01: np.ndarray, colors) -> np.ndarray:
-    pal = np.asarray(colors, np.float32)
-    if len(pal) == 1:
-        return np.broadcast_to(pal[0], height01.shape + (3,)).copy()
-    t = np.clip(height01, 0, 1) * (len(pal) - 1)
-    i = np.minimum(t.astype(int), len(pal) - 2)
-    f = (t - i)[..., None]
-    return pal[i] * (1 - f) + pal[i + 1] * f
 
 
 def _paint_layer(raster: np.ndarray, bbox, out_size):
@@ -372,13 +363,18 @@ def _sized_sprite(cat, texture, w, h):
 
 
 def _is_sample_color(cat, texture, memo) -> bool:
-    d = texture.rsplit("/", 1)[0]
-    if d not in memo:
-        try:
-            memo[d] = cat.get_set(d).draw_mode == "sample_color"
-        except AssetNotFound:
-            memo[d] = False
-    return memo[d]
+    """Per-variant draw mode (sets may define it per sprite)."""
+    if texture not in memo:
+        meta_of = getattr(cat, "variant_meta", None)
+        if meta_of is not None:
+            m = meta_of(texture)
+            memo[texture] = m is not None and m.draw_mode == "sample_color"
+        else:
+            try:
+                memo[texture] = cat.get_set(texture.rsplit("/", 1)[0]).draw_mode == "sample_color"
+            except AssetNotFound:
+                memo[texture] = False
+    return memo[texture]
 
 
 def _draw_symbols(img: Image.Image, doc, cat, bbox, s, tags):

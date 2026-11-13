@@ -484,6 +484,8 @@ def update_object(id: str, fields: dict) -> dict:
         e = doc.update(id, **conv)
         if "texture" in conv:
             place._register_packs(doc, [e])
+            if "sample" not in fields:  # the tint follows the new sprite's draw mode
+                place.set_sample_for_sprite(doc, s.catalog, e)
         added = _packs_added(before, doc)
     msg = f"Updated {id}: {', '.join(conv) or 'nothing'}."
     if added:
@@ -520,6 +522,25 @@ def remove_objects(ids: list[str]) -> dict:
         n = doc.remove(list(ids))
     return _result([], f"Removed {n} object(s). Remaining ids of those kinds may have shifted; "
                        f"use list_objects to get current ids.")
+
+
+@tool_errors
+def recolor_symbols(ids: list[str] | None = None, overwrite: bool = False) -> dict:
+    """Repair symbols placed by older versions of this server (or by hand-edited files) so
+    Wonderdraft draws them like its own: black-and-white "paintable" (sample_color) sprites
+    get the land colour under them as their tint (only where it is missing, or for all of
+    them with overwrite=true), and entries still holding the old wrong default radius 50 /
+    offset (0, 0) get their sprite's own values. ids limits it to some symbols (default all).
+    New placements never need this. Undoable."""
+    s = session()
+    s.doc()
+    with s.mutation("recolor_symbols") as doc:
+        c = place.recolor_symbols(doc, s.catalog, ids, overwrite)
+    msg = (f"Checked {c['checked']} symbol(s): recoloured {c['recolored']}, restored radius/offset "
+           f"of {c['reoffset']}.")
+    if c["unknown"]:
+        msg += f" {c['unknown']} use sprites not in the asset catalogue and were left alone."
+    return _result([], msg, **c)
 
 
 @tool_errors
@@ -711,7 +732,7 @@ TOOLS = [
     paint_land, generate_landmass, raise_area, add_lake, add_river, paint_ground,
     add_symbol, scatter_symbols, add_mountain_range, add_forest, add_settlement,
     add_label, add_path, add_territory,
-    update_object, move_objects, remove_objects, apply_theme, set_frame,
+    update_object, move_objects, remove_objects, recolor_symbols, apply_theme, set_frame,
     build_region, region_spec_schema,
     render_preview, export_image, undo,
 ]
