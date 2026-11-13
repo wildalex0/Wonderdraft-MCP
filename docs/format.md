@@ -129,3 +129,10 @@ The controller then opened the map in **Wonderdraft 1.1.8** and exported it with
 7. **Scale-appropriate default sets.** The default "hills" are tiny tufts and the default mountains are alpine peaks.
 8. **Export on large maps.** The first Ctrl+E is still sometimes ignored; the guarded retry covers it.
 9. **Not representable from the notes.** Off-map destinations such as the sea port appear only as edge labels.
+
+## Rotation units, GUI-pinned (2026-11-13)
+
+Probe maps (`out/rotprobe*.wonderdraft_map`) were opened in Wonderdraft 1.1.8:
+- **Label `rotation` is stored in degrees**, clockwise on screen. 30 shows a 30° tilt, 90 is vertical, and 0.5 and 1.5708 look almost flat.
+- **Symbol `rotation` is stored in radians**, clockwise. 0.5 tilts about 29°, 1.5708 is vertical, and 30 and 90 wrap around (30 rad ≈ 278°).
+- Tools take **degrees** for both and convert to radians when writing symbols. The preview must read labels as degrees and symbols as radians.
