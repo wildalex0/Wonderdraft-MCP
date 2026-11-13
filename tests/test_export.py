@@ -173,6 +173,13 @@ def test_export_via_app_refuses_when_running(monkeypatch, tmp_path):
         export_via_app(m, tmp_path / "o.png")
 
 
+def test_input_struct_size():
+    import ctypes
+    if ctypes.sizeof(ctypes.c_void_p) != 8:
+        pytest.skip("64-bit only")
+    assert ctypes.sizeof(wa.INPUT) == 40
+
+
 # ------------------------------------------------------------------ real GUI
 @pytest.mark.gui
 @pytest.mark.skipif(os.environ.get("WDMCP_GUI_TESTS") != "1",

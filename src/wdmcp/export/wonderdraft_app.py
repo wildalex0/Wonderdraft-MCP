@@ -6,10 +6,13 @@ wait for the file to appear and stop growing. Wonderdraft is always closed after
 """
 from __future__ import annotations
 
+import ctypes
+import logging
 import os
 import subprocess
 import sys
 import time
+from ctypes import wintypes
 from pathlib import Path
 from typing import Callable
 
@@ -18,6 +21,7 @@ DIALOG_TITLE = "Export"
 EDIT_ID = 1001
 SAVE_BUTTON_ID = 1
 POLL_INTERVAL = 0.7
+log = logging.getLogger("wdmcp")
 
 
 class ExportError(RuntimeError):
@@ -56,9 +60,6 @@ def wait_for_stable_size(get_size: Callable[[], int | None], *, deadline: float,
 
 # ------------------------------------------------------------------ Win32
 def _user32():
-    import ctypes
-    from ctypes import wintypes
-
     u = ctypes.WinDLL("user32", use_last_error=True)
     enum_proc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
     u.EnumWindows.argtypes = [enum_proc, wintypes.LPARAM]
@@ -83,7 +84,6 @@ def _user32():
 
 
 def _text(fn, hwnd) -> str:
-    import ctypes
     buf = ctypes.create_unicode_buffer(512)
     fn(hwnd, buf, 512)
     return buf.value
@@ -91,9 +91,6 @@ def _text(fn, hwnd) -> str:
 
 def _find_windows(pid: int, *, visible_only: bool = True) -> list[tuple[int, str, str]]:
     """Top-level windows of ``pid`` as (hwnd, class name, title)."""
-    import ctypes
-    from ctypes import wintypes
-
     u, enum_proc = _user32()
     found: list[tuple[int, str, str]] = []
 
@@ -119,7 +116,6 @@ def _wonderdraft_running() -> bool:
 
 def _foreground(hwnd) -> bool:
     """Bring ``hwnd`` to the foreground, falling back to the ALT-key and AttachThreadInput tricks."""
-    import ctypes
     u, _ = _user32()
     u.ShowWindow(hwnd, 9)  # SW_RESTORE
     if u.SetForegroundWindow(hwnd) and u.GetForegroundWindow() == hwnd:
@@ -140,66 +136,66 @@ def _foreground(hwnd) -> bool:
             u.SetForegroundWindow(hwnd)
         finally:
             u.AttachThreadInput(this, fg_thread, False)
+    time.sleep(0.1)
     return u.GetForegroundWindow() == hwnd
 
 
+ULONG_PTR = ctypes.c_size_t
+
+
+class KEYBDINPUT(ctypes.Structure):
+    _fields_ = [("wVk", wintypes.WORD), ("wScan", wintypes.WORD), ("dwFlags", wintypes.DWORD),
+                ("time", wintypes.DWORD), ("dwExtraInfo", ULONG_PTR)]
+
+
+class MOUSEINPUT(ctypes.Structure):  # only here so the union has the right size
+    _fields_ = [("dx", wintypes.LONG), ("dy", wintypes.LONG), ("mouseData", wintypes.DWORD),
+                ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD),
+                ("dwExtraInfo", ULONG_PTR)]
+
+
+class _InputUnion(ctypes.Union):
+    _fields_ = [("ki", KEYBDINPUT), ("mi", MOUSEINPUT)]
+
+
+class INPUT(ctypes.Structure):
+    _anonymous_ = ("u",)
+    _fields_ = [("type", wintypes.DWORD), ("u", _InputUnion)]
+
+
+def _send_event(u, vk: int, up: bool) -> None:
+    i = INPUT(type=1)  # INPUT_KEYBOARD
+    i.ki = KEYBDINPUT(vk, u.MapVirtualKeyW(vk, 0), 0x2 if up else 0, 0, 0)
+    if u.SendInput(1, ctypes.byref(i), ctypes.sizeof(INPUT)) != 1:
+        raise ExportError("SendInput was blocked (is Wonderdraft running elevated?)")
+
+
 def _send_keys(chords: list[list[int]]) -> None:
-    """SendInput each chord (virtual keys, modifiers first): press in order, release reversed."""
-    import ctypes
-    from ctypes import wintypes
+    """Send each chord (virtual keys, modifiers first) one event per SendInput call.
 
+    Godot polls input once per frame, so a press and release in the same frame is lost:
+    events are spaced 40 ms apart and the chord is held 80 ms before the releases."""
     u, _ = _user32()
-    ulong_ptr = ctypes.c_size_t
-
-    class KEYBDINPUT(ctypes.Structure):
-        _fields_ = [("wVk", wintypes.WORD), ("wScan", wintypes.WORD), ("dwFlags", wintypes.DWORD),
-                    ("time", wintypes.DWORD), ("dwExtraInfo", ulong_ptr)]
-
-    class MOUSEINPUT(ctypes.Structure):  # only here so the union has the right size
-        _fields_ = [("dx", wintypes.LONG), ("dy", wintypes.LONG), ("mouseData", wintypes.DWORD),
-                    ("dwFlags", wintypes.DWORD), ("time", wintypes.DWORD),
-                    ("dwExtraInfo", ulong_ptr)]
-
-    class _U(ctypes.Union):
-        _fields_ = [("ki", KEYBDINPUT), ("mi", MOUSEINPUT)]
-
-    class INPUT(ctypes.Structure):
-        _anonymous_ = ("u",)
-        _fields_ = [("type", wintypes.DWORD), ("u", _U)]
-
     u.SendInput.argtypes = [wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int]
     u.SendInput.restype = wintypes.UINT
-    keyup = 0x2
-
-    def one(vk: int, up: bool) -> INPUT:
-        i = INPUT(type=1)  # INPUT_KEYBOARD
-        i.ki = KEYBDINPUT(vk, u.MapVirtualKeyW(vk, 0), keyup if up else 0, 0, 0)
-        return i
-
     for chord in chords:
-        events = [one(vk, False) for vk in chord] + [one(vk, True) for vk in reversed(chord)]
-        arr = (INPUT * len(events))(*events)
-        if u.SendInput(len(arr), arr, ctypes.sizeof(INPUT)) != len(arr):
-            raise ExportError("SendInput was blocked (is Wonderdraft running elevated?)")
-        time.sleep(0.05)
+        for vk in chord:
+            _send_event(u, vk, False)
+            time.sleep(0.04)
+        time.sleep(0.08)
+        for vk in reversed(chord):
+            _send_event(u, vk, True)
+            time.sleep(0.04)
+        log.info("sent keys %s", [hex(v) for v in chord])
 
 
 def _fill_save_dialog(pid: int, out_path: str, timeout: float = 15.0) -> None:
     """Wait for the native "Export" dialog of ``pid``, set the file name and press Save."""
-    import ctypes
     u, enum_proc = _user32()
     wm_settext, bm_click = 0x000C, 0x00F5
-    end = time.monotonic() + timeout
-    dlg = None
-    while dlg is None:
-        for hwnd, cls, title in _find_windows(pid):
-            if cls == "#32770" and title == DIALOG_TITLE:
-                dlg = hwnd
-                break
-        if dlg is None:
-            if time.monotonic() >= end:
-                raise ExportError(f"the Export dialog did not appear within {timeout:.0f} s")
-            time.sleep(0.25)
+    dlg = _wait_dialog(pid, timeout)
+    if dlg is None:
+        raise ExportError(f"the Export dialog did not appear within {timeout:.0f} s")
 
     edit = save = None
 
@@ -219,6 +215,41 @@ def _fill_save_dialog(pid: int, out_path: str, timeout: float = 15.0) -> None:
     u.SendMessageW(edit, wm_settext, 0, ctypes.addressof(buf))
     time.sleep(0.2)
     u.SendMessageW(save, bm_click, 0, 0)
+
+
+def _find_dialog(pid: int) -> int | None:
+    for hwnd, cls, title in _find_windows(pid):
+        if cls == "#32770" and title == DIALOG_TITLE:
+            return hwnd
+    return None
+
+
+def _wait_dialog(pid: int, timeout: float) -> int | None:
+    end = time.monotonic() + timeout
+    while True:
+        dlg = _find_dialog(pid)
+        if dlg is not None or time.monotonic() >= end:
+            return dlg
+        time.sleep(0.25)
+
+
+def _open_export_dialog(pid: int, main: int) -> None:
+    """Ctrl+E then Enter; if the native dialog does not show within 5 s, retry once."""
+    for attempt in (1, 2):
+        fg = _foreground(main)
+        log.info("export attempt %d: foreground=%s", attempt, fg)
+        if not fg:
+            if attempt == 2:
+                raise ExportError("could not bring Wonderdraft to the foreground")
+            continue
+        time.sleep(0.3)
+        _send_keys([[0x11, 0x45]])  # Ctrl+E
+        time.sleep(1.5)
+        _send_keys([[0x0D]])  # Enter: accept the Export Options defaults
+        if _wait_dialog(pid, 5.0) is not None:
+            log.info("export dialog appeared (attempt %d)", attempt)
+            return
+        log.info("export dialog not seen after attempt %d", attempt)
 
 
 def _close(proc: subprocess.Popen, grace: float = 5.0) -> None:
@@ -270,11 +301,7 @@ def export_via_app(map_path, out_path, timeout: float = 120) -> Path:
                     raise ExportError(f"timed out after {timeout:.0f} s waiting for the map window")
                 time.sleep(0.5)
         time.sleep(3)  # let the canvas finish its first render
-        if not _foreground(main):
-            raise ExportError("could not bring Wonderdraft to the foreground")
-        _send_keys([[0x11, 0x45]])  # Ctrl+E
-        time.sleep(1.5)
-        _send_keys([[0x0D]])  # Enter: accept the Export Options defaults
+        _open_export_dialog(proc.pid, main)
         _fill_save_dialog(proc.pid, str(out_p),
                           timeout=min(15.0, max(1.0, deadline - time.monotonic())))
         size = wait_for_stable_size(
