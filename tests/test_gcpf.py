@@ -58,9 +58,38 @@ def test_gcpf_exact_block_size_payload():
     p = bytes(range(256)) * 16
     assert len(p) == 4096
     out = gcpf.write(p)
-    # one block size plus the extra entry for exact multiples
-    assert struct.unpack_from("<II", out, 16)[1] == 0
+    # one block size plus the extra entry for exact multiples (16-byte padded, never 0)
+    assert struct.unpack_from("<II", out, 16)[1] != 0
     assert gcpf.read(out) == p
+
+
+AUTOSAVE = Path(__file__).parent / "fixtures" / "autosave_exact_multiple.wonderdraft_map"
+
+
+def test_read_autosave_exact_multiple():
+    assert len(gcpf.read(AUTOSAVE.read_bytes())) == 24_887_296
+
+
+@pytest.mark.parametrize("n", [4096, 4096 + 5])
+def test_write_last_size_entry_nonzero(n):
+    p = bytes(range(256)) * 17
+    p = p[:n]
+    out = gcpf.write(p)
+    nblocks = -(-n // 4096) + (1 if n % 4096 == 0 else 0)
+    sizes = struct.unpack_from(f"<{nblocks}I", out, 16)
+    assert sizes[-1] != 0
+    assert gcpf.read(out) == p
+
+
+def test_short_block_decoding_longer_is_truncated_but_shorter_is_error():
+    # 16 zero bytes decoded for an expected 0-byte extra block is accepted
+    out = gcpf.write(b"")
+    assert gcpf.read(out) == b""
+    short = bytearray(gcpf.write(b"x" * 100))
+    # claim 101 bytes but only 100 decode from the block -> error
+    struct.pack_into("<I", short, 12, 101)
+    with pytest.raises(gcpf.GcpfError):
+        gcpf.read(bytes(short))
 
 
 def test_gcpf_non_multiple_and_empty():

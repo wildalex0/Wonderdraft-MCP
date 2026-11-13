@@ -16,6 +16,12 @@ def test_testmap_byte_exact():
     assert variant.encode(variant.decode(payload)) == payload
 
 
+def test_autosave_byte_exact():
+    fix = Path(__file__).parent / "fixtures" / "autosave_exact_multiple.wonderdraft_map"
+    payload = gcpf.read(fix.read_bytes())
+    assert variant.encode(variant.decode(payload)) == payload
+
+
 def test_real_width_rule():  # Godot: 64-bit iff float32 can't hold it exactly
     assert len(variant.encode(0.5)) == 4 + 8 and len(variant.encode(0.47001155663049116)) == 4 + 12
 

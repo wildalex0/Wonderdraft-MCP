@@ -38,10 +38,15 @@ def read(data: bytes) -> bytes:
         raise GcpfError("truncated GCPF data")
     out = bytearray()
     try:
-        for size in sizes:
+        for i, size in enumerate(sizes):
             chunk = data[pos:pos + size]
             pos += size
-            out += fastlz.decompress(chunk) if mode == MODE_FASTLZ else zlib.decompress(chunk)
+            want = min(block, max(total - i * block, 0))
+            dec = fastlz.decompress(chunk) if mode == MODE_FASTLZ else zlib.decompress(chunk)
+            if len(dec) < want:
+                raise ValueError(f"block {i} decoded {len(dec)} bytes, expected {want}")
+            # Godot pads blocks shorter than 16 bytes to 16 before compressing; drop the padding.
+            out += dec[:want]
     except (ValueError, zlib.error) as e:
         raise GcpfError(f"corrupt GCPF block: {e}") from e
     if len(out) != total:
@@ -55,9 +60,11 @@ def write(payload: bytes, block_size: int = 4096) -> bytes:
     if block_size <= 0:
         raise GcpfError("block_size must be positive")
     total = len(payload)
-    blocks = [fastlz.compress(payload[i:i + block_size]) for i in range(0, total, block_size)]
+    chunks = [payload[i:i + block_size] for i in range(0, total, block_size)]
     if total % block_size == 0:
-        blocks.append(b"")
+        chunks.append(b"")
+    # Godot zero-pads any block shorter than 16 bytes to 16 before compressing.
+    blocks = [fastlz.compress(c.ljust(16, b"\x00")) for c in chunks]
     head = MAGIC + struct.pack("<III", MODE_FASTLZ, block_size, total)
     sizes = struct.pack(f"<{len(blocks)}I", *map(len, blocks))
     return head + sizes + b"".join(blocks) + MAGIC
