@@ -495,3 +495,50 @@ def test_update_object_symbol_variant_scale_and_packs():
     assert e["scale"] == Vector2(0.75, 0.75)
     server.undo()
     assert "MyPack" not in (server.session().current.root.get("included_packs") or [])
+
+
+# ------------------------------------------------------------------ concurrency
+def test_tool_calls_are_serialised():
+    import threading
+    import time
+    from wdmcp.session import tool_errors
+    active, overlap = [0], []
+
+    @tool_errors
+    def slow():
+        active[0] += 1
+        overlap.append(active[0])
+        time.sleep(0.02)
+        active[0] -= 1
+
+    ts = [threading.Thread(target=lambda: [slow() for _ in range(5)]) for _ in range(4)]
+    for t in ts:
+        t.start()
+    for t in ts:
+        t.join()
+    assert overlap and max(overlap) == 1
+
+
+def test_concurrent_mutating_tools_keep_state_consistent():
+    import threading
+    sample_map()
+    errors = []
+
+    def worker(k):
+        try:
+            for i in range(25):
+                server.add_label(f"L{k}-{i}", [10 + i, 10 + k])
+                server.add_symbol(TOWN, [100 + i, 100 + k], variant=0)
+        except Exception as e:  # pragma: no cover
+            errors.append(e)
+
+    ts = [threading.Thread(target=worker, args=(k,)) for k in range(4)]
+    for t in ts:
+        t.start()
+    for t in ts:
+        t.join()
+    assert not errors
+    doc = server.session().current
+    assert len(doc.list("label")) == 100 and len(doc.list("symbol")) == 100
+    assert len({e["text"] for _, e in doc.list("label")}) == 100
+    assert len(server.session().history) == 20  # bounded undo intact

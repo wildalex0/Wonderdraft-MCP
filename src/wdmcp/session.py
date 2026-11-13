@@ -5,6 +5,7 @@ import copy
 import functools
 import logging
 import tempfile
+import threading
 import zlib
 from contextlib import contextmanager
 from dataclasses import dataclass, field
@@ -22,6 +23,10 @@ log = logging.getLogger("wdmcp")
 NO_MAP = "No map is open. Call new_map or open_map first."
 UNDO_DEPTH = 20
 UNDO_BUDGET = 300 * 1024 * 1024  # bytes of compressed raster snapshots
+
+# mcp runs sync tools in worker threads, possibly concurrently: every tool call holds this
+# (re-entrant) lock for its whole duration, so tools see and leave a consistent session.
+SESSION_LOCK = threading.RLock()
 
 _ATOMIC = (str, int, float, bool, bytes, type(None), Vector2, Color, Rect2, Transform2D)
 
@@ -146,11 +151,13 @@ class Session:
 
 
 def tool_errors(fn):
-    """Turn expected failures into ToolError so the client sees the message."""
+    """Serialise tool calls on SESSION_LOCK and turn expected failures into ToolError so the
+    client sees the message."""
     @functools.wraps(fn)
     def wrapper(*a, **kw):
         try:
-            return fn(*a, **kw)
+            with SESSION_LOCK:
+                return fn(*a, **kw)
         except ToolError:
             raise
         except KeyError as e:
