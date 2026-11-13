@@ -306,3 +306,27 @@ def test_build_region_undo_restores_previous_map(tmp_path):
     server.session().dirty = False
     assert server.build_region(sample_spec(), str(tmp_path / "s.wonderdraft_map"))[
         "replaced_unsaved_map"] is False
+
+
+# ------------------------------------------------------------------ river warnings
+def test_river_on_land_ending_in_sea_has_no_warning():
+    res = region.build(small_spec(rivers=[{"points": [[150, 150], [250, 150], [380, 150]],
+                                           "width": 6}]), fake_catalog())
+    assert not [w for w in res.warnings if "river" in w]
+
+
+def test_river_mostly_over_sea_warns():
+    # land is x 100..300; this course starts far out at sea and crosses land briefly
+    res = region.build(small_spec(rivers=[{"points": [[10, 20], [10, 280], [200, 280],
+                                                      [200, 150]], "width": 6}]), fake_catalog())
+    ws = [w for w in res.warnings if "river" in w]
+    assert any("over sea" in w for w in ws) and any("drew only" in w for w in ws)
+
+
+def test_river_warning_helper_counts_pixels():
+    doc = MapDocument.new(400, 300)
+    from wdmcp.ops import terrain
+    terrain.paint_land(doc, BOX, roughness=0)
+    assert region.river_warnings(doc, [(150, 150), (250, 150)], 6, 600) == []
+    ws = region.river_warnings(doc, [(150, 150), (250, 150)], 6, 50)
+    assert len(ws) == 1 and "drew only 50 px" in ws[0]

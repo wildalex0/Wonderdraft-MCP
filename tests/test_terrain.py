@@ -323,3 +323,30 @@ def test_ground_feather_fits_in_box():
     assert g[:, 100 - 22].max() == 0 and g[:, 300 + 21].max() == 0
     assert g[80 - 22, :].max() == 0 and g[220 + 21, :].max() == 0
     assert g[150, 100 - 10] > 0
+
+
+# ------------------------------------------------------------------ river source taper
+def _river_doc(length=1100, width=10.0, seed=0):
+    doc = MapDocument.new(length + 100, 300)
+    terrain.paint_land(doc, [(0, 0), (length + 100, 0), (length + 100, 300), (0, 300)],
+                       roughness=0)
+    terrain.add_river(doc, [(50, 150), (50 + length, 150)], width, seed)
+    return doc
+
+
+def _band(doc, x):
+    """Pixels with freshwater >= 128 in column x (>= the river's width where it crosses)."""
+    return int((doc.raster("mask")[:, x, rs.FRESHWATER_CHANNEL] >= 128).sum())
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_long_river_is_full_width_away_from_source(seed):
+    doc = _river_doc(1100, 10.0, seed)
+    assert _band(doc, 50 + 300) >= 0.6 * 10
+    # the ramp is capped at 6 widths, so 80 px from the source the river is nearly full width
+    assert _band(doc, 50 + 80) >= 0.8 * 10
+
+
+def test_thin_river_keeps_at_least_one_pixel_near_source():
+    doc = _river_doc(600, 2.0, 0)
+    assert _band(doc, 52) >= 1

@@ -255,6 +255,45 @@ def _nearest_land(doc: MapDocument, x: float, y: float, radius: int = WATER_SEAR
     return (float(xs[i] + x0), float(ys[i] + y0)) if d[i] <= radius else None
 
 
+def _sea_along(doc: MapDocument, points, step: float = 2.0) -> np.ndarray:
+    """Whether each sample (every ``step`` px) along the polyline lies on sea (not land)."""
+    a = np.asarray(points, dtype=np.float64).reshape(-1, 2)
+    samples = [a[:1]]
+    for p, q in zip(a[:-1], a[1:]):
+        n = max(1, int(np.ceil(np.hypot(*(q - p)) / step)))
+        u = (np.arange(1, n + 1) / n)[:, None]
+        samples.append(p + u * (q - p))
+    s = np.vstack(samples)
+    xi = np.clip(s[:, 0].astype(int), 0, doc.width - 1)
+    yi = np.clip(s[:, 1].astype(int), 0, doc.height - 1)
+    return ~rs.is_land(doc.raster("mask")[yi, xi, 3])
+
+
+def river_warnings(doc: MapDocument, points, width: float, written: int) -> list[str]:
+    """Warnings for a river that drew much less than expected or runs mostly over sea.
+
+    ``written`` is the number of pixels add_river changed; a river fully on land changes about
+    ``length * width`` pixels. The stretch at the mouth that lies in the sea is expected (rivers
+    should end there) and is not counted as "on water"."""
+    a = np.asarray(points, dtype=np.float64).reshape(-1, 2)
+    length = float(np.hypot(*np.diff(a, axis=0).T).sum())
+    out: list[str] = []
+    sea = _sea_along(doc, a)
+    tail = len(sea) - (int(np.argmax(~sea[::-1])) if (~sea).any() else 0)  # mouth run
+    inland = sea[:tail]
+    frac = float(inland.mean()) if len(inland) else 1.0
+    src = tuple(round(v) for v in a[0])
+    if frac > 0.25:
+        out.append(f"river from {src} runs over sea for about {frac:.0%} of its course "
+                   f"before its mouth; rivers only draw on land")
+    expected = 0.5 * length * width
+    if written < expected:
+        out.append(f"river from {src} drew only {written} px (expected about "
+                   f"{int(length * width)} for {length:.0f} px at width {width:g}); "
+                   f"part of it is probably off land or over other water")
+    return out
+
+
 def _on_water(doc: MapDocument, x: float, y: float) -> bool:
     xi, yi = min(max(int(x), 0), doc.width - 1), min(max(int(y), 0), doc.height - 1)
     return bool(_water_mask(doc, xi, yi, xi + 1, yi + 1)[0, 0])
@@ -319,7 +358,9 @@ class _Builder:
 
     def water(self):
         for r in self.spec.rivers:
-            terrain.add_river(self.doc, [tuple(p) for p in r.points], r.width, self.seed())
+            pts = [tuple(p) for p in r.points]
+            n = terrain.add_river(self.doc, pts, r.width, self.seed())
+            self.warnings.extend(river_warnings(self.doc, pts, r.width, n))
             self.counts["rivers"] += 1
         for lk in self.spec.lakes:
             terrain.add_lake(self.doc, [tuple(p) for p in lk.polygon], lk.roughness, self.seed())

@@ -22,6 +22,7 @@ from wdmcp.ops.noise import fbm
 Point = tuple[float, float]
 _SS = 4  # supersampling factor for anti-aliased coverage
 PERSIST = 0.6  # fbm persistence for outlines (0.5 alone is too smooth to read as a coast)
+MIN_RIVER_RADIUS = 1.0  # px: floor of the source radius (capped at the full radius)
 AMPF = 0.5
 
 
@@ -299,8 +300,9 @@ def add_lake(doc: MapDocument, polygon: list[Point], roughness: float = 0.3, see
 def add_river(doc: MapDocument, points: list[Point], width: float = 3.0, seed: int = 0) -> int:
     """Meandering anti-aliased river through ``points`` (first point is the source).
 
-    The width tapers from ~25% at the source to full width over the first third of the
-    length. The meander amplitude is ~4-8% of each segment's length and the offset is
+    The width tapers from ~25% at the source to full width over the first
+    ``min(35% of the length, 6 * width)`` px, with a radius of at least ~1 px (never more than
+    the full radius). The meander amplitude is ~4-8% of each segment's length and the offset is
     zero at every input point, so the river always passes
     through them. Written to mask R on land only.
     """
@@ -331,8 +333,10 @@ def add_river(doc: MapDocument, points: list[Point], width: float = 3.0, seed: i
     samples.append(pts[-1:])
     s = np.vstack(samples)
     arc = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(s, axis=0).T))])
-    t = np.clip(arc / max(0.35 * arc[-1], 1e-9), 0, 1)
+    ramp = max(min(0.35 * arc[-1], 6.0 * width), 1e-9)
+    t = np.clip(arc / ramp, 0, 1)
     radius = 0.5 * width * (0.25 + 0.75 * t * t * (3 - 2 * t))
+    radius = np.maximum(radius, min(MIN_RIVER_RADIUS, 0.5 * width))
 
     pad = int(math.ceil(width)) + 2
     box = _box(s, doc, pad)
