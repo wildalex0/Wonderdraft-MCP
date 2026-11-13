@@ -21,6 +21,8 @@ from wdmcp.ops.noise import fbm
 
 Point = tuple[float, float]
 _SS = 4  # supersampling factor for anti-aliased coverage
+PERSIST = 0.6  # fbm persistence for outlines (0.5 alone is too smooth to read as a coast)
+AMPF = 0.5
 
 
 # ---------------------------------------------------------------- geometry helpers
@@ -37,13 +39,17 @@ def _clean(points: Sequence[Point], doc: MapDocument, min_pts: int) -> np.ndarra
     return np.clip(a, -3 * m, 4 * m)
 
 
-def _loop_noise(n: int, rng: np.random.Generator) -> np.ndarray:
-    """Periodic 1D fractal noise of n samples, roughly in [-1, 1]."""
+def _loop_noise(n: int, rng: np.random.Generator, wavelength: float = 3.0) -> np.ndarray:
+    """Periodic 1D fractal noise of n samples (n points ~1 px apart), roughly in [-1, 1].
+
+    Octave k has k cells around the loop, starting at 8 (base wavelength = 1/8 of the
+    outline) and doubling while the wavelength stays >= ``wavelength`` samples (max 8
+    octaves). Persistence 0.5.
+    """
     t = np.arange(n, dtype=np.float64) / n
     out = np.zeros(n)
-    amp, norm = 1.0, 0.0
-    for o in range(4):
-        k = 4 * 2**o
+    amp, norm, k = 1.0, 0.0, 8
+    for _ in range(8):
         vals = rng.random(k) * 2 - 1
         x = t * k
         i0 = np.floor(x).astype(int)
@@ -51,12 +57,24 @@ def _loop_noise(n: int, rng: np.random.Generator) -> np.ndarray:
         f = f * f * (3 - 2 * f)
         out += amp * (vals[i0 % k] * (1 - f) + vals[(i0 + 1) % k] * f)
         norm += amp
-        amp *= 0.55
+        amp *= PERSIST
+        k *= 2
+        if n / k < wavelength:
+            break
     return out / norm
 
 
+def _smooth_loop(a: np.ndarray, win: int) -> np.ndarray:
+    out = np.zeros_like(a)
+    for s in range(-win, win + 1):
+        out += np.roll(a, s, axis=0)
+    return out / (2 * win + 1)
+
+
 def _displace(pts: np.ndarray, roughness: float, rng: np.random.Generator) -> np.ndarray:
-    """Densify the outline and push vertices along the outward normal by 1D fbm."""
+    """Densify the outline (~1.5 px steps) and push vertices along the outward normal
+    by multi-octave 1D fbm. Amplitude = roughness * 0.5 * sqrt(area), capped; normals are
+    smoothed over a short window so tight corners do not explode into loops."""
     if roughness <= 0:
         return pts
     closed = np.vstack([pts, pts[:1]])
@@ -64,22 +82,27 @@ def _displace(pts: np.ndarray, roughness: float, rng: np.random.Generator) -> np
     perim = float(seg.sum())
     if perim < 1e-6:
         return pts
-    step = max(3.0, perim / 1500.0)
+    step = max(1.5, perim / 4000.0)
     dense = []
     for (x0, y0), (x1, y1), length in zip(closed[:-1], closed[1:], seg):
         n = max(1, int(math.ceil(length / step)))
         t = np.arange(n) / n
         dense.append(np.column_stack([x0 + (x1 - x0) * t, y0 + (y1 - y0) * t]))
     d = np.vstack(dense)
-    tang = np.roll(d, -1, axis=0) - np.roll(d, 1, axis=0)
+    x, y = d[:, 0], d[:, 1]
+    area2 = float(np.sum(x * np.roll(y, -1) - np.roll(x, -1) * y))
+    tang = np.roll(d, -2, axis=0) - np.roll(d, 2, axis=0)
     tang /= np.maximum(np.hypot(*tang.T), 1e-9)[:, None]
     normal = np.column_stack([tang[:, 1], -tang[:, 0]])
-    x, y = d[:, 0], d[:, 1]
-    if float(np.sum(x * np.roll(y, -1) - np.roll(x, -1) * y)) < 0:
+    if area2 < 0:
         normal = -normal  # make it point outward for either winding
-    size = float(min(np.ptp(pts[:, 0]), np.ptp(pts[:, 1])))
-    amp = roughness * 0.12 * size
-    return d + normal * (_loop_noise(len(d), rng) * amp)[:, None]
+    normal = _smooth_loop(normal, 3)
+    size = math.sqrt(abs(area2) / 2.0)
+    if size < 1e-6:
+        size = float(min(np.ptp(pts[:, 0]), np.ptp(pts[:, 1])))
+    amp = min(roughness, 1.5) * AMPF * size
+    noise = _loop_noise(len(d), rng, wavelength=2.0 * step)
+    return d + normal * (np.clip(noise * 1.6, -1, 1) * amp)[:, None]
 
 
 def _box(pts: np.ndarray, doc: MapDocument, pad: int) -> tuple[int, int, int, int] | None:
@@ -277,7 +300,8 @@ def add_river(doc: MapDocument, points: list[Point], width: float = 3.0, seed: i
     """Meandering anti-aliased river through ``points`` (first point is the source).
 
     The width tapers from ~25% at the source to full width over the first third of the
-    length. The meander offset is zero at every input point, so the river always passes
+    length. The meander amplitude is ~4-8% of each segment's length and the offset is
+    zero at every input point, so the river always passes
     through them. Written to mask R on land only.
     """
     pts = _clean(points, doc, 2)
@@ -296,10 +320,13 @@ def add_river(doc: MapDocument, points: list[Point], width: float = 3.0, seed: i
         n = max(2, int(math.ceil(length / 0.5)))
         u = np.arange(n) / n
         perp = np.array([-d[1], d[0]]) / length
-        amp = min(0.5 * width, 0.12 * length)
+        amp = rng.uniform(0.04, 0.08) * length  # meander scales with segment length
         off = np.zeros(n)
-        for k in (1, 2, 3):
-            off += rng.uniform(-1, 1) * amp / k * np.sin(k * np.pi * u)
+        for k in range(1, 9):
+            c = rng.uniform(-1, 1)
+            if k == 1:
+                c = rng.choice([-1.0, 1.0]) * rng.uniform(0.6, 1.0)
+            off += c * amp / k * np.sin(k * np.pi * u)
         samples.append(p + np.outer(u, d) + np.outer(off, perp))
     samples.append(pts[-1:])
     s = np.vstack(samples)
@@ -342,7 +369,7 @@ def paint_ground(doc: MapDocument, polygon: list[Point], color_index: int,
     if pts is None:
         return 0
     r = int(round(float(np.clip(softness, 0, 1)) * 10))
-    box = _box(pts, doc, r + 2)
+    box = _box(pts, doc, 2 * r + 2)  # double box blur spreads ~2r
     if box is None:
         return 0
     x0, y0, x1, y1 = box

@@ -68,7 +68,7 @@ def test_roughness_changes_outline():
 
 def test_subtract_restores_water():
     doc = blank()
-    terrain.paint_land(doc, POLY, seed=1)
+    terrain.paint_land(doc, POLY, roughness=0.1, seed=1)
     g = doc.raster("ground")
     g[150, 200] = (9, 9, 9, 255)
     m = doc.raster("mask")
@@ -272,3 +272,54 @@ def test_terrain_roundtrip_saves(tmp_path):
     back = MapDocument.open(out)
     for n, arr in want.items():
         assert np.array_equal(back.raster(n), arr)
+
+
+def _perimeter(p):
+    c = np.vstack([p, p[:1]])
+    return float(np.hypot(*np.diff(c, axis=0).T).sum())
+
+
+def _boundary_len(land):
+    water = ~land
+    edge = np.zeros_like(land)
+    edge[1:] |= water[:-1]
+    edge[:-1] |= water[1:]
+    edge[:, 1:] |= water[:, :-1]
+    edge[:, :-1] |= water[:, 1:]
+    return int((land & edge).sum())
+
+
+def test_displaced_outline_is_fractal():
+    pts = np.array(POLY, dtype=float)
+    plain = terrain._displace(pts, 0.0, np.random.default_rng(1))
+    assert np.array_equal(plain, pts)
+    rough = terrain._displace(pts, 0.6, np.random.default_rng(1))
+    assert _perimeter(rough) >= 1.5 * _perimeter(pts)
+    wild = terrain._displace(pts, 1.0, np.random.default_rng(1))
+    assert np.isfinite(wild).all() and np.abs(wild).max() < 3 * max(W, H)
+
+
+def test_raster_coast_longer_with_roughness():
+    a, b = blank(), blank()
+    terrain.paint_land(a, POLY, roughness=0, seed=1)
+    terrain.paint_land(b, POLY, roughness=0.6, seed=1)
+    la, lb = (rs.is_land(d.raster("mask")[..., 3]) for d in (a, b))
+    assert _boundary_len(lb) >= 1.3 * _boundary_len(la)  # pixel count under-reads sub-pixel jaggedness
+
+
+def test_river_visibly_meanders():
+    doc = MapDocument.new(600, 300)
+    terrain.paint_land(doc, [(0, 0), (600, 0), (600, 300), (0, 300)], roughness=0)
+    width = 3.0
+    terrain.add_river(doc, [(100, 150), (500, 150)], width=width, seed=3)
+    ys, xs = np.nonzero(doc.raster("mask")[..., 0])
+    assert np.abs(ys - 150).max() > 2 * width
+
+
+def test_ground_feather_fits_in_box():
+    doc = blank()
+    terrain.paint_ground(doc, POLY, 0, softness=1.0)  # r = 10, box pad 22
+    g = doc.raster("ground")[..., 3]
+    assert g[:, 100 - 22].max() == 0 and g[:, 300 + 21].max() == 0
+    assert g[80 - 22, :].max() == 0 and g[220 + 21, :].max() == 0
+    assert g[150, 100 - 10] > 0
