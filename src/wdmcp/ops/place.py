@@ -23,6 +23,7 @@ Conventions
 from __future__ import annotations
 
 import bisect
+import re
 from typing import Literal
 
 import numpy as np
@@ -37,7 +38,6 @@ from wdmcp.ops import scatter as _sc
 Point = tuple[float, float]
 BASE_SCALE = 1.0
 USER_BASE_SCALE = 0.25
-LABEL_GAP = 6.0
 _TYPE = {"mountains": "mountain", "trees": "tree", "symbols": "symbol"}
 
 # kind -> keywords searched (in order) among built-in (res://) "symbols" sets.
@@ -128,8 +128,33 @@ def _make_symbol(s: SymbolSet, texture: str, pos, scale: float, rotation: float,
         mirror=mirror)
 
 
+def pack_of_texture(texture: str) -> tuple[Literal["user", "builtin"], str] | None:
+    """Pack a texture belongs to: ("user", name) for ``user://assets/<pack>/...``,
+    ("builtin", name) for ``res://packs/<pack>/...``, None for core assets."""
+    for prefix, kind in (("user://assets/", "user"), ("res://packs/", "builtin")):
+        if texture.startswith(prefix):
+            name = texture[len(prefix):].split("/", 1)[0]
+            return (kind, name) if name else None
+    return None
+
+
+def _register_packs(doc: MapDocument, entries: list[dict]) -> None:
+    """Wonderdraft refuses to load pack assets the map doesn't list."""
+    for e in entries:
+        pk = pack_of_texture(e["texture"])
+        if pk is None:
+            continue
+        key = "included_packs" if pk[0] == "user" else "included_default_packs"
+        lst = doc.root.get(key)
+        if lst is None:
+            lst = doc.root[key] = []
+        if pk[1] not in lst:
+            lst.append(pk[1])
+
+
 def _insert_symbols(doc: MapDocument, entries: list[dict]) -> list[str]:
     """Insert keeping ``(z_index, y)`` order; return ids of ``entries`` after insertion."""
+    _register_packs(doc, entries)
     lst = doc.root["symbols"]
     keys = [(e["z_index"], e["position"].y) for e in lst]
     for e in entries:
@@ -251,6 +276,10 @@ def add_label(doc: MapDocument, text: str, pos, preset: str = "Town", size: int 
 
 
 # ------------------------------------------------------------------ settlements
+def _words(text: str) -> str:
+    return re.sub(r"[_\-]+", " ", text)
+
+
 def default_settlement_set(cat: Catalog, kind: str) -> str:
     """Pick a built-in symbols set for ``kind`` via SETTLEMENT_KEYWORDS."""
     if kind not in SETTLEMENT_KEYWORDS:
@@ -258,8 +287,9 @@ def default_settlement_set(cat: Catalog, kind: str) -> str:
                          f"{', '.join(SETTLEMENT_KEYWORDS)}")
     builtin = [s for s in cat.sets("symbols") if s.key.startswith("res://") and s.variants]
     for kw in SETTLEMENT_KEYWORDS[kind]:
+        pat = re.compile(rf"\b{re.escape(kw)}s?\b", re.IGNORECASE)
         for s in builtin:
-            if kw in s.key.lower() or kw in s.name.lower():
+            if pat.search(_words(s.key.rsplit("/", 1)[-1])) or pat.search(_words(s.name)):
                 return s.key
     core = [s for s in builtin if s.key.startswith("res://sprites/")]
     if core or builtin:
@@ -283,10 +313,16 @@ def add_settlement(doc: MapDocument, cat: Catalog, name: str, pos,
     ids = [sym_id]
     if label:
         e = doc.get(sym_id)
-        ly = min(e["position"].y + e["radius"] * e["scale"].y + LABEL_GAP, doc.height - 1.0)
+        preset = "City" if kind == "city" else "Town"
+        gap = 0.35 * _label_kwargs(doc, preset)["size"]
+        try:
+            half = cat.image(e["texture"]).height * e["scale"].y / 2.0
+        except Exception:  # image unavailable: fall back to the set radius
+            half = e["radius"] * e["scale"].y
+        ly = e["position"].y + e["offset"].y + half + gap
+        ly = min(max(ly, 0.0), doc.height - 1.0)
         # labels are a separate list, so the (positional) symbol id stays valid
-        ids.append(add_label(doc, name, (e["position"].x, ly),
-                             preset="City" if kind == "city" else "Town"))
+        ids.append(add_label(doc, name, (e["position"].x, ly), preset=preset))
     return ids
 
 

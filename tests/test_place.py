@@ -181,7 +181,9 @@ def test_settlement_adds_symbol_and_label(cat):
     s, l = doc.get(ids[0]), doc.get(ids[1])
     assert l["text"] == "Oakvale"
     assert l["position"].x == 200.0
-    assert l["position"].y > s["position"].y + s["radius"] * s["scale"].y - 1e-9
+    # fake catalog has no image: radius fallback, offset and 0.35*size gap
+    assert l["position"].y == pytest.approx(
+        100 + s["offset"].y + s["radius"] * s["scale"].y + 0.35 * l["size"])
     assert l["size"] == 48  # City preset of the blank theme
     ids = place.add_settlement(doc, cat, "Hamlet", (100, 100), "village", set_key=HOUSES, label=False)
     assert len(ids) == 1
@@ -191,6 +193,14 @@ def test_settlement_default_sets(cat):
     assert place.default_settlement_set(cat, "town") == TOWN
     assert place.default_settlement_set(cat, "castle") == CASTLE
     assert place.default_settlement_set(cat, "mine") in (TOWN, CASTLE)  # fallback: any builtin
+    cat._sets["res://sprites/symbols/gold_mines"] = SymbolSet(
+        "res://sprites/symbols/gold_mines", None, "symbols", "Gold", 5.0,
+        (0.0, 0.0), "normal", ["a"])
+    cat._sets["res://sprites/symbols/comfort"] = SymbolSet(
+        "res://sprites/symbols/comfort", None, "symbols", "Comfort", 5.0,
+        (0.0, 0.0), "normal", ["a"])
+    assert place.default_settlement_set(cat, "mine") == "res://sprites/symbols/gold_mines"
+    assert place.default_settlement_set(cat, "fort") == CASTLE  # not "comfort"
     empty = Catalog(None, None)
     with pytest.raises(ValueError):
         place.default_settlement_set(empty, "town")
@@ -258,7 +268,7 @@ def test_label_preset_fallback():
     assert place.label_preset_used(doc, "Region") == "Terrain"
     assert place.label_preset_used(doc, "Water") == "Water"
     del presets["Water"]
-    assert place.label_preset_used(doc, "Water") == "Terrain" or place.label_preset_used(doc, "Water") in presets
+    assert place.label_preset_used(doc, "Water") == "City"  # Water, Town missing -> first available
     with pytest.raises(ValueError, match="Bogus"):
         place.label_preset_used(doc, "Bogus")
     presets.clear()
@@ -276,3 +286,39 @@ def test_roundtrip_save(tmp_path, cat):
     back = MapDocument.open(out)
     assert len(back.root["symbols"]) == len(doc.root["symbols"])
     assert len(back.list("label")) == 1 and len(back.list("territory")) == 1
+
+
+def test_settlement_label_below_real_sprite(cat):
+    from PIL import Image
+    cat.image = lambda tex: Image.new("RGBA", (100, 200))
+    doc = blank()
+    ids = place.add_settlement(doc, cat, "Hut", (200, 100), "village", set_key=HOUSES)
+    s, l = doc.get(ids[0]), doc.get(ids[1])
+    assert s["scale"].y == 0.25
+    # 200px * 0.25 / 2 = 25 below the sprite centre, plus a gap
+    assert l["position"].y >= 100 + s["offset"].y + 25 + 0.35 * l["size"] - 1e-9
+
+
+def test_pack_of_texture():
+    assert place.pack_of_texture("user://assets/My Pack/sprites/symbols/H/1") == ("user", "My Pack")
+    assert place.pack_of_texture("res://packs/Arabia/sprites/symbols/x/1") == ("builtin", "Arabia")
+    assert place.pack_of_texture("res://sprites/symbols/x/1") is None
+
+
+def test_symbols_register_packs(cat, tmp_path):
+    ARAB = "res://packs/Arabia/sprites/trees/palms"
+    cat._sets[ARAB] = SymbolSet(ARAB, "Arabia", "trees", "palms", 10.0, (0.0, 0.0), "normal", [ARAB + "/p"])
+    doc = blank()
+    doc.root["included_packs"] = ["Other"]
+    before = list(doc.root["included_default_packs"])
+    place.add_symbol(doc, cat, TOWN, (10, 10))
+    assert doc.root["included_packs"] == ["Other"]
+    assert doc.root["included_default_packs"] == before
+    place.add_symbol(doc, cat, HOUSES, (20, 20))
+    place.add_symbol(doc, cat, HOUSES, (30, 30))
+    place.scatter(doc, cat, ARAB, FULL, 1.0, land_only=False)
+    assert doc.root["included_packs"] == ["Other", "Pack"]
+    assert doc.root["included_default_packs"] == before + ["Arabia"]
+    back = MapDocument.open(doc.save(tmp_path / "m.wonderdraft_map"))
+    assert back.root["included_packs"] == ["Other", "Pack"]
+    assert back.root["included_default_packs"] == before + ["Arabia"]
