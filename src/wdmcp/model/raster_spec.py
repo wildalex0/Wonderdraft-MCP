@@ -21,7 +21,12 @@ GROUND_ENCODING = (
 WATER_TINT_ENCODING = (
     "Direct RGBA tint over water only; (0,0,0,0) = none."
 )
-RIVER_ENCODING: str = "PROVISIONAL: unknown until probe_gui is analysed"
+FRESHWATER_CHANNEL = 0  # R index of mask
+RIVER_ENCODING: str = (
+    "Rivers and lakes live in the R channel of mask as anti-aliased freshwater "
+    "coverage 0-255, only on land pixels (alpha >= 128); G and B stay 0; no paths entries."
+)
+USER_TEXTURE_PREFIX = "user://assets/"
 
 
 def land_alpha(height01: np.ndarray) -> np.ndarray:
@@ -40,11 +45,26 @@ def is_land(alpha: np.ndarray) -> np.ndarray:
     return np.asarray(alpha) >= SEA_LEVEL_ALPHA
 
 
+def paint_freshwater(mask: np.ndarray, coverage: np.ndarray) -> int:
+    """Max-combine freshwater coverage into mask R, on land pixels only.
+
+    ``coverage`` is (h, w) uint8 or float in [0,1]. Returns the number of pixels
+    whose R value changed.
+    """
+    cov = np.asarray(coverage)
+    if cov.dtype != np.uint8:
+        cov = np.rint(np.clip(cov.astype(np.float64), 0.0, 1.0) * 255).astype(np.uint8)
+    old = mask[..., FRESHWATER_CHANNEL].copy()
+    new = np.where(is_land(mask[..., 3]), np.maximum(old, cov), old)
+    mask[..., FRESHWATER_CHANNEL] = new
+    return int((new != old).sum())
+
+
 def user_pack_texture(pack: str, rel: str) -> str:
-    """PROVISIONAL (unverified against a real user-pack map).
+    """Texture string for a user-pack asset: ``user://assets/<pack>/<rel>`` with no extension.
 
     ``rel`` is relative to the pack root, e.g. ``sprites/symbols/<set>/<name>.png``.
     """
     rel = rel.replace("\\", "/")
     root, _ext = os.path.splitext(rel)
-    return f"res://packs/{pack}/{root}"
+    return f"{USER_TEXTURE_PREFIX}{pack}/{root}"

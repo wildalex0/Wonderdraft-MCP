@@ -16,6 +16,12 @@ def test_testmap_byte_exact():
     assert variant.encode(variant.decode(payload)) == payload
 
 
+def test_probe_gui_byte_exact():
+    fix = Path(__file__).parent / "fixtures" / "probe_gui.wonderdraft_map"
+    payload = gcpf.read(fix.read_bytes())
+    assert variant.encode(variant.decode(payload)) == payload
+
+
 def test_autosave_byte_exact():
     fix = Path(__file__).parent / "fixtures" / "autosave_exact_multiple.wonderdraft_map"
     payload = gcpf.read(fix.read_bytes())
