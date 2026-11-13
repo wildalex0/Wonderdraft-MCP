@@ -417,14 +417,15 @@ def test_sample_color_variant_gets_land_colour_and_meta():
     assert e3["sample"] is None
 
 
-def test_land_colour_follows_ground_paint_and_water_fallback():
+def test_sample_colour_is_base_ground_plus_paint_not_height():
     from wdmcp.model.land_color import land_color_at
     doc = land_doc()
     gc = doc.root["theme"]["ground_colors"]
-    c0 = land_color_at(doc, 5, 5)  # open sea, no land within 64 px -> first ground colour
-    assert (c0.r, c0.g, c0.b) == pytest.approx((gc[0].r, gc[0].g, gc[0].b), abs=1e-6)
-    near = land_color_at(doc, 45, 150)  # water next to the coast -> nearest land
-    assert near.a == 1.0
+    base = pytest.approx((gc[0].r, gc[0].g, gc[0].b), abs=1e-6)
+    terrain.raise_area(doc, [(60, 60), (340, 60), (340, 240), (60, 240)], 0.9)
+    for x, y in ((5, 5), (45, 150), (200, 150)):  # sea, coast, high land: all the same
+        c = land_color_at(doc, x, y)
+        assert (c.r, c.g, c.b) == base and c.a == 1.0
     k = len(gc) - 1
     terrain.paint_ground(doc, [(150, 100), (250, 100), (250, 200), (150, 200)], k, softness=0)
     p = land_color_at(doc, 200, 150)
@@ -448,3 +449,15 @@ def test_recolor_symbols_repairs_old_entries():
     e["sample"] = Color(0, 0, 0, 1)
     assert place.recolor_symbols(doc, c, [i], overwrite=True)["recolored"] == 1
     assert e["sample"] == before
+
+
+def test_sample_colour_close_to_wonderdraft_on_testmap():
+    from wdmcp.model.land_color import land_color_at
+    doc = MapDocument.open(FIXTURE)
+    diffs = [max(abs(a - b) for a, b in zip(
+        (land_color_at(doc, e["position"].x, e["position"].y).r,
+         land_color_at(doc, e["position"].x, e["position"].y).g,
+         land_color_at(doc, e["position"].x, e["position"].y).b),
+        (e["sample"].r, e["sample"].g, e["sample"].b)))
+        for _, e in doc.list("symbol") if e["sample"] is not None]
+    assert len(diffs) == 47 and max(diffs) < 0.05  # only the paper texture is missing
