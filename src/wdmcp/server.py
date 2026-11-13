@@ -12,12 +12,14 @@ from pathlib import Path
 from typing import Any, Literal
 
 from mcp.server.mcpserver import Image, MCPServer
+from PIL import Image as PILImage
 from mcp.server.mcpserver.exceptions import ToolError
 
 from wdmcp import convert, region
 from wdmcp.assets.catalog import CATEGORIES
 from wdmcp.assets.themes import apply_theme as _apply_theme
 from wdmcp.codec.types import Vector2
+from wdmcp.export import ExportError, export_via_app, is_supported
 from wdmcp.model import raster_spec as rs
 from wdmcp.model.document import MapDocument
 from wdmcp.model.points import format_points, parse_points
@@ -525,6 +527,60 @@ def render_preview(scale: float = 0.5, bbox: list[int] | None = None,
 
 
 @tool_errors
+def export_image(path: str, format: Literal["png", "jpg"] = "png",
+                 via: Literal["wonderdraft", "preview"] = "wonderdraft") -> dict:
+    """Export the open map as an image file at path (never overwrites an existing file).
+    via="wonderdraft" drives the real Wonderdraft app (~10 s, Windows only; close Wonderdraft
+    first and do not type meanwhile) and needs the map saved with no unsaved edits.
+    via="preview" writes a full-scale render from this server instead."""
+    s = session()
+    doc = s.doc()
+    out = Path(path).expanduser()
+    if out.suffix == "":
+        out = out.with_name(out.name + (".png" if format == "png" else ".jpg"))
+    if out.exists():
+        raise ValueError(f"{out} already exists; choose a new file name (nothing was overwritten)")
+    if not out.parent.is_dir():
+        raise ValueError(f"folder not found: {out.parent}")
+    note = ""
+    if via == "preview":
+        img = _render_preview(doc, s.catalog, scale=1.0)
+    else:
+        if doc.path is None or s.dirty:
+            raise ValueError("via=\"wonderdraft\" exports the saved map file: call save_map first "
+                             "(the map is unsaved or has unsaved edits). Nothing was written.")
+        manual = (f"To export by hand: open {doc.path} in Wonderdraft, press Ctrl+E, keep the "
+                  f"defaults and save the PNG. Or call export_image with via=\"preview\" for a "
+                  f"full-scale render from this server.")
+        if not is_supported():
+            return _result([], "Automated export needs Wonderdraft installed on Windows "
+                               "(set WDMCP_EXE if it is elsewhere). " + manual,
+                           path=None, via="instructions", width=None, height=None)
+        png = out if format == "png" else out.with_name(f".{out.stem}.wdmcp-tmp.png")
+        try:
+            try:
+                export_via_app(doc.path, png)
+            except ExportError as e:
+                png.unlink(missing_ok=True)
+                return _result([], f"Automated export failed: {e} " + manual,
+                               path=None, via="instructions", width=None, height=None)
+            img = PILImage.open(png)
+            img.load()
+        finally:
+            if png != out:
+                png.unlink(missing_ok=True)
+        if format == "jpg":
+            note = " Wonderdraft exported a PNG, which was converted to JPG (quality 92)."
+    if format == "jpg":
+        img = img.convert("RGB")
+        img.save(out, format="JPEG", quality=92)
+    elif via == "preview":
+        img.save(out, format="PNG")
+    return _result([], f"Exported {img.width}x{img.height} {format.upper()} to {out} via {via}." + note,
+                   path=str(out), via=via, width=img.width, height=img.height)
+
+
+@tool_errors
 def undo() -> dict:
     """Undo the last change (up to 20 steps; cleared when a map is created or opened)."""
     s = session()
@@ -544,7 +600,7 @@ TOOLS = [
     add_label, add_path, add_territory,
     update_object, move_objects, remove_objects, apply_theme, set_frame,
     build_region, region_spec_schema,
-    render_preview, undo,
+    render_preview, export_image, undo,
 ]
 for _fn in TOOLS:
     mcp.tool()(_fn)

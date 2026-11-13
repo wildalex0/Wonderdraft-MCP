@@ -40,6 +40,22 @@ symbols are inserted or removed; use the ids a tool returns, or `list_objects`.
   `add_settlement`, `add_label`, `add_path`, `add_territory`
 - Editing: `update_object`, `move_objects`, `remove_objects`, `apply_theme`, `set_frame`
 - Output: `render_preview` returns a PNG image and saves it (`<map>.preview.png` next to a saved
-  map, otherwise in a temp dir)
+  map, otherwise in a temp dir); `export_image` writes a PNG/JPG file (see Export)
 
 Points are `[[x, y], ...]`; colours are `[r, g, b]` / `[r, g, b, a]` floats 0-1 or `"#rrggbb"`.
+
+## Export
+
+`export_image(path, format="png"|"jpg", via="wonderdraft"|"preview")` never overwrites an
+existing file.
+
+- `via="wonderdraft"` (default) drives the real Wonderdraft app (Windows only) for a
+  pixel-exact export: it launches Wonderdraft with the saved map, sends Ctrl+E and Enter, fills
+  in the save dialog, then closes Wonderdraft. It takes about 10 seconds. **Do not type while it
+  runs**: it sends Ctrl+E/Enter to the foreground window. Wonderdraft must not already be
+  running, and the map must be saved with no unsaved edits (call `save_map` first). JPG is a PNG
+  export converted with Pillow (quality 92). If automation is unavailable or fails, the tool
+  returns instructions (open the map, press Ctrl+E). Set `WDMCP_EXE` if Wonderdraft is not at
+  `C:\Program Files\Wonderdraft\Wonderdraft.exe`.
+- `via="preview"` writes a full-scale render from this server's own renderer; it works anywhere
+  and needs no saved map.

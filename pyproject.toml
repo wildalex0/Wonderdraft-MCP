@@ -21,3 +21,4 @@ packages = ["src/wdmcp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["gui: drives the real Wonderdraft app; needs WDMCP_GUI_TESTS=1"]
