@@ -204,11 +204,41 @@ def test_undo_memory_budget(session):
         server.undo()
 
 
-def test_undo_after_new_map_is_empty(session):
+def test_undo_after_new_map_restores_previous_map(session):
     sample_map()
-    server.new_map(100, 100)
+    server.add_label("Keep", [10, 10])
+    prev = session.current
+    r = server.new_map(100, 100)
+    assert r["replaced_unsaved_map"] is True and r["warnings"]
+    assert "undo restores it" in r["summary"]
+    server.undo()
+    assert session.current is prev and session.dirty
+    assert len(prev.list("label")) == 1
+    server.undo()  # the previous map's own history is back too
+    assert prev.list("label") == []
+
+
+def test_new_map_from_nothing_has_no_undo(session):
+    r = server.new_map(100, 100)
+    assert r["replaced_unsaved_map"] is False and r["warnings"] == []
     with pytest.raises(ToolError, match="Nothing to undo"):
         server.undo()
+
+
+def test_open_map_keeps_previous_for_undo(session, tmp_path):
+    from pathlib import Path
+    fx = Path(__file__).parent / "fixtures" / "testmap.wonderdraft_map"
+    sample_map()
+    prev = session.current
+    r = server.open_map(str(fx))
+    assert r["replaced_unsaved_map"] is True and Path(r["path"]).is_absolute()
+    assert not session.dirty
+    server.undo()
+    assert session.current is prev
+    # opening over a saved, clean map does not warn
+    server.save_map(str(tmp_path / "s.wonderdraft_map"))
+    r = server.open_map(str(fx))
+    assert r["replaced_unsaved_map"] is False and r["warnings"] == []
 
 
 # ------------------------------------------------------------------ editing
@@ -542,3 +572,13 @@ def test_concurrent_mutating_tools_keep_state_consistent():
     assert len(doc.list("label")) == 100 and len(doc.list("symbol")) == 100
     assert len({e["text"] for _, e in doc.list("label")}) == 100
     assert len(server.session().history) == 20  # bounded undo intact
+
+
+def test_replacing_maps_keeps_only_one_previous(session):
+    server.new_map(100, 100)
+    server.new_map(110, 100)
+    server.new_map(120, 100)
+    server.undo()
+    assert session.current.width == 110
+    with pytest.raises(ToolError, match="Nothing to undo"):
+        server.undo()

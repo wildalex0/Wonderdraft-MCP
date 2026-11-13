@@ -86,8 +86,12 @@ class Session:
 
     def replace_current(self, doc: MapDocument, dirty: bool, label: str) -> bool:
         """Make ``doc`` current like set_current, but keep the previous map (and its undo
-        history) as one undo step. Returns True if an unsaved map was replaced."""
+        history) as one undo step. Returns True if an unsaved map was replaced.
+
+        Only one previous map is kept: the old map's own map-replacing step (always the first
+        of its history) is dropped, so memory stays bounded to two maps."""
         old, hist, was_dirty = self.current, self.history, self.dirty
+        hist = [h for h in hist if h.prev is None]
         self.current, self.history, self.dirty = doc, [], dirty
         if old is not None:
             self.history.append(Snapshot(label, {}, prev=(old, hist, was_dirty)))

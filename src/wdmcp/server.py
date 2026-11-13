@@ -41,6 +41,7 @@ MIN_MAP_SIDE = 64
 ID_NOTE = ("Symbol ids are positional and shift when symbols are inserted or removed; "
            "the ids returned here are valid now.")
 RASTER_TOOLS = ("mask", "ground")  # rasters the terrain ops may write
+UNSAVED_WARNING = "the previously open map had unsaved changes; undo restores it"
 
 _session = Session()
 
@@ -105,34 +106,43 @@ def _pos(v, what="pos") -> list[float]:
 # ----------------------------------------------------------------- lifecycle
 @tool_errors
 def new_map(width: int = 1920, height: int = 1080, theme: str = "Adventure") -> dict:
-    """Create a blank all-water map (replacing any open map) and apply a theme.
+    """Create a blank all-water map (replacing any open map; undo brings that one back) and
+    apply a theme.
 
     Use list_themes for theme names. Then paint land with generate_landmass or paint_land."""
     if not (MIN_MAP_SIDE <= width <= MAX_MAP_SIDE and MIN_MAP_SIDE <= height <= MAX_MAP_SIDE):
         raise ValueError(f"width and height must be between {MIN_MAP_SIDE} and {MAX_MAP_SIDE}")
     s = session()
     theme_json = s.catalog.get_theme(theme)  # raises AssetNotFound with close matches
-    discarded = s.current is not None and s.dirty
     doc = MapDocument.new(width, height)
     _apply_theme(doc, theme_json)
-    s.set_current(doc, dirty=True)
+    replaced = s.replace_current(doc, dirty=True, label="new_map")
     msg = f"Created blank {width}x{height} map with theme {theme!r}. It is all water."
-    if discarded:
-        msg += " The previously open map had unsaved changes and was discarded."
-    return _result([], msg)
+    warnings = []
+    if replaced:
+        warnings.append(UNSAVED_WARNING)
+        msg += " Warning: " + UNSAVED_WARNING + "."
+    return _result([], msg, replaced_unsaved_map=replaced, warnings=warnings)
 
 
 @tool_errors
 def open_map(path: str) -> dict:
-    """Open a .wonderdraft_map file. The file is only read, never modified; save_map writes."""
-    p = Path(path).expanduser()
+    """Open a .wonderdraft_map file. The file is only read, never modified; save_map writes.
+    The previously open map is replaced (undo brings it back)."""
+    p = Path(path).expanduser().resolve()
     if not p.is_file():
         raise ValueError(f"file not found: {p}")
     doc = MapDocument.open(p)
-    session().set_current(doc, dirty=False)
+    replaced = session().replace_current(doc, dirty=False, label="open_map")
     c = _counts(doc)
-    return _result([], f"Opened {p} ({doc.width}x{doc.height}): " +
-                   ", ".join(f"{n} {k}" for k, n in c.items()) + " objects.", counts=c)
+    msg = (f"Opened {p} ({doc.width}x{doc.height}): " +
+           ", ".join(f"{n} {k}" for k, n in c.items()) + " objects.")
+    warnings = []
+    if replaced:
+        warnings.append(UNSAVED_WARNING)
+        msg += " Warning: " + UNSAVED_WARNING + "."
+    return _result([], msg, counts=c, path=str(p), replaced_unsaved_map=replaced,
+                   warnings=warnings)
 
 
 @tool_errors
@@ -526,7 +536,7 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
     saved = res.doc.path
     replaced = s.replace_current(res.doc, dirty=False, label="build_region")
     if replaced:
-        res.warnings.append("the previously open map had unsaved changes; undo restores it")
+        res.warnings.append(UNSAVED_WARNING)
     c = res.counts
     msg = (f"Built {spec.name!r} ({spec.width}x{spec.height}, theme {spec.theme!r}) and saved it to "
            f"{saved}: {c['settlements']} settlements, {c['realms']} realms, {c['roads']} roads, "
@@ -641,7 +651,8 @@ def export_image(path: str, format: Literal["png", "jpg"] = "png",
 
 @tool_errors
 def undo() -> dict:
-    """Undo the last change (up to 20 steps; cleared when a map is created or opened)."""
+    """Undo the last change (up to 20 steps). After new_map, open_map or build_region, undo
+    first brings back the map that was open before (with its own undo history)."""
     s = session()
     label = s.undo()
     return _result([], f"Undid {label}. {len(s.history)} undo step(s) left. "
