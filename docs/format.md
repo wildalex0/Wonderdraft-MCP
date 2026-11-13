@@ -109,3 +109,23 @@ Caveats:
   - Keys must be sent as one `SendInput` per event, about 40 ms apart, because Godot polls input once per frame and loses a press+release that arrive in the same frame. Allow 300 ms after foregrounding before sending.
   - Readiness matters. Sent 3 s after the window title appears, the first Ctrl+E was always ignored. After polling `SendMessageTimeoutW(WM_NULL)` and waiting `READY_SECONDS = 6` from the title, the first attempt succeeded in **3/3 runs, about 12.8 s each**. A guarded single retry (Esc, then Ctrl+E, then Enter, only if no native dialog exists yet) remains as a fallback.
   - Wonderdraft is launched with stdin/stdout/stderr set to DEVNULL so it can't write into the MCP JSON-RPC pipe.
+
+## Task 13: end-to-end acceptance on the Dreifurt notes (2026-11-13)
+
+**Result: pass.** A fresh headless Claude Code session (`claude -p`) with the `wonderdraft` server attached took 146 turns, ~12 min and $5.01. It had read-only file tools and read the user's New Campaign vault without modifying it. Then it:
+- wrote a 3000×2400 `RegionSpec` from *The Dreifurt Region*, the four quarter pages, *Villages*, *Surroundings* and *Travel and Distances*, at 27 px per road mile from the Roadstone;
+- called `build_region` and iterated three times with `render_preview` plus edit tools (moved labels, re-scattered hills, re-added a missing river stretch, swapped sprites, cleared clutter), saving after each round;
+- exported a full-scale preview.
+
+The controller then opened the map in **Wonderdraft 1.1.8** and exported it with `export_via_app`, which took 21.5 s and succeeded on the second attempt. The result is a 3000×2400 PNG with the four quarters as territories, roads, the Aldengau/Eisenmark/Irmenwald rivers, Irmenwald forest, upland hills, all towns, villages and ranked sites, and labels with theme fonts and frame. Everything is present, and the objects are ordinary Wonderdraft entries, so they stay editable. Outputs are in `out/dreifurt/`, which is not committed.
+
+## Known gaps (from the acceptance run and controller checks)
+1. **Map size.** Saved maps are about 89 MB at 3000×2400 because `fastlz.compress` is literal-only; Wonderdraft's own saves are about 30× smaller. A real FastLZ level-1 compressor is needed.
+2. **Backup clutter.** Every `save_map` onto the same path writes another `.bak`. The acceptance run left three 89 MB backups.
+3. **Label rotation units.** Tools and schema say degrees, but the value is stored as Godot radians, so small numbers spin text.
+4. **`build_region` dropped a river stretch silently.** The Aldengau's first segment from the city did not draw, and there was no warning. Re-adding it with `add_river` worked.
+5. **`update_object` can't change a symbol's variant.** Guessing a `texture` name picked the wrong sprite. Remove plus `add_symbol(variant=…)` works.
+6. **Missing knobs.** `add_mountain_range` has no symbol scale, and river width can't be edited after building.
+7. **Scale-appropriate default sets.** The default "hills" are tiny tufts and the default mountains are alpine peaks.
+8. **Export on large maps.** The first Ctrl+E is still sometimes ignored; the guarded retry covers it.
+9. **Not representable from the notes.** Off-map destinations such as the sea port appear only as edge labels.
