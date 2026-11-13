@@ -292,8 +292,8 @@ def test_apply_theme_changes_label_presets():
   - `paint_land(doc, polygon: list[tuple], mode: Literal["add","subtract"] = "add", roughness: float = 0.5, seed: int = 0) -> int`: returns the pixels changed. The polygon edge is displaced by fractal noise scaled by `roughness`. Heights rise toward the interior.
   - `generate_landmass(doc, coverage: float, seed: int, kind: Literal["continent","archipelago","island"]) -> int`
   - `raise_area(doc, polygon, amount: float) -> int`
-  - `add_lake(doc, polygon, roughness=0.3, seed=0) -> int`
-  - `add_river(doc, points: list[tuple], width: float = 3.0, seed=0) -> str | int`: returns a path id or a pixel count, per `RIVER_ENCODING`
+  - `add_lake(doc, polygon, roughness=0.3, seed=0) -> int`: freshwater lake. Rasterise the noise-displaced polygon as anti-aliased coverage and write it with `raster_spec.paint_freshwater` (mask R channel, land only). Returns pixels changed. *(Updated after Spike B: lakes are mask R, not erased land.)*
+  - `add_river(doc, points: list[tuple], width: float = 3.0, seed=0) -> int`: rasterise a meandering, anti-aliased polyline (width tapering toward the first point, like Wonderdraft's source fade-in) into coverage and write it with `raster_spec.paint_freshwater`. Returns pixels changed. *(Updated after Spike B: rivers are mask R, not paths.)*
   - `paint_ground(doc, polygon, color_index: int, softness: float = 0.5) -> int`
   - `noise.fbm(shape, scale, octaves, seed) -> np.ndarray[float32]` in [0, 1], deterministic per seed
 

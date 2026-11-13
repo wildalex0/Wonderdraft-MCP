@@ -49,3 +49,19 @@ Cross-check against the test map: thresholding its mask at `alpha >= 128` reprod
 - **Mask RGB:** binary 0 or 1. It is set by the raise tool and has no rendering effect in our probes. We write 0, except to mirror the raise tool.
 - **`ground`:** RGBA paint over land. Alpha is opacity, and (0,0,0,0) means no paint.
 - **`water_tint`:** RGBA tint over water. (0,0,0,0) means none.
+
+### Spike B, step 2: hand-drawn GUI probe (`tests/fixtures/probe_gui.wonderdraft_map`)
+
+The user drew land, one river, one lake and two user-pack symbols in Wonderdraft and saved the map. Our codec round-trips it byte-exactly.
+
+- **Rivers and lakes are mask R.** The **R channel of `mask`** holds anti-aliased freshwater coverage, 0–255. The river (with a thin, fading source) and the lake both live there. No `paths` entries are created.
+  - Freshwater pixels occur only on land (alpha ≥ 128 under every R > 0 pixel).
+  - G and B stay 0.
+  - The R=G=B=1 pixels in the test map's raised stroke are freshwater coverage 1/255, which is effectively nothing.
+- **User-pack symbol textures** have the form `user://assets/<pack>/sprites/<category>/<set>/<name>`, with no extension. Examples:
+  - `user://assets/T.A's Mapmaking Kit/sprites/symbols/[T.A.] Houses/13`
+  - `user://assets/Moulk's AI Fantasy Cartography Megapack/sprites/symbols/Mushroom Houses/Mushroom 5`
+
+  `user://` is `%APPDATA%\Wonderdraft\`. The packs are listed in `included_packs`.
+- Placed user symbols had `radius` 107/96, `offset` (0,0)/(0,−63) and `scale` 0.25 (Wonderdraft's default brush size). Both `draw_mode` and `custom_color_mode` are absent (None) on these entries.
+- The `ground` and `water_tint` layers were untouched, so both stay all-zero.
