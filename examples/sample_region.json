@@ -30,10 +30,10 @@
   ],
   "settlements": [
     {"name": "Eldmoor", "kind": "city", "pos": [780, 400]},
-    {"name": "Saltreach", "kind": "town", "pos": [1090, 890]},
+    {"name": "Saltreach", "kind": "port", "pos": [1090, 890]},
     {"name": "Graycrag", "kind": "castle", "pos": [1500, 540]},
-    {"name": "Old Harrow", "kind": "ruin", "pos": [500, 740], "scale": 0.6},
-    {"name": "Wren's Ferry", "kind": "village", "pos": [1290, 640], "scale": 0.8}
+    {"name": "Old Harrow", "kind": "ruin", "pos": [500, 740]},
+    {"name": "Wren's Ferry", "kind": "village", "pos": [1290, 640]}
   ],
   "roads": [
     {"points": [[780, 400], [900, 450], [1080, 470], [1200, 520], [1290, 640]], "width": 4},

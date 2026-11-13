@@ -42,6 +42,8 @@ class Snapshot:
     label: str
     root: dict
     rasters: dict[str, tuple[tuple[int, ...], bytes]] = field(default_factory=dict)
+    # set when the step replaced the whole map: (previous doc, its history, its dirty flag)
+    prev: tuple | None = None
 
     @property
     def size(self) -> int:
@@ -76,6 +78,15 @@ class Session:
         self.current = doc
         self.history.clear()
         self.dirty = dirty
+
+    def replace_current(self, doc: MapDocument, dirty: bool, label: str) -> bool:
+        """Make ``doc`` current like set_current, but keep the previous map (and its undo
+        history) as one undo step. Returns True if an unsaved map was replaced."""
+        old, hist, was_dirty = self.current, self.history, self.dirty
+        self.current, self.history, self.dirty = doc, [], dirty
+        if old is not None:
+            self.history.append(Snapshot(label, {}, prev=(old, hist, was_dirty)))
+        return old is not None and was_dirty
 
     # preview files ----------------------------------------------------
     def preview_path(self, doc: MapDocument) -> Path:
@@ -126,6 +137,9 @@ class Session:
         if not self.history:
             raise ToolError("Nothing to undo.")
         snap = self.history.pop()
+        if snap.prev is not None:
+            self.current, self.history, self.dirty = snap.prev
+            return snap.label
         self._restore(doc, snap)
         self.dirty = True
         return snap.label

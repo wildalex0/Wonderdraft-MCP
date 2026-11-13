@@ -28,7 +28,7 @@ from typing import Literal
 
 import numpy as np
 
-from wdmcp.assets.catalog import Catalog, SymbolSet
+from wdmcp.assets.catalog import AssetNotFound, Catalog, SymbolSet
 from wdmcp.codec.types import Color
 from wdmcp.model import raster_spec as rs
 from wdmcp.model import template
@@ -51,6 +51,23 @@ SETTLEMENT_KEYWORDS: dict[str, list[str]] = {
     "port": ["port", "harbor", "harbour", "dock", "ship"],
     "temple": ["temple", "church", "shrine", "cathedral"],
     "mine": ["mine"],
+}
+
+# kind -> (set key, regex matched against the variant's name, fallback scale multiplier,
+# target sprite height in px on screen). The sprites of a set differ a lot in size, so each
+# variant is scaled to the target height (scale multiplier is used only if the image can't
+# be read). Only used when no set_key is given; the keyword search above is the fallback if a
+# curated set is missing from the catalogue.
+CURATED_SETTLEMENTS: dict[str, tuple[str, str, float, float]] = {
+    "city": ("res://sprites/symbols/colored_town", r"castle_0[1-7]", 0.3, 75.0),
+    "town": ("res://sprites/symbols/colored_town", r"hamlet_(0[1-9]|1[0-2])", 0.5, 52.0),
+    "village": ("res://sprites/symbols/farm_village_colored", r"village_houses_.*", 0.4, 40.0),
+    "castle": ("res://sprites/symbols/inked_castles", r"castle_(medium|large)_.*", 0.8, 60.0),
+    "fort": ("res://sprites/symbols/inked_castles", r"castle_small_.*", 0.7, 50.0),
+    "ruin": ("res://sprites/symbols/ruins_colored", r".*", 0.3, 50.0),
+    "port": ("res://sprites/symbols/colored_town", r"hamlet_.*", 0.5, 52.0),
+    "temple": ("res://sprites/symbols/colored_town", r"castle_0[1-3]", 0.3, 65.0),
+    "mine": ("res://sprites/symbols/rocks_and_more_colored", r"mine_.*", 0.4, 50.0),
 }
 
 # preset -> fallback chain ("*" = first available)
@@ -300,16 +317,52 @@ def default_settlement_set(cat: Catalog, kind: str) -> str:
     raise ValueError("the catalogue has no symbols sets; pass set_key explicitly")
 
 
+def curated_settlement(cat: Catalog, kind: str) -> tuple[str, list[int], float] | None:
+    """(set key, indexes of the matching variants, scale multiplier) for ``kind``, or None
+    when the curated set is missing from the catalogue or no variant name matches."""
+    if kind not in CURATED_SETTLEMENTS:
+        raise ValueError(f"unknown settlement kind {kind!r}")
+    key, pattern, k, _ = CURATED_SETTLEMENTS[kind]
+    try:
+        s = cat.get_set(key)
+    except AssetNotFound:
+        return None
+    pat = re.compile(pattern)
+    idx = [i for i, v in enumerate(s.variants) if pat.fullmatch(v.rsplit("/", 1)[-1])]
+    return (key, idx, k) if idx else None
+
+
 def add_settlement(doc: MapDocument, cat: Catalog, name: str, pos,
                    kind: Literal["city", "town", "village", "castle", "fort", "ruin",
                                  "port", "temple", "mine"],
                    set_key: str | None = None, label: bool = True, seed: int = 0,
-                   scale: float = 1.0) -> list[str]:
-    """Symbol plus (optionally) a label just below it. Returns [symbol_id, label_id]."""
+                   scale: float = 1.0, variant: int | None = None,
+                   warnings: list[str] | None = None) -> list[str]:
+    """Symbol plus (optionally) a label just below it. Returns [symbol_id, label_id].
+
+    Without ``set_key`` the curated sprite for ``kind`` is used (see CURATED_SETTLEMENTS),
+    chosen among its matching variants by ``seed`` (or ``variant``, an index into the set's
+    variants); ``scale`` multiplies the kind's default size. If the curated set is missing,
+    the keyword search is used and a message is appended to ``warnings``."""
     if kind not in SETTLEMENT_KEYWORDS:
         raise ValueError(f"unknown settlement kind {kind!r}")
+    if set_key is None:
+        cur = curated_settlement(cat, kind)
+        if cur is not None:
+            set_key, idx, k = cur
+            if variant is None:
+                variant = idx[int(np.random.default_rng(seed).integers(0, len(idx)))]
+            try:
+                h = cat.image(cat.get_set(set_key).variants[variant]).height
+                k = CURATED_SETTLEMENTS[kind][3] / max(h, 1)
+            except Exception:  # image unavailable: use the fixed multiplier
+                pass
+            scale = scale * k
+        elif warnings is not None:
+            warnings.append(f"curated {kind} set {CURATED_SETTLEMENTS[kind][0]} is not in the "
+                            f"catalogue; used keyword search instead")
     key = set_key if set_key is not None else default_settlement_set(cat, kind)
-    sym_id = add_symbol(doc, cat, key, pos, scale=scale, seed=seed)
+    sym_id = add_symbol(doc, cat, key, pos, variant, scale=scale, seed=seed)
     ids = [sym_id]
     if label:
         e = doc.get(sym_id)

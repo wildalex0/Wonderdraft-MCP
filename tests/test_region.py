@@ -179,3 +179,130 @@ def test_sample_builds_with_real_catalog_fast():
     res = region.build(spec, cat)
     assert time.perf_counter() - t < 10
     assert not [w for w in res.warnings if "default" in w]
+
+
+# ------------------------------------------------------------ fix round 1
+import re  # noqa: E402
+
+from wdmcp.ops import place  # noqa: E402
+
+
+def curated_catalog():
+    c = fake_catalog()
+    for kind, (key, _pat, _k, _h) in place.CURATED_SETTLEMENTS.items():
+        if key in c._sets:
+            continue
+        names = {"colored_town": [f"castle_0{i}" for i in range(1, 8)]
+                 + [f"hamlet_{i:02d}" for i in range(1, 13)] + ["japanese_castle"],
+                 "farm_village_colored": ["field_01_mill_color"]
+                 + [f"village_houses_0{i}_color" for i in range(1, 10)],
+                 "inked_castles": ["castle_large_01", "castle_medium_01", "castle_small_01"],
+                 "ruins_colored": [f"ruin_0{i}_color" for i in range(1, 6)],
+                 "rocks_and_more_colored": ["mine_01_color", "mine_02_color", "rock_01_color"]
+                 }[key.rsplit("/", 1)[-1]]
+        c._sets[key] = SymbolSet(key, None, "symbols", key.rsplit("/", 1)[-1], 40.0, (0.0, 0.0),
+                                 "normal", [f"{key}/{n}" for n in names])
+    return c
+
+
+@pytest.mark.parametrize("kind", list(place.CURATED_SETTLEMENTS))
+def test_each_kind_uses_curated_set_and_variant_names(kind):
+    cat = curated_catalog()
+    key, pat, _k, _h = place.CURATED_SETTLEMENTS[kind]
+    seen = set()
+    for seed in range(12):
+        doc = MapDocument.new(200, 200)
+        warnings: list[str] = []
+        ids = place.add_settlement(doc, cat, "X", (100, 100), kind, seed=seed, warnings=warnings)
+        tex = doc.get(ids[0])["texture"]
+        assert tex.startswith(key + "/") and not warnings
+        assert re.fullmatch(pat, tex.rsplit("/", 1)[-1]), tex
+        seen.add(tex)
+        doc2 = MapDocument.new(200, 200)  # deterministic per seed
+        again = place.add_settlement(doc2, cat, "X", (100, 100), kind, seed=seed)
+        assert doc2.get(again[0])["texture"] == tex
+    if kind in ("city", "town", "ruin"):
+        assert len(seen) > 1
+
+
+def test_curated_fallback_warns_when_set_missing():
+    doc = MapDocument.new(200, 200)
+    warnings: list[str] = []
+    place.add_settlement(doc, fake_catalog(), "X", (100, 100), "city", warnings=warnings)
+    assert warnings and "colored_town" in warnings[0]
+    res = region.build(small_spec(settlements=[{"name": "A", "kind": "town", "pos": [200, 150]}]),
+                       fake_catalog())
+    assert any("curated town" in w for w in res.warnings)
+
+
+def test_settlement_variant_and_server_tool():
+    cat = curated_catalog()
+    spec = small_spec(settlements=[{"name": "A", "kind": "town", "pos": [200, 150], "variant": 2}])
+    res = region.build(spec, cat)
+    assert res.doc.get(res.ids[0])["texture"].endswith("/castle_03")
+    server.reset_session(cat)
+    server.new_map(400, 300)
+    server.paint_land(BOX, roughness=0)
+    r = server.add_settlement("B", [200, 150], "village", variant=1)
+    assert server.session().doc().get(r["ids"][0])["texture"].endswith("village_houses_01_color")
+    server.add_settlement("C", [220, 150], "city", set_key="res://sprites/symbols/colored_town",
+                          variant=0)
+    assert any(e["texture"].endswith("castle_01") for _, e in server.session().doc().list("symbol"))
+
+
+def test_settlement_ids_resolve_to_their_entries():
+    spec = small_spec(
+        mountains=[{"polyline": [[120, 100], [280, 100]], "width": 40, "density": 5}],
+        forests=[{"polygon": [[110, 70], [290, 70], [290, 230], [110, 230]], "density": 8}],
+        settlements=[{"name": "Alpha", "kind": "town", "pos": [250, 200]},
+                     {"name": "Beta", "kind": "town", "pos": [150, 80]},
+                     {"name": "Gamma", "kind": "town", "pos": [200, 150]}])
+    res = region.build(spec, fake_catalog())
+    syms = [i for i in res.ids if i.startswith("symbol:")]
+    assert len(syms) == 3
+    by_y = {n: e["position"] for n, e in ((l["text"], l) for _, l in res.doc.list("label"))}
+    got = sorted(res.doc.get(i)["position"].x for i in syms)
+    want = sorted(by_y[n].x for n in ("Alpha", "Beta", "Gamma"))
+    assert got == want  # label x == symbol x for each settlement
+
+
+def test_generate_applied_before_polygons():
+    spec = region.RegionSpec.model_validate({
+        "name": "T", "width": 400, "height": 300,
+        "land": [{"polygon": BOX, "roughness": 0}, {"generate": "island", "coverage": 0.1}]})
+    res = region.build(spec, fake_catalog())
+    m = res.doc.raster("mask")[..., 3]
+    assert rs.is_land(m[150, 200])  # the polygon survives the later generate entry
+
+
+def _dirty_doc():
+    doc = MapDocument.new(100, 100)
+    server.session().set_current(doc, dirty=True)
+    return doc
+
+
+def test_failed_build_leaves_previous_map(tmp_path):
+    prev = _dirty_doc()
+    bad = region.RegionSpec.model_validate({
+        "name": "T", "width": 400, "height": 300, "land": [{"generate": "island"}],
+        "forests": [{"polygon": [[50, 50], [350, 50], [350, 250]], "density": 3,
+                     "set_key": "res://nope"}]})
+    with pytest.raises(ToolError):
+        server.build_region(bad, str(tmp_path / "x.wonderdraft_map"))
+    assert server.session().current is prev and server.session().dirty
+    assert not (tmp_path / "x.wonderdraft_map").exists()
+
+
+def test_build_region_undo_restores_previous_map(tmp_path):
+    prev = _dirty_doc()
+    r = server.build_region(sample_spec(), str(tmp_path / "r.wonderdraft_map"))
+    assert r["replaced_unsaved_map"] is True
+    assert any("unsaved" in w for w in r["warnings"])
+    assert server.session().current is not prev
+    server.undo()
+    assert server.session().current is prev and server.session().dirty
+    # clean previous map: no flag
+    server.new_map(100, 100)
+    server.session().dirty = False
+    assert server.build_region(sample_spec(), str(tmp_path / "s.wonderdraft_map"))[
+        "replaced_unsaved_map"] is False

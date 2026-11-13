@@ -128,7 +128,11 @@ class Settlement(_Model):
     kind: SettlementKind = Field(description="Picks the default symbol and label size (city uses the City label preset).")
     pos: Point
     set_key: str | None = Field(None, description="Override the default symbol set for this kind.")
-    scale: float = Field(1.0, gt=0, le=5, description="Symbol size multiplier (1 = native size).")
+    scale: float = Field(1.0, gt=0, le=5, description=(
+        "Size multiplier on top of the kind's default size (1 = default)."))
+    variant: int | None = Field(None, ge=0, description=(
+        "Pick one sprite of the set by index (list_asset_sets shows the count); default is "
+        "chosen per kind from a curated list using the seed."))
 
 
 class Road(_Model):
@@ -180,7 +184,8 @@ class RegionSpec(_Model):
     scale: Literal["world", "region"] = Field(
         "region", description="world: small symbols for a whole-world map; region: larger symbols.")
     land: list[LandShape] = Field(default_factory=list, description=(
-        "Landmasses. A map with no land is all sea."))
+        "Landmasses. A map with no land is all sea. 'generate' shapes are applied first and "
+        "polygons after them, whatever the list order, so polygons are never wiped."))
     lakes: list[Area] = Field(default_factory=list)
     rivers: list[River] = Field(default_factory=list)
     mountains: list[MountainRange] = Field(default_factory=list)
@@ -263,7 +268,7 @@ class _Builder:
         apply_theme(doc, cat.get_theme(spec.theme))
         doc.root["frame"]["enabled"] = bool(spec.frame)
         self.doc = doc
-        self.settle_pos: list[tuple[str, tuple[float, float]]] = []
+        self.settle_entries: list[dict] = []
 
     def seed(self) -> int:
         self._n += 1
@@ -289,7 +294,8 @@ class _Builder:
 
     # sections ---------------------------------------------------------
     def land(self):
-        for ls in self.spec.land:
+        # generate_landmass overwrites the whole mask, so it must come before any polygon
+        for ls in sorted(self.spec.land, key=lambda x: x.generate is None):
             if ls.generate:
                 terrain.generate_landmass(self.doc, ls.coverage, self.seed(), ls.generate)
             else:
@@ -342,9 +348,10 @@ class _Builder:
                         f"settlement {s.name!r} was on water at ({x:g}, {y:g}); moved to "
                         f"({spot[0]:g}, {spot[1]:g})")
                     x, y = spot
-            place.add_settlement(self.doc, self.cat, s.name, (x, y), s.kind, s.set_key,
-                                 True, self.seed(), s.scale)
-            self.settle_pos.append((s.name, (x, y)))
+            ids = place.add_settlement(self.doc, self.cat, s.name, (x, y), s.kind, s.set_key,
+                                       True, self.seed(), s.scale, s.variant, self.warnings)
+            # symbol ids shift on later inserts, so keep the entry itself and resolve at the end
+            self.settle_entries.append(self.doc.get(ids[0]))
             self.counts["settlements"] += 1
             self.counts["labels"] += 1
 
@@ -381,18 +388,14 @@ class _Builder:
             self.counts["labels"] += 1
 
     def final_ids(self) -> list[str]:
-        """Ids valid now: labels, paths, territories and settlement symbols (found by
-        position, since symbol ids shift while inserting). Mountain/forest symbols are
+        """Ids valid now: labels, paths, territories and settlement symbols (resolved
+        by entry identity, since symbol ids shift while inserting). Mountain/forest symbols are
         left out; use list_objects for them."""
         ids = [i for k in ("label", "path", "territory") for i, _ in self.doc.list(k)]
-        syms = self.doc.list("symbol")
-        taken: set[str] = set()
-        for _, (x, y) in self.settle_pos:
-            for sid, e in syms:
-                if sid not in taken and e["position"].x == x and e["position"].y == y:
-                    taken.add(sid)
-                    break
-        return sorted(taken, key=lambda s: int(s.split(":")[1])) + ids
+        index = {id(e): sid for sid, e in self.doc.list("symbol")}
+        sym = sorted((index[id(e)] for e in self.settle_entries),
+                     key=lambda i: int(i.split(":")[1]))
+        return sym + ids
 
 
 def build(spec: RegionSpec, cat: Catalog) -> RegionResult:

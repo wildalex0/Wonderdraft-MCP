@@ -337,12 +337,15 @@ def add_forest(set_key: str, polygon: Points, density: float, seed: int = 0) -> 
 
 @tool_errors
 def add_settlement(name: str, pos: list[float], kind: SettlementKind, set_key: str | None = None,
-                   label: bool = True, seed: int = 0, scale: float = 1.0) -> dict:
+                   label: bool = True, seed: int = 0, scale: float = 1.0,
+                   variant: int | None = None) -> dict:
     """Place a settlement symbol and (optionally) its name label just below it. Returns
-    [symbol_id, label_id]. set_key overrides the default symbol for the kind."""
+    [symbol_id, label_id]. Each kind has a curated default sprite (seed picks among its
+    variants); set_key overrides the set and variant picks one sprite by index. scale
+    multiplies the kind's default size."""
     p = _pos(pos)
     return _symbols("add_settlement", lambda d, c: place.add_settlement(
-        d, c, name, p, kind, set_key, label, seed, scale))
+        d, c, name, p, kind, set_key, label, seed, scale, variant))
 
 
 @tool_errors
@@ -471,7 +474,9 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
     if target.suffix == "":
         target = target.with_name(target.name + ".wonderdraft_map")
     saved = res.doc.save(target)
-    s.set_current(res.doc, dirty=False)
+    replaced = s.replace_current(res.doc, dirty=False, label="build_region")
+    if replaced:
+        res.warnings.append("the previously open map had unsaved changes; undo restores it")
     c = res.counts
     msg = (f"Built {spec.name!r} ({spec.width}x{spec.height}, theme {spec.theme!r}) and saved it to "
            f"{saved}: {c['settlements']} settlements, {c['realms']} realms, {c['roads']} roads, "
@@ -482,7 +487,7 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
         msg += " Warnings: " + "; ".join(res.warnings) + "."
     msg += " Returned ids cover labels, paths, territories and settlement symbols; "            "use list_objects for mountain and forest symbols. " + ID_NOTE
     return {"ids": res.ids, "summary": msg, "counts": c, "warnings": res.warnings,
-            "path": str(saved)}
+            "path": str(saved), "replaced_unsaved_map": replaced}
 
 
 def region_spec_schema() -> dict:
