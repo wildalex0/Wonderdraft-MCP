@@ -105,3 +105,7 @@ Caveats:
 - Windows' foreground-lock can refuse `SetForegroundWindow`. When the native dialog is open, refocusing the main window sends keystrokes to it instead of the dialog, which is why step 4 uses window messages.
 - Capturing the native dialog needs `CopyFromScreen` on its own rect, because `PrintWindow` on the main window doesn't include it.
 - Godot draws the Export Options dialog itself, so UIA/pywinauto can't see its controls (as expected). Only keystrokes or clicks work there.
+- **Python port (`wdmcp.export.wonderdraft_app.export_via_app`), live-tested 3/3, about 17 s each.**
+  - Keys must be sent as one `SendInput` per event, about 40 ms apart, because Godot polls input once per frame and loses a press+release that arrive in the same frame. Allow 300 ms after foregrounding before sending.
+  - Readiness matters. Sent 3 s after the window title appears, the first Ctrl+E was always ignored. After polling `SendMessageTimeoutW(WM_NULL)` and waiting `READY_SECONDS = 6` from the title, the first attempt succeeded in **3/3 runs, about 12.8 s each**. A guarded single retry (Esc, then Ctrl+E, then Enter, only if no native dialog exists yet) remains as a fallback.
+  - Wonderdraft is launched with stdin/stdout/stderr set to DEVNULL so it can't write into the MCP JSON-RPC pipe.
