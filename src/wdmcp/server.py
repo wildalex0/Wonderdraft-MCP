@@ -210,8 +210,10 @@ def list_objects(kind: Literal["symbol", "label", "path", "territory"],
     found = doc.list(kind, box)
     for id_, e in found[:max(limit, 0)]:
         if kind == "symbol":
+            base = place._base_scale(str(e["texture"]))
             rows.append({"id": id_, "texture": e["texture"],
-                         "position": [e["position"].x, e["position"].y]})
+                         "position": [e["position"].x, e["position"].y],
+                         "scale": round(e["scale"].x / base, 4)})
         elif kind == "label":
             rows.append({"id": id_, "text": e["text"],
                          "position": [e["position"].x, e["position"].y]})
@@ -415,18 +417,32 @@ def add_territory(points: Points, color: Color, opacity: float = 0.25,
 # ----------------------------------------------------------------- editing
 @tool_errors
 def update_object(id: str, fields: dict) -> dict:
-    """Update fields of one object (id like "label:3", see list_objects). rotation is in
-    degrees, clockwise, for symbols and labels alike (symbols are stored in radians). Vectors
-    (position, offset, scale) are [x, y]; colours are [r, g, b(, a)] floats 0-1 or "#rrggbb";
-    points (path/territory) are [[x, y], ...]. Unknown keys are rejected with the valid list."""
+    """Update fields of one object (id like "label:3", see list_objects). Values are checked
+    against the type Wonderdraft stores for each key; unknown keys are rejected with the valid
+    list.
+    - rotation: degrees, clockwise, for symbols and labels alike (symbols are stored in radians).
+    - scale (symbols): a number or [x, y], a multiplier on the set's base size, the same meaning
+      as add_symbol's scale (list_objects shows the current multiplier).
+    - variant (symbols): sprite index within the symbol's set (or within the set given as
+      texture in the same call); texture: a sprite path. Packs are registered as needed.
+    - style (paths/territories): a path or border texture name as in add_path / add_territory.
+    - Vectors (position, offset) are [x, y]; colours are [r, g, b(, a)] floats 0-1 or
+      "#rrggbb"; points (path/territory) are [[x, y], ...]."""
     s = session()
     doc = s.doc()
-    doc.get(id)  # validates the id
+    entry = doc.get(id)  # validates the id
     kind = id.partition(":")[0]
-    conv = convert.convert_fields(kind, fields)
+    conv = convert.convert_fields(kind, fields, entry, s.catalog)
     with s.mutation("update_object") as doc:
-        doc.update(id, **conv)
-    return _result([id], f"Updated {id}: {', '.join(conv) or 'nothing'}.")
+        before = _packs(doc)
+        e = doc.update(id, **conv)
+        if "texture" in conv:
+            place._register_packs(doc, [e])
+        added = _packs_added(before, doc)
+    msg = f"Updated {id}: {', '.join(conv) or 'nothing'}."
+    if added:
+        msg += f" Registered pack(s) in the map: {', '.join(added)}."
+    return _result([id], msg, packs_registered=added)
 
 
 @tool_errors

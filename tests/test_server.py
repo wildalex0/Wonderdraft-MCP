@@ -443,3 +443,55 @@ def test_style_names_listed_in_docs():
         assert n in server.add_territory.__doc__
     for n in BUILTIN_TEXTURES["frames"]:
         assert n in server.set_frame.__doc__
+
+
+# ------------------------------------------------------------------ update_object types
+def test_update_object_type_coercion_and_errors():
+    sample_map()
+    server.add_label("x", [10, 10])
+    server.update_object("label:0", {"size": 30.0, "align": 2, "curve": 1, "z_index": 3})
+    lab = server.session().current.get("label:0")
+    assert lab["size"] == 30 and type(lab["size"]) is int
+    assert lab["curve"] == 1.0 and type(lab["curve"]) is float
+    for bad, msg in (({"size": 30.5}, "integer"), ({"size": "big"}, "integer"),
+                     ({"size": True}, "integer"), ({"curve": True}, "number"),
+                     ({"text": 5}, "string"), ({"size": 2 ** 70}, "64-bit"),
+                     ({"color": None}, "colour"), ({"position": [1]}, r"\[x, y\]")):
+        with pytest.raises(ToolError, match=msg):
+            server.update_object("label:0", bad)
+    assert server.session().current.get("label:0")["size"] == 30
+    server.add_path([[10, 10], [50, 50]])
+    with pytest.raises(ToolError, match="true or false"):
+        server.update_object("path:0", {"straight": 1})
+    server.update_object("path:0", {"straight": True, "noise_seed": 7})
+    assert server.session().current.get("path:0")["straight"] is True
+
+
+def test_update_object_symbol_variant_scale_and_packs():
+    sample_map()
+    r = server.add_symbol(TOWN, [200, 150], variant=0, scale=2)
+    sid = r["ids"][0]
+    server.update_object(sid, {"variant": 2})
+    e = server.session().current.get(sid)
+    assert e["texture"] == f"{TOWN}/v2"
+    assert e["scale"] == Vector2(2.0, 2.0)  # multiplier kept
+    server.update_object(sid, {"scale": 3})
+    assert server.session().current.get(sid)["scale"] == Vector2(3.0, 3.0)
+    with pytest.raises(ToolError, match="out of range"):
+        server.update_object(sid, {"variant": 9})
+    with pytest.raises(ToolError, match="v3"):
+        server.update_object(sid, {"texture": f"{TOWN}/v3x"})
+    # a different set via texture + variant brings its radius/type
+    server.update_object(sid, {"texture": PEAK, "variant": 1})
+    e = server.session().current.get(sid)
+    assert e["texture"] == f"{PEAK}/v1" and e["type"] == "mountain" and e["radius"] == 30.0
+    rows = server.list_objects("symbol")["objects"]
+    assert rows[0]["scale"] == 3.0
+    # a user-pack texture registers its pack and keeps the multiplier on the 0.25 base
+    r = server.update_object(sid, {"texture": "user://assets/MyPack/sprites/symbols/S/a"})
+    assert r["packs_registered"] == ["MyPack"]
+    e = server.session().current.get(sid)
+    assert "MyPack" in server.session().current.root["included_packs"]
+    assert e["scale"] == Vector2(0.75, 0.75)
+    server.undo()
+    assert "MyPack" not in (server.session().current.root.get("included_packs") or [])
