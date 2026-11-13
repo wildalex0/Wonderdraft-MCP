@@ -318,7 +318,8 @@ def test_save_map_errors_and_backup(tmp_path):
     p = tmp_path / "m.wonderdraft_map"
     server.save_map(str(p))
     r = server.save_map()
-    assert r["backup"] and Path(r["backup"]).exists()
+    assert r["backup"] is None  # this server wrote m.wonderdraft_map itself: no .bak
+    assert not list(tmp_path.glob("*.bak"))
     r = server.save_map(str(tmp_path / "noext"))
     assert r["path"].endswith("noext.wonderdraft_map")
 
@@ -390,3 +391,17 @@ def test_add_symbol_and_label_rotation_degrees():
     assert server.session().current.get(r["ids"][0])["rotation"] == pytest.approx(math.pi / 2)
     r = server.add_label("Side", [200, 150], rotation=90)
     assert server.session().current.get(r["ids"][0])["rotation"] == 90.0
+
+
+def test_save_map_backup_once_and_brackets(tmp_path):
+    import shutil
+    from pathlib import Path
+    p = tmp_path / "x[1].wonderdraft_map"
+    shutil.copy(Path(__file__).parent / "fixtures" / "testmap.wonderdraft_map", p)
+    server.open_map(str(p))
+    r1 = server.save_map()
+    assert r1["backup"] and Path(r1["backup"]).is_file() and Path(r1["path"]).is_absolute()
+    server.add_label("Z", [10, 10])
+    r2 = server.save_map()
+    assert r2["backup"] is None
+    assert len(list(tmp_path.glob("*.bak"))) == 1

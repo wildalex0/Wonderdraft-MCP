@@ -13,7 +13,8 @@ FIX = Path(__file__).parent / "fixtures" / "testmap.wonderdraft_map"
 
 def test_open_save_identity(tmp_path):
     doc = MapDocument.open(FIX)
-    out = doc.save(tmp_path / "a.wonderdraft_map")
+    out = tmp_path / "a.wonderdraft_map"
+    doc.save(out)
     assert gcpf.read(out.read_bytes()) == gcpf.read(FIX.read_bytes())
 
 
@@ -50,7 +51,8 @@ def test_new_map_does_not_share_template_state(tmp_path):
     a = MapDocument.new(64, 32)
     a.add("label", label_entry("A", (1, 1)))
     assert MapDocument.new(64, 32).root["labels"] == []
-    out = a.save(tmp_path / "n.wonderdraft_map")
+    out = tmp_path / "n.wonderdraft_map"
+    a.save(out)
     assert load_map_bytes(out)["mask"].props["data"]["width"] == 64
 
 
@@ -59,7 +61,8 @@ def test_raster_edits_are_saved(tmp_path):
     arr = doc.raster("ground")
     assert arr.shape == (1080, 1920, 4) and arr.flags.writeable
     arr[0, 0] = (1, 2, 3, 4)
-    out = doc.save(tmp_path / "r.wonderdraft_map")
+    out = tmp_path / "r.wonderdraft_map"
+    doc.save(out)
     back = MapDocument.open(out).raster("ground")
     assert tuple(back[0, 0]) == (1, 2, 3, 4)
     orig = np.frombuffer(
@@ -102,3 +105,29 @@ def test_add_update_and_bbox():
     assert [i for i, _ in doc.list("path", (40, 40, 60, 60))] == ["path:0"]
     assert doc.list("path", (200, 200, 250, 250)) == []
     assert [i for i, _ in doc.list("territory", (400, 400, 500, 500))] == ["territory:0"]
+
+
+def test_save_twice_makes_one_backup(tmp_path):
+    p = tmp_path / "m.wonderdraft_map"
+    shutil.copy(FIX, p)
+    doc = MapDocument.open(p)
+    bak = doc.save()
+    assert bak is not None and bak.read_bytes() == FIX.read_bytes()
+    doc.add("label", label_entry("Y", (10, 10)))
+    assert doc.save() is None
+    assert len(list(tmp_path.glob("*.bak"))) == 1
+
+
+def test_new_file_saved_twice_has_no_backup(tmp_path):
+    doc = MapDocument.new(64, 64)
+    assert doc.save(tmp_path / "fresh.wonderdraft_map") is None
+    assert doc.save() is None
+    assert list(tmp_path.glob("*.bak")) == []
+    assert doc.path.is_absolute()
+
+
+def test_backup_with_brackets_in_stem(tmp_path):
+    p = tmp_path / "map [v2] (x).wonderdraft_map"
+    shutil.copy(FIX, p)
+    bak = MapDocument.open(p).save()
+    assert bak is not None and bak.is_file() and bak.name.startswith("map [v2] (x).")

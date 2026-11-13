@@ -33,6 +33,32 @@ _KINDS = ("symbol", "label", "path", "territory")
 
 _template_cache: dict | None = None
 
+# Backup bookkeeping for this process, keyed by normalised absolute path:
+# files backed up this session, and the (mtime_ns, size) of files this process wrote.
+_backed_up: set[str] = set()
+_written: dict[str, tuple[int, int]] = {}
+
+
+def _path_key(p: Path) -> str:
+    return os.path.normcase(str(Path(p).resolve()))
+
+
+def _signature(p: Path) -> tuple[int, int] | None:
+    try:
+        st = p.stat()
+    except OSError:
+        return None
+    return (st.st_mtime_ns, st.st_size)
+
+
+def _needs_backup(target: Path, key: str) -> bool:
+    """Back up an existing file at most once per session, and never a file this process
+    wrote itself (unless something else changed it since)."""
+    if not target.exists() or key in _backed_up:
+        return False
+    ours = _written.get(key)
+    return ours is None or ours != _signature(target)
+
 
 def _template() -> dict:
     """Decoded template (cached; decoding is slow). Always returns a deep copy."""
@@ -160,15 +186,23 @@ class MapDocument:
         return any(x0 <= x <= x1 and y0 <= y <= y1 for x, y in pts)
 
     # saving -----------------------------------------------------------
-    def save(self, path: Path | None = None) -> Path:
+    def save(self, path: Path | None = None) -> Path | None:
+        """Write the map to ``path`` (default: the path it came from) atomically and make
+        that the document's path (absolute). Returns the backup made, or None.
+
+        An existing file is first copied to ``<stem>.<YYYYMMDD-HHMMSS>.bak``, but at most once
+        per file per session, and not when this process wrote the file itself."""
         target = Path(path) if path is not None else self.path
         if target is None:
             raise ValueError("no path to save to; pass one to save()")
+        target = target.expanduser().resolve()
         for name, arr in self._rasters.items():
             self.root[name].props["data"]["data"] = arr.tobytes()
         data = dump_map_bytes(self.root)
         target.parent.mkdir(parents=True, exist_ok=True)
-        if target.exists():
+        key = _path_key(target)
+        bak = None
+        if _needs_backup(target, key):
             stamp = _dt.datetime.now().strftime("%Y%m%d-%H%M%S")
             bak = target.with_name(f"{target.stem}.{stamp}.bak")
             n = 1
@@ -176,6 +210,7 @@ class MapDocument:
                 bak = target.with_name(f"{target.stem}.{stamp}-{n}.bak")
                 n += 1
             shutil.copy2(target, bak)
+            _backed_up.add(key)
         fd, tmp = tempfile.mkstemp(dir=target.parent, suffix=".tmp")
         try:
             with os.fdopen(fd, "wb") as f:
@@ -185,4 +220,8 @@ class MapDocument:
             Path(tmp).unlink(missing_ok=True)
             raise
         self.path = target
-        return target
+        key = _path_key(target)  # after the write, so the resolved case is canonical
+        sig = _signature(target)
+        if sig is not None:
+            _written[key] = sig
+        return bak

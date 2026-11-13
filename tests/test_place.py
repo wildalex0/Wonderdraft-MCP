@@ -282,7 +282,8 @@ def test_roundtrip_save(tmp_path, cat):
     place.add_settlement(doc, cat, "A", (100, 100), "town")
     place.add_path(doc, [(10, 10), (50, 60)])
     place.add_territory(doc, [(10, 10), (80, 10), (80, 80)], (1, 0, 0))
-    out = doc.save(tmp_path / "m.wonderdraft_map")
+    out = tmp_path / "m.wonderdraft_map"
+    doc.save(out)
     back = MapDocument.open(out)
     assert len(back.root["symbols"]) == len(doc.root["symbols"])
     assert len(back.list("label")) == 1 and len(back.list("territory")) == 1
@@ -319,7 +320,8 @@ def test_symbols_register_packs(cat, tmp_path):
     place.scatter(doc, cat, ARAB, FULL, 1.0, land_only=False)
     assert doc.root["included_packs"] == ["Other", "Pack"]
     assert doc.root["included_default_packs"] == before + ["Arabia"]
-    back = MapDocument.open(doc.save(tmp_path / "m.wonderdraft_map"))
+    doc.save(tmp_path / "m.wonderdraft_map")
+    back = MapDocument.open(doc.path)
     assert back.root["included_packs"] == ["Other", "Pack"]
     assert back.root["included_default_packs"] == before + ["Arabia"]
 

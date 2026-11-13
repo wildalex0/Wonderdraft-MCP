@@ -152,8 +152,9 @@ def test_build_region_tool_saves_and_sets_session(tmp_path):
     assert "render_preview" in r["summary"]
     assert server.session().current is not None and not server.session().dirty
     MapDocument.open(out)  # loads back
-    again = server.build_region(spec, str(out))  # overwrite -> .bak
-    assert list(tmp_path.glob("*.bak"))
+    assert r["backup"] is None
+    again = server.build_region(spec, str(out))  # this process wrote it: no .bak
+    assert not list(tmp_path.glob("*.bak")) and again["backup"] is None
     assert server.map_summary()["counts"]["territory"] == len(spec.realms)
     assert again["ids"]
 
@@ -330,3 +331,12 @@ def test_river_warning_helper_counts_pixels():
     assert region.river_warnings(doc, [(150, 150), (250, 150)], 6, 600) == []
     ws = region.river_warnings(doc, [(150, 150), (250, 150)], 6, 50)
     assert len(ws) == 1 and "drew only 50 px" in ws[0]
+
+
+def test_build_region_reports_backup_of_existing_file(tmp_path):
+    import shutil
+    out = tmp_path / "pre[1].wonderdraft_map"
+    shutil.copy(Path(__file__).parent / "fixtures" / "testmap.wonderdraft_map", out)
+    r = server.build_region(small_spec(), str(out))
+    baks = list(tmp_path.glob("*.bak"))
+    assert len(baks) == 1 and r["backup"] == str(baks[0]) and baks[0].name in r["summary"]

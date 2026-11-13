@@ -268,7 +268,8 @@ def test_terrain_roundtrip_saves(tmp_path):
     terrain.add_river(doc, [(120, 100), (200, 190), (280, 200)], seed=1)
     terrain.paint_ground(doc, POLY, 2)
     want = {n: doc.raster(n).copy() for n in ("mask", "ground", "water_tint")}
-    out = doc.save(tmp_path / "t.wonderdraft_map")
+    out = tmp_path / "t.wonderdraft_map"
+    doc.save(out)
     back = MapDocument.open(out)
     for n, arr in want.items():
         assert np.array_equal(back.raster(n), arr)

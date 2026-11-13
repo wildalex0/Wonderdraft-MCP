@@ -137,8 +137,10 @@ def open_map(path: str) -> dict:
 
 @tool_errors
 def save_map(path: str | None = None) -> dict:
-    """Save the open map. Without a path, overwrite the file it was opened from (a
-    timestamped .bak of the old file is made first). New maps need a path."""
+    """Save the open map. Without a path, overwrite the file it was opened from. New maps
+    need a path. Before an existing file is overwritten a timestamped .bak copy is made, at
+    most once per file per session and never of a file this server wrote itself. Returns the
+    absolute path and the backup (or null)."""
     s = session()
     doc = s.doc()
     target = Path(path).expanduser() if path else doc.path
@@ -146,14 +148,13 @@ def save_map(path: str | None = None) -> dict:
         raise ValueError("this map has not been saved yet; pass a path to save_map")
     if target.suffix == "":
         target = target.with_name(target.name + ".wonderdraft_map")
-    before = set(target.parent.glob(f"{target.stem}.*.bak")) if target.parent.is_dir() else set()
-    saved = doc.save(target)
-    new_bak = sorted(set(saved.parent.glob(f"{saved.stem}.*.bak")) - before)
+    bak = doc.save(target)
+    saved = doc.path
     s.dirty = False
     msg = f"Saved {saved}."
-    if new_bak:
-        msg += f" Previous file backed up to {new_bak[-1].name}."
-    return {"path": str(saved), "backup": str(new_bak[-1]) if new_bak else None, "summary": msg}
+    if bak is not None:
+        msg += f" Previous file backed up to {bak.name}."
+    return {"path": str(saved), "backup": str(bak) if bak else None, "summary": msg}
 
 
 @tool_errors
@@ -482,7 +483,8 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
     target = Path(out_path).expanduser()
     if target.suffix == "":
         target = target.with_name(target.name + ".wonderdraft_map")
-    saved = res.doc.save(target)
+    bak = res.doc.save(target)
+    saved = res.doc.path
     replaced = s.replace_current(res.doc, dirty=False, label="build_region")
     if replaced:
         res.warnings.append("the previously open map had unsaved changes; undo restores it")
@@ -492,11 +494,14 @@ def build_region(spec: region.RegionSpec, out_path: str) -> dict:
            f"{c['rivers']} rivers, {c['lakes']} lakes, {c['mountain_symbols']} mountain symbols, "
            f"{c['forest_symbols']} forest symbols, {c['labels']} labels. "
            f"It is the open map: call render_preview to see it, then refine with the edit tools.")
+    if bak is not None:
+        msg += f" The existing file was backed up to {bak.name}."
     if res.warnings:
         msg += " Warnings: " + "; ".join(res.warnings) + "."
     msg += " Returned ids cover labels, paths, territories and settlement symbols; "            "use list_objects for mountain and forest symbols. " + ID_NOTE
     return {"ids": res.ids, "summary": msg, "counts": c, "warnings": res.warnings,
-            "path": str(saved), "replaced_unsaved_map": replaced}
+            "path": str(saved), "backup": str(bak) if bak else None,
+            "replaced_unsaved_map": replaced}
 
 
 def region_spec_schema() -> dict:
