@@ -292,8 +292,7 @@ def test_every_send_is_guarded():
     src = inspect.getsource(wa)
     # "_send_keys(" appears only in its def and in the one guarded call inside _send_keys_to
     assert src.count("_send_keys(") == 2
-    guarded = src.split("def _send_keys_to", 1)[1].split("
-def ", 1)[0]
+    guarded = src.split("def _send_keys_to", 1)[1].split("def _open_export_dialog", 1)[0]
     assert "_send_keys(chords)" in guarded
 
 
