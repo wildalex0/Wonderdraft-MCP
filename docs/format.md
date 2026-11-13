@@ -73,3 +73,9 @@ The user drew land, one river, one lake and two user-pack symbols in Wonderdraft
 - The **lake** and **river** written to mask R render as freshwater (theme freshwater colour plus outline). This confirms writing freshwater synthetically works.
 - The **ground** stroke renders as a soft green patch over land.
 - Quality note: with roughness 0.6 the coastline still reads as a polygon with gentle wobble, not a fractal coast, and the river looks like straight segments. This went to the Task 7 fix loop.
+
+## Task 8 GUI check: placed objects render (2026-11-13)
+
+`tools/make_placement_demo.py` (continent, built-in mountain range, built-in forest, built-in and user-pack settlements, a free label, a path and a territory) was opened in Wonderdraft 1.1.8.
+- **Pack registration is required.** Wonderdraft loads user packs only when they are listed in `root["included_packs"]`. With the list empty, which is the blank template's default, a `user://assets/<pack>/...` symbol fails with "couldn't load" (the user saw this error). Built-in pack textures (`res://packs/<pack>/...`) correspond to `included_default_packs`. Placement now registers packs automatically.
+- With registration in place, everything renders: mountains, trees, both settlements (built-in Stonebridge, T.A's-kit Mossgrove), labels in the theme preset font, the path (`path_blended`) and the territory (`border_dash`, fill at opacity). Settlement labels sit below the sprite: the label y is `pos.y + offset.y + sprite_h*scale/2 + 0.35*font size`.
